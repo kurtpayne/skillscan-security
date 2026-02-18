@@ -191,3 +191,14 @@ def test_new_patterns_2026_02_13_patch2() -> None:
         is not None
     )
     assert mal008.pattern.search('mainWindow.webContents.send("ok")') is None
+
+
+def test_new_patterns_2026_02_18() -> None:
+    """Test IPv4-mapped IPv6 SSRF bypass literal markers."""
+    compiled = load_compiled_builtin_rulepack()
+
+    exf006 = next((r for r in compiled.static_rules if r.id == "EXF-006"), None)
+    assert exf006 is not None
+    assert exf006.pattern.search("http://0:0:0:0:0:ffff:7f00:1:8080/") is not None
+    assert exf006.pattern.search("http://[::ffff:127.0.0.1]/") is not None
+    assert exf006.pattern.search("http://[::1]/") is None

@@ -1,5 +1,30 @@
 # Pattern Updates - February 2026
 
+## 2026-02-18 (1): IPv4-Mapped IPv6 SSRF Bypass Literals
+
+**Sources:**
+- [GitHub Security Advisory - GHSA-jrvc-8ff5-2f9f (CVE-2026-26324)](https://github.com/openclaw/openclaw/security/advisories/GHSA-jrvc-8ff5-2f9f)
+- [NVD - CVE-2026-26324](https://nvd.nist.gov/vuln/detail/CVE-2026-26324)
+- [GitLab Advisory Mirror - CVE-2026-26324](https://advisories.gitlab.com/pkg/npm/openclaw/CVE-2026-26324/)
+
+**Event Summary:** Advisory details describe SSRF guard bypass using full-form IPv4-mapped IPv6 literals (for example `0:0:0:0:0:ffff:7f00:1` => `127.0.0.1`). In skill/tool artifacts, these literals are high-signal markers of attempts to evade naive host-blocking rules for loopback/metadata access.
+
+**New Pattern Added:**
+
+### EXF-006: IPv4-mapped IPv6 loopback/metadata SSRF bypass literal
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.90
+- **Pattern:** Detects explicit IPv4-mapped IPv6 loopback/metadata literals such as `0:0:0:0:0:ffff:7f00:1`, `::ffff:127.0.0.1`, `0:0:0:0:0:ffff:a9fe:a9fe`, and `::ffff:169.254.169.254`.
+- **Justification:** Directly maps to currently disclosed SSRF bypass techniques where alternate IPv6 forms evade simplistic localhost/metadata deny lists.
+- **Mitigation:** Normalize IP representations before SSRF checks and block mapped loopback/metadata targets in untrusted tool inputs.
+
+**Version:** Rules updated from 2026.02.17.3 to 2026.02.18.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_18`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/36_ipv4_mapped_ipv6_ssrf_bypass`.
+
+---
+
 ## 2026-02-13 (2): Discord Electron Debugger Credential Interception Marker
 
 **Sources:**

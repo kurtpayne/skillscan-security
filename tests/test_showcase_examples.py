@@ -44,6 +44,9 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "EXF-005" for f in findings_34)
     assert any(f.id == "CHN-005" for f in findings_34)
     assert any(f.id == "MAL-008" for f in _scan("examples/showcase/35_discord_debugger_token_theft").findings)
+    assert any(
+        f.id == "EXF-006" for f in _scan("examples/showcase/36_ipv4_mapped_ipv6_ssrf_bypass").findings
+    )
 
 
 def test_showcase_policy_block_domain() -> None:
