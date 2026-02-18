@@ -1,4 +1,4 @@
-version: "2026.02.17.3"
+version: "2026.02.18.1"
 
 static_rules:
   - id: MAL-001
@@ -72,6 +72,14 @@ static_rules:
     title: GitHub Actions untrusted PR head checkout reference
     pattern: 'ref:\s*\$\{\{\s*github\.event\.pull_request\.head\.(?:sha|ref)\s*\}\}|repository:\s*\$\{\{\s*github\.event\.pull_request\.head\.repo\.full_name\s*\}\}'
     mitigation: Avoid checking out `github.event.pull_request.head.*` in privileged workflows. Use `pull_request` for untrusted code, or gate privileged jobs and use immutable trusted refs.
+
+  - id: EXF-006
+    category: exfiltration
+    severity: high
+    confidence: 0.9
+    title: IPv4-mapped IPv6 loopback/metadata SSRF bypass literal
+    pattern: '(?i)(?:0:0:0:0:0:ffff:7f00:1|::ffff:127\.0\.0\.1|0:0:0:0:0:ffff:a9fe:a9fe|::ffff:169\.254\.169\.254)'
+    mitigation: Block IPv4-mapped IPv6 loopback/metadata literals in untrusted URLs and normalize IP forms before SSRF allow/deny checks.
 
   - id: MAL-003
     category: malware_pattern
