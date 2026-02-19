@@ -1,3 +1,28 @@
+## 2026-02-19 (1): OpenClaw Config Token/Key Access Marker
+
+**Sources:**
+- [The Hacker News - Infostealer Steals OpenClaw AI Agent Configuration Files and Gateway Tokens](https://thehackernews.com/2026/02/infostealer-steals-openclaw-ai-agent.html)
+- [BleepingComputer - Infostealer malware found stealing OpenClaw secrets for first time](https://www.bleepingcomputer.com/news/security/infostealer-malware-found-stealing-openclaw-secrets-for-first-time/)
+- [Security Affairs - Hackers steal OpenClaw configuration in emerging AI agent threat](https://securityaffairs.com/188097/malware/hackers-steal-openclaw-configuration-in-emerging-ai-agent-threat.html)
+
+**Event Summary:** Reporting this week describes live infostealer infections stealing `.openclaw` runtime identity material including `openclaw.json` gateway tokens and `device.json` private keys. In skill/tool artifacts, direct references to those files/fields are high-signal indicators of identity-token theft behavior.
+
+**New Pattern Added:**
+
+### EXF-007: OpenClaw gateway token/private-key config access marker
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.91
+- **Pattern:** Detects access markers for `.openclaw/openclaw.json`, `.openclaw/device.json`, and sensitive fields such as `gateway.auth.token` and `privateKeyPem`.
+- **Justification:** These exact artifacts were highlighted in incident reporting as the stolen identity material enabling gateway impersonation and device-signing abuse.
+- **Mitigation:** Do not read or transmit these files/fields in skills/tools; rotate tokens and re-pair devices after suspected compromise.
+
+**Version:** Rules updated from 2026.02.18.2 to 2026.02.19.1
+
+**Testing:** Added assertions in `tests/test_rules.py::test_new_patterns_2026_02_18`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/38_openclaw_config_token_access`.
+
+---
+
 # Pattern Updates - February 2026
 
 ## 2026-02-18 (2): npm Lifecycle Inline Node Eval Pattern

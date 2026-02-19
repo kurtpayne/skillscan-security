@@ -52,3 +52,4 @@ skillscan scan examples/showcase/27_github_actions_secrets_exfil --fail-on never
 skillscan scan examples/showcase/28_npx_registry_fallback --fail-on never
 skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 ```
+38. `38_openclaw_config_token_access`: OpenClaw config/token/private-key access markers (`EXF-007`)

@@ -42,6 +42,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `35_discord_debugger_token_theft` | Discord Electron `webContents.debugger` hook intercepting auth/MFA network traffic (`/login`, `/mfa`, `codes-verification`) | `MAL-008` |
 | `36_ipv4_mapped_ipv6_ssrf_bypass` | IPv4-mapped IPv6 loopback/metadata endpoint literals that can bypass naive SSRF filters | `EXF-006` |
 | `37_npm_lifecycle_node_eval` | npm `preinstall`/`postinstall` inline `node -e` / `node --eval` execution in lifecycle hooks | `SUP-005` |
+| `38_openclaw_config_token_access` | Access to `.openclaw/openclaw.json` or `device.json` and fields like `gateway.auth.token` / `privateKeyPem` tied to AI-agent identity theft | `EXF-007` |
 
 ## Commands
 

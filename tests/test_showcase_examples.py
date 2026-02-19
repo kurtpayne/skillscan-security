@@ -48,6 +48,7 @@ def test_showcase_detection_rules() -> None:
         f.id == "EXF-006" for f in _scan("examples/showcase/36_ipv4_mapped_ipv6_ssrf_bypass").findings
     )
     assert any(f.id == "SUP-005" for f in _scan("examples/showcase/37_npm_lifecycle_node_eval").findings)
+    assert any(f.id == "EXF-007" for f in _scan("examples/showcase/38_openclaw_config_token_access").findings)
 
 
 def test_showcase_policy_block_domain() -> None:
