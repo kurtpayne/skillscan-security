@@ -38,6 +38,7 @@ Each folder demonstrates one major detection or behavior.
 34. `34_pr_target_checkout_exfil`: `pull_request_target` workflow checking out untrusted PR head refs (`EXF-005`, `CHN-005`)
 35. `35_discord_debugger_token_theft`: Discord Electron debugger network interception markers used for credential/token theft (`MAL-008`)
 36. `36_ipv4_mapped_ipv6_ssrf_bypass`: IPv4-mapped IPv6 loopback/metadata literals used for SSRF guard bypass attempts (`EXF-006`)
+37. `37_npm_lifecycle_node_eval`: npm install lifecycle inline `node -e/--eval` execution pattern seen in supply-chain malware (`SUP-005`)
 
 ## Run examples
 

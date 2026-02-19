@@ -1,4 +1,4 @@
-version: "2026.02.18.1"
+version: "2026.02.18.2"
 
 static_rules:
   - id: MAL-001
@@ -160,6 +160,14 @@ static_rules:
     title: npm preinstall/postinstall shell bootstrap pattern
     pattern: '(?i)"(?:preinstall|postinstall)"\s*:\s*"[^"\n]{0,300}(?:curl|wget|iwr|irm|invoke-webrequest|invoke-restmethod|powershell(?:\.exe)?|cmd(?:\.exe)?\s*/c|bash\s+-c|sh\s+-c)[^"\n]*"'
     mitigation: Remove shell/bootstrap execution from npm preinstall/postinstall hooks. Use explicit reviewed setup steps outside lifecycle scripts.
+
+  - id: SUP-005
+    category: malware_pattern
+    severity: high
+    confidence: 0.86
+    title: npm preinstall/postinstall inline Node eval pattern
+    pattern: '(?i)"(?:preinstall|postinstall)"\s*:\s*"[^"\n]{0,260}\bnode\s+(?:--eval|-e)\b[^"\n]*"'
+    mitigation: Remove inline `node -e/--eval` execution from npm install lifecycle hooks. Use reviewed version-controlled scripts with explicit file paths.
 
   - id: MAL-007
     category: malware_pattern

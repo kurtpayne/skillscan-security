@@ -41,6 +41,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `34_pr_target_checkout_exfil` | `pull_request_target` workflow that checks out untrusted PR head refs (`head.ref`/`head.sha`) | `EXF-005`, `CHN-005` |
 | `35_discord_debugger_token_theft` | Discord Electron `webContents.debugger` hook intercepting auth/MFA network traffic (`/login`, `/mfa`, `codes-verification`) | `MAL-008` |
 | `36_ipv4_mapped_ipv6_ssrf_bypass` | IPv4-mapped IPv6 loopback/metadata endpoint literals that can bypass naive SSRF filters | `EXF-006` |
+| `37_npm_lifecycle_node_eval` | npm `preinstall`/`postinstall` inline `node -e` / `node --eval` execution in lifecycle hooks | `SUP-005` |
 
 ## Commands
 

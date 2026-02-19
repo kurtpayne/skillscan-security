@@ -1,5 +1,29 @@
 # Pattern Updates - February 2026
 
+## 2026-02-18 (2): npm Lifecycle Inline Node Eval Pattern
+
+**Sources:**
+- [The Hacker News - Compromised dYdX npm and PyPI Packages Deliver Wallet Stealers and RAT Malware](https://thehackernews.com/2026/02/compromised-dydx-npm-and-pypi-packages.html)
+- [The Hacker News - npm’s Update to Harden Their Supply Chain, and Points to Consider](https://thehackernews.com/2026/02/npms-update-to-harden-their-supply.html)
+
+**Event Summary:** Recent npm supply-chain reporting continues to show malicious execution paths tied to install-time behavior. While prior rules covered shell bootstrap primitives in lifecycle hooks, attacker playbooks also rely on inline JavaScript execution during `preinstall`/`postinstall` to launch child processes and run second-stage payloads.
+
+**New Pattern Added:**
+
+### SUP-005: npm preinstall/postinstall inline Node eval pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects `package.json` lifecycle script values where `preinstall` or `postinstall` runs `node -e` or `node --eval` inline.
+- **Justification:** Inline eval in install hooks is an execution primitive frequently used in supply-chain malware to hide process-spawn/download behavior without checked-in script files.
+- **Mitigation:** Remove inline eval from install hooks and use reviewed version-controlled scripts with explicit file paths.
+
+**Version:** Rules updated from 2026.02.18.1 to 2026.02.18.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_18`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/37_npm_lifecycle_node_eval`.
+
+---
+
 ## 2026-02-18 (1): IPv4-Mapped IPv6 SSRF Bypass Literals
 
 **Sources:**
