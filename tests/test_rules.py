@@ -213,3 +213,15 @@ def test_new_patterns_2026_02_18() -> None:
     )
     assert sup005.pattern.search('"postinstall": "node --eval \"process.exit(0)\""') is not None
     assert sup005.pattern.search('"prepare": "node -e \"console.log(1)\""') is None
+
+
+def test_new_patterns_2026_02_19() -> None:
+    """Test OpenClaw config token/private key access markers."""
+    compiled = load_compiled_builtin_rulepack()
+
+    exf007 = next((r for r in compiled.static_rules if r.id == "EXF-007"), None)
+    assert exf007 is not None
+    assert exf007.pattern.search("cat ~/.openclaw/openclaw.json") is not None
+    assert exf007.pattern.search("gateway.auth.token") is not None
+    assert exf007.pattern.search("privateKeyPem") is not None
+    assert exf007.pattern.search("docs/readme.md") is None

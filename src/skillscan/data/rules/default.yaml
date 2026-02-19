@@ -1,4 +1,4 @@
-version: "2026.02.18.2"
+version: "2026.02.19.1"
 
 static_rules:
   - id: MAL-001
@@ -80,6 +80,14 @@ static_rules:
     title: IPv4-mapped IPv6 loopback/metadata SSRF bypass literal
     pattern: '(?i)(?:0:0:0:0:0:ffff:7f00:1|::ffff:127\.0\.0\.1|0:0:0:0:0:ffff:a9fe:a9fe|::ffff:169\.254\.169\.254)'
     mitigation: Block IPv4-mapped IPv6 loopback/metadata literals in untrusted URLs and normalize IP forms before SSRF allow/deny checks.
+
+  - id: EXF-007
+    category: exfiltration
+    severity: high
+    confidence: 0.91
+    title: OpenClaw gateway token/private-key config access marker
+    pattern: '(?i)(?:\.openclaw[/\\](?:openclaw\.json|device\.json)|\bgateway\.auth\.token\b|\bprivateKeyPem\b|\bopenclaw\.json\b|\bdevice\.json\b)'
+    mitigation: Do not read, copy, or transmit OpenClaw agent config/identity files (`openclaw.json`, `device.json`) or fields like `gateway.auth.token`/`privateKeyPem`; rotate compromised tokens and re-pair devices.
 
   - id: MAL-003
     category: malware_pattern
