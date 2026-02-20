@@ -39,6 +39,9 @@ Each folder demonstrates one major detection or behavior.
 35. `35_discord_debugger_token_theft`: Discord Electron debugger network interception markers used for credential/token theft (`MAL-008`)
 36. `36_ipv4_mapped_ipv6_ssrf_bypass`: IPv4-mapped IPv6 loopback/metadata literals used for SSRF guard bypass attempts (`EXF-006`)
 37. `37_npm_lifecycle_node_eval`: npm install lifecycle inline `node -e/--eval` execution pattern seen in supply-chain malware (`SUP-005`)
+38. `38_openclaw_config_token_access`: OpenClaw config/token/private-key access markers (`EXF-007`)
+39. `39_pr_target_metadata_injection`: `pull_request_target` workflow interpolating untrusted PR metadata (`title/body`) into shell/script context (`EXF-008`, `CHN-006`)
+40. `40_clickfix_dns_nslookup`: ClickFix DNS-staged execution via `nslookup -q=txt` output parsing and command execution (`MAL-009`)
 
 ## Run examples
 
@@ -52,4 +55,3 @@ skillscan scan examples/showcase/27_github_actions_secrets_exfil --fail-on never
 skillscan scan examples/showcase/28_npx_registry_fallback --fail-on never
 skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 ```
-38. `38_openclaw_config_token_access`: OpenClaw config/token/private-key access markers (`EXF-007`)

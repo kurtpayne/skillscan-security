@@ -1,3 +1,28 @@
+## 2026-02-20 (1): ClickFix DNS nslookup Staged Execution Pattern
+
+**Sources:**
+- [The Hacker News - Microsoft Discloses DNS-Based ClickFix Attack Using Nslookup for Malware Staging](https://thehackernews.com/2026/02/microsoft-discloses-dns-based-clickfix.html)
+- [BleepingComputer - New ClickFix attack abuses nslookup to retrieve PowerShell payload via DNS](https://www.bleepingcomputer.com/news/security/new-clickfix-attack-abuses-nslookup-to-retrieve-powershell-payload-via-dns/)
+- [Microsoft Security Blog - Think before you Click(Fix): Analyzing the ClickFix social engineering technique](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/)
+
+**Event Summary:** Recent reporting documents ClickFix campaigns that instruct users to run `nslookup` commands against attacker-controlled DNS servers, parse specific response lines (for example `Name:`), and execute the resulting command as stage two. This DNS-staging primitive is materially different from direct HTTP `iwr|iex` chains and appears in realistic AI-shared “fix” instructions.
+
+**New Pattern Added:**
+
+### MAL-009: ClickFix DNS nslookup staged command execution pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `nslookup` TXT-query commands (`-q=txt`/`-querytype=txt`) that parse returned fields (`findstr`/`for /f`/`Select-String`) and hand off execution to `cmd /c`, `powershell`, `pwsh`, or `iex`.
+- **Justification:** Captures the documented DNS-based ClickFix staging behavior where command text is delivered through DNS and executed locally.
+- **Mitigation:** Block copy-paste Run-dialog instructions that execute parsed DNS response content; never execute command text sourced from untrusted resolver responses.
+
+**Version:** Rules updated from 2026.02.19.2 to 2026.02.20.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_20`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/40_clickfix_dns_nslookup`.
+
+---
+
 ## 2026-02-19 (1): OpenClaw Config Token/Key Access Marker
 
 **Sources:**
@@ -348,3 +373,35 @@
 - **Mitigation:** Block instruction-driven external image beacons with interpolated placeholders and treat all metadata/context as untrusted.
 
 **Version:** Rules updated from 2026.02.09.2 to 2026.02.09.3
+
+---
+
+## 2026-02-19: pull_request_target Metadata Interpolation Injection Pattern
+
+**Sources:**
+- https://github.com/RooCodeInc/Roo-Code/security/advisories/GHSA-xr6r-vj48-29f6
+- https://github.blog/security/supply-chain-security/four-tips-to-keep-your-github-actions-workflows-secure/
+
+**Event Summary:** A recent advisory documented command injection in a privileged GitHub Actions workflow where untrusted pull-request metadata was interpolated in shell execution context. This is especially risky when combined with `pull_request_target`, which runs with elevated repository privileges.
+
+**New Patterns Added:**
+
+### EXF-008: GitHub Actions untrusted PR metadata interpolation in run/script
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `${{ github.event.pull_request.title/body/head.label/user.login }}` interpolation in `run:` / `script:` blocks.
+- **Justification:** Mirrors the root cause class from recent workflow command-injection disclosures.
+- **Mitigation:** Never interpolate PR metadata directly into shell/script execution. Prefer safe non-shell actions or strict quoting and input validation.
+
+### CHN-006: pull_request_target with untrusted PR metadata in shell/script
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.91
+- **Pattern:** Chains `pull_request_target` with untrusted PR metadata interpolation markers.
+- **Justification:** Reduces false positives by requiring the privileged workflow context plus untrusted metadata usage.
+- **Mitigation:** Avoid privileged `pull_request_target` execution paths that evaluate untrusted PR metadata in shell commands.
+
+**Version:** Rules updated from 2026.02.19.1 to 2026.02.19.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_19_patch2` and `tests/test_showcase_examples.py`.
