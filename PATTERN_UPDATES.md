@@ -1,3 +1,28 @@
+## 2026-02-20 (1): ClickFix DNS nslookup Staged Execution Pattern
+
+**Sources:**
+- [The Hacker News - Microsoft Discloses DNS-Based ClickFix Attack Using Nslookup for Malware Staging](https://thehackernews.com/2026/02/microsoft-discloses-dns-based-clickfix.html)
+- [BleepingComputer - New ClickFix attack abuses nslookup to retrieve PowerShell payload via DNS](https://www.bleepingcomputer.com/news/security/new-clickfix-attack-abuses-nslookup-to-retrieve-powershell-payload-via-dns/)
+- [Microsoft Security Blog - Think before you Click(Fix): Analyzing the ClickFix social engineering technique](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/)
+
+**Event Summary:** Recent reporting documents ClickFix campaigns that instruct users to run `nslookup` commands against attacker-controlled DNS servers, parse specific response lines (for example `Name:`), and execute the resulting command as stage two. This DNS-staging primitive is materially different from direct HTTP `iwr|iex` chains and appears in realistic AI-shared “fix” instructions.
+
+**New Pattern Added:**
+
+### MAL-009: ClickFix DNS nslookup staged command execution pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `nslookup` TXT-query commands (`-q=txt`/`-querytype=txt`) that parse returned fields (`findstr`/`for /f`/`Select-String`) and hand off execution to `cmd /c`, `powershell`, `pwsh`, or `iex`.
+- **Justification:** Captures the documented DNS-based ClickFix staging behavior where command text is delivered through DNS and executed locally.
+- **Mitigation:** Block copy-paste Run-dialog instructions that execute parsed DNS response content; never execute command text sourced from untrusted resolver responses.
+
+**Version:** Rules updated from 2026.02.19.2 to 2026.02.20.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_20`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/40_clickfix_dns_nslookup`.
+
+---
+
 ## 2026-02-19 (1): OpenClaw Config Token/Key Access Marker
 
 **Sources:**

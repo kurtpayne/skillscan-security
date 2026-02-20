@@ -41,6 +41,7 @@ Each folder demonstrates one major detection or behavior.
 37. `37_npm_lifecycle_node_eval`: npm install lifecycle inline `node -e/--eval` execution pattern seen in supply-chain malware (`SUP-005`)
 38. `38_openclaw_config_token_access`: OpenClaw config/token/private-key access markers (`EXF-007`)
 39. `39_pr_target_metadata_injection`: `pull_request_target` workflow interpolating untrusted PR metadata (`title/body`) into shell/script context (`EXF-008`, `CHN-006`)
+40. `40_clickfix_dns_nslookup`: ClickFix DNS-staged execution via `nslookup -q=txt` output parsing and command execution (`MAL-009`)
 
 ## Run examples
 

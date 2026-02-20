@@ -52,6 +52,7 @@ def test_showcase_detection_rules() -> None:
     findings_39 = _scan("examples/showcase/39_pr_target_metadata_injection").findings
     assert any(f.id == "EXF-008" for f in findings_39)
     assert any(f.id == "CHN-006" for f in findings_39)
+    assert any(f.id == "MAL-009" for f in _scan("examples/showcase/40_clickfix_dns_nslookup").findings)
 
 
 def test_showcase_policy_block_domain() -> None:

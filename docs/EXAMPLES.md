@@ -44,6 +44,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `37_npm_lifecycle_node_eval` | npm `preinstall`/`postinstall` inline `node -e` / `node --eval` execution in lifecycle hooks | `SUP-005` |
 | `38_openclaw_config_token_access` | Access to `.openclaw/openclaw.json` or `device.json` and fields like `gateway.auth.token` / `privateKeyPem` tied to AI-agent identity theft | `EXF-007` |
 | `39_pr_target_metadata_injection` | `pull_request_target` workflow that interpolates untrusted PR metadata (for example `github.event.pull_request.title`) in shell/script steps, enabling command injection in privileged CI contexts | `EXF-008`, `CHN-006` |
+| `40_clickfix_dns_nslookup` | ClickFix variant that parses DNS `nslookup -q=txt` response fields and executes returned command text (`cmd /c`, `powershell`, `iex`) | `MAL-009` |
 
 ## Commands
 

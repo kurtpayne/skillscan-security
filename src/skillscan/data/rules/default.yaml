@@ -1,4 +1,4 @@
-version: "2026.02.19.2"
+version: "2026.02.20.1"
 
 static_rules:
   - id: MAL-001
@@ -200,6 +200,14 @@ static_rules:
     title: GitHub Actions untrusted PR metadata interpolation in run/script
     pattern: '\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|user\.login)\s*\}\}'
     mitigation: Do not interpolate untrusted pull request metadata directly into shell/script steps. Pass through safe quoting or dedicated actions and avoid shell evaluation in privileged workflows.
+
+  - id: MAL-009
+    category: malware_pattern
+    severity: high
+    confidence: 0.88
+    title: ClickFix DNS nslookup staged command execution pattern
+    pattern: '(?i)\bnslookup(?:\.exe)?\b[^\n]{0,260}(?:\s+-q=txt|\s+-querytype=txt)\b[^\n]{0,260}\b(?:findstr|for\s+/f|select-string)\b[^\n]{0,260}\b(?:cmd(?:\.exe)?\s*/c|powershell(?:\.exe)?|pwsh|iex|invoke-expression)\b'
+    mitigation: Do not include ClickFix-style instructions that parse DNS lookup output and execute it. Never run clipboard/Run-dialog commands from untrusted pages.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
