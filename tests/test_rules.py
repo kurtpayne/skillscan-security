@@ -269,3 +269,29 @@ def test_new_patterns_2026_02_20() -> None:
         is not None
     )
     assert mal009.pattern.search('nslookup example.com 8.8.8.8') is None
+
+
+def test_new_patterns_2026_02_20_patch2() -> None:
+    """Test dotenv newline environment-variable injection payload markers."""
+    compiled = load_compiled_builtin_rulepack()
+
+    sup006 = next((r for r in compiled.static_rules if r.id == "SUP-006"), None)
+    assert sup006 is not None
+    assert (
+        sup006.pattern.search(
+            'tool_input={"accessToken":"abc\\nNODE_OPTIONS=--require /tmp/pwn.js"}'
+        )
+        is not None
+    )
+    assert (
+        sup006.pattern.search(
+            'ebay_set_user_tokens refreshToken=ok%0aEBAY_REDIRECT_URI=https://attacker.example/cb'
+        )
+        is not None
+    )
+    assert (
+        sup006.pattern.search(
+            'ebay_set_user_tokens accessToken=plain-token-without-newline'
+        )
+        is None
+    )

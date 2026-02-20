@@ -1,4 +1,4 @@
-version: "2026.02.20.1"
+version: "2026.02.20.2"
 
 static_rules:
   - id: MAL-001
@@ -208,6 +208,15 @@ static_rules:
     title: ClickFix DNS nslookup staged command execution pattern
     pattern: '(?i)\bnslookup(?:\.exe)?\b[^\n]{0,260}(?:\s+-q=txt|\s+-querytype=txt)\b[^\n]{0,260}\b(?:findstr|for\s+/f|select-string)\b[^\n]{0,260}\b(?:cmd(?:\.exe)?\s*/c|powershell(?:\.exe)?|pwsh|iex|invoke-expression)\b'
     mitigation: Do not include ClickFix-style instructions that parse DNS lookup output and execute it. Never run clipboard/Run-dialog commands from untrusted pages.
+
+
+  - id: SUP-006
+    category: malware_pattern
+    severity: high
+    confidence: 0.89
+    title: Dotenv newline environment-variable injection payload marker
+    pattern: '(?i)(?:access[_-]?token|refresh[_-]?token|client[_-]?secret|set[_-]?user[_-]?tokens)[^\n]{0,180}(?:%0a|%0d|\\n|\\r)[^\n]{0,120}[A-Z][A-Z0-9_]{2,}\s*='
+    mitigation: Reject newline/carriage-return characters in token inputs before writing `.env` files. Update env values via strict key allowlists and escaped serialization.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

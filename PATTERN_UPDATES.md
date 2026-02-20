@@ -1,3 +1,27 @@
+## 2026-02-20 (2): Dotenv Newline Environment-Variable Injection Payload Marker
+
+**Sources:**
+- [GitHub Advisory Database - CVE-2026-27203 (GHSA-97rm-xj73-33jh)](https://github.com/advisories/GHSA-97rm-xj73-33jh)
+- [GitLab Advisory Mirror - CVE-2026-27203](https://advisories.gitlab.com/pkg/npm/ebay-mcp/CVE-2026-27203/)
+
+**Event Summary:** A newly published MCP advisory (Feb 18-19, 2026) describes a token update tool writing user-controlled values into `.env` without rejecting newline/carriage-return characters. Attackers can smuggle additional key/value pairs (for example `NODE_OPTIONS=...`) and poison runtime configuration.
+
+**New Pattern Added:**
+
+### SUP-006: Dotenv newline environment-variable injection payload marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.89
+- **Pattern:** Detects token/update input strings where token-like fields contain newline encodings (`\n`, `\r`, `%0a`, `%0d`) followed by injected uppercase env assignments.
+- **Justification:** Captures the concrete payload shape used to exploit unsafe `.env` update helpers in MCP token management flows.
+- **Mitigation:** Reject CR/LF in token inputs, enforce strict key allowlists, and serialize `.env` updates safely.
+
+**Version:** Rules updated from 2026.02.20.1 to 2026.02.20.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_20_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/41_env_newline_injection`.
+
+---
+
 ## 2026-02-20 (1): ClickFix DNS nslookup Staged Execution Pattern
 
 **Sources:**
