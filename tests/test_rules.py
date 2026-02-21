@@ -316,3 +316,30 @@ def test_new_patterns_2026_02_21() -> None:
         is not None
     )
     assert sup007.pattern.search('"postinstall": "npm install openclaw@latest"') is None
+
+
+def test_new_patterns_2026_02_21_patch2() -> None:
+    """Test GitHub Actions issue/comment metadata interpolation command-injection marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal010 = next((r for r in compiled.static_rules if r.id == "MAL-010"), None)
+    assert mal010 is not None
+    assert (
+        mal010.pattern.search(
+            "run: echo \"${{ github.event.issue.title }}\""
+        )
+        is not None
+    )
+    assert (
+        mal010.pattern.search(
+            "run: bash -lc '${{ github.event.comment.body }}'"
+        )
+        is not None
+    )
+    assert (
+        mal010.pattern.search(
+            "script: console.log('${{ github.event.discussion.title }}')"
+        )
+        is not None
+    )
+    assert mal010.pattern.search("run: echo safe") is None

@@ -47,6 +47,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `40_clickfix_dns_nslookup` | ClickFix variant that parses DNS `nslookup -q=txt` response fields and executes returned command text (`cmd /c`, `powershell`, `iex`) | `MAL-009` |
 | `41_env_newline_injection` | Newline (`\n`/`%0a`) token payload that injects arbitrary env vars into `.env` update flows (for example `NODE_OPTIONS=...`) | `SUP-006` |
 | `42_npm_lifecycle_global_install` | npm `preinstall`/`postinstall` lifecycle script performs global package install (`npm install -g` / `npm i -g`) | `SUP-007` |
+| `43_gh_issue_metadata_injection` | GitHub Actions `issues`/`issue_comment` workflow interpolates untrusted `${{ github.event.issue.* }}` or `${{ github.event.comment.body }}` directly into shell/script context | `MAL-010` |
 
 ## Commands
 

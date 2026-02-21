@@ -1,3 +1,27 @@
+## 2026-02-21 (2): GitHub Actions Issue/Comment Metadata Interpolation in Shell Context
+
+**Sources:**
+- [GitHub Blog - How to secure GitHub Actions workflows: 4 tips to handle untrusted input and tighten permissions (updated 2026-02-04)](https://github.blog/security/supply-chain-security/four-tips-to-keep-your-github-actions-workflows-secure/)
+- [GitHub Security Lab Advisories Index (workflow injection examples)](https://securitylab.github.com/advisories/)
+
+**Event Summary:** Recent GitHub guidance re-emphasizes that untrusted issue/comment fields (for example `github.event.issue.title`) become command/script injection vectors when directly interpolated in `run:` blocks. Existing SkillScan coverage already handled pull-request metadata interpolation, but not issue/comment/discussion events.
+
+**New Pattern Added:**
+
+### MAL-010: GitHub Actions issue/comment metadata interpolation in run/script
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects `${{ github.event.issue.title/body }}`, `${{ github.event.comment.body }}`, and discussion body/title interpolation markers commonly inserted into shell/script steps.
+- **Justification:** Captures the same workflow command-injection root cause class for issue/comment-driven automations that was not previously covered by `EXF-008`.
+- **Mitigation:** Route untrusted metadata through environment variables and treat as untrusted data; avoid shell interpolation/evaluation of event text.
+
+**Version:** Rules updated from 2026.02.21.1 to 2026.02.21.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_21_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/43_gh_issue_metadata_injection`.
+
+---
+
 ## 2026-02-21 (1): npm Lifecycle Global Install via Compromised Publish Token
 
 **Sources:**

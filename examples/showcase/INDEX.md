@@ -44,6 +44,7 @@ Each folder demonstrates one major detection or behavior.
 40. `40_clickfix_dns_nslookup`: ClickFix DNS-staged execution via `nslookup -q=txt` output parsing and command execution (`MAL-009`)
 41. `41_env_newline_injection`: dotenv newline env-var injection payload in token update input (`SUP-006`)
 42. `42_npm_lifecycle_global_install`: npm lifecycle script performing global package install (`npm install -g` / `npm i -g`) from install hooks (`SUP-007`)
+43. `43_gh_issue_metadata_injection`: untrusted issue/comment metadata interpolation in shell/script workflow steps (command-injection risk, `MAL-010`)
 
 ## Run examples
 
