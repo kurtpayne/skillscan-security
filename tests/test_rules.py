@@ -295,3 +295,24 @@ def test_new_patterns_2026_02_20_patch2() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_02_21() -> None:
+    """Test npm lifecycle global package install marker from cline token-compromise advisory."""
+    compiled = load_compiled_builtin_rulepack()
+
+    sup007 = next((r for r in compiled.static_rules if r.id == "SUP-007"), None)
+    assert sup007 is not None
+    assert (
+        sup007.pattern.search(
+            '"postinstall": "npm install -g openclaw@latest"'
+        )
+        is not None
+    )
+    assert (
+        sup007.pattern.search(
+            '"preinstall": "npm i -g @scope/internal-cli"'
+        )
+        is not None
+    )
+    assert sup007.pattern.search('"postinstall": "npm install openclaw@latest"') is None

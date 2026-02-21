@@ -1,3 +1,28 @@
+## 2026-02-21 (1): npm Lifecycle Global Install via Compromised Publish Token
+
+**Sources:**
+- [GitHub Advisory Database - GHSA-9ppg-jx86-fqw7](https://github.com/advisories/GHSA-9ppg-jx86-fqw7)
+- [Cline Security Advisory - GHSA-9ppg-jx86-fqw7](https://github.com/cline/cline/security/advisories/GHSA-9ppg-jx86-fqw7)
+- [GitLab Advisory Mirror - GHSA-9ppg-jx86-fqw7](https://advisories.gitlab.com/pkg/npm/cline/GHSA-9ppg-jx86-fqw7/)
+
+**Event Summary:** A compromised npm publish token was used to publish `cline@2.3.0` with a modified `postinstall` lifecycle script: `npm install -g openclaw@latest`. This is a concrete install-time behavior change that can silently pull in unrelated global packages during dependency install.
+
+**New Pattern Added:**
+
+### SUP-007: npm preinstall/postinstall global package install pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects `package.json` `preinstall`/`postinstall` script values running `npm install -g ...` or `npm i -g ...`.
+- **Justification:** Captures the exact lifecycle-hook execution shape in GHSA-9ppg-jx86-fqw7 while staying narrow to install-hook global installs.
+- **Mitigation:** Remove global package installation from npm lifecycle hooks and move setup to explicit reviewed, user-initiated steps.
+
+**Version:** Rules updated from 2026.02.20.2 to 2026.02.21.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_21`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/42_npm_lifecycle_global_install`.
+
+---
+
 ## 2026-02-20 (2): Dotenv Newline Environment-Variable Injection Payload Marker
 
 **Sources:**

@@ -54,6 +54,7 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "CHN-006" for f in findings_39)
     assert any(f.id == "MAL-009" for f in _scan("examples/showcase/40_clickfix_dns_nslookup").findings)
     assert any(f.id == "SUP-006" for f in _scan("examples/showcase/41_env_newline_injection").findings)
+    assert any(f.id == "SUP-007" for f in _scan("examples/showcase/42_npm_lifecycle_global_install").findings)
 
 
 def test_showcase_policy_block_domain() -> None:

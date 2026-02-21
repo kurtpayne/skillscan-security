@@ -1,4 +1,4 @@
-version: "2026.02.20.2"
+version: "2026.02.21.1"
 
 static_rules:
   - id: MAL-001
@@ -217,6 +217,14 @@ static_rules:
     title: Dotenv newline environment-variable injection payload marker
     pattern: '(?i)(?:access[_-]?token|refresh[_-]?token|client[_-]?secret|set[_-]?user[_-]?tokens)[^\n]{0,180}(?:%0a|%0d|\\n|\\r)[^\n]{0,120}[A-Z][A-Z0-9_]{2,}\s*='
     mitigation: Reject newline/carriage-return characters in token inputs before writing `.env` files. Update env values via strict key allowlists and escaped serialization.
+
+  - id: SUP-007
+    category: malware_pattern
+    severity: high
+    confidence: 0.87
+    title: npm preinstall/postinstall global package install pattern
+    pattern: '(?i)"(?:preinstall|postinstall)"\s*:\s*"[^"\n]{0,260}\bnpm\s+(?:install|i)\s+-g\s+[^"\n]+'
+    mitigation: Remove global package installation from npm install lifecycle hooks. Keep dependency setup explicit, pinned, and user-initiated outside preinstall/postinstall.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

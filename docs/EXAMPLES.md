@@ -46,6 +46,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `39_pr_target_metadata_injection` | `pull_request_target` workflow that interpolates untrusted PR metadata (for example `github.event.pull_request.title`) in shell/script steps, enabling command injection in privileged CI contexts | `EXF-008`, `CHN-006` |
 | `40_clickfix_dns_nslookup` | ClickFix variant that parses DNS `nslookup -q=txt` response fields and executes returned command text (`cmd /c`, `powershell`, `iex`) | `MAL-009` |
 | `41_env_newline_injection` | Newline (`\n`/`%0a`) token payload that injects arbitrary env vars into `.env` update flows (for example `NODE_OPTIONS=...`) | `SUP-006` |
+| `42_npm_lifecycle_global_install` | npm `preinstall`/`postinstall` lifecycle script performs global package install (`npm install -g` / `npm i -g`) | `SUP-007` |
 
 ## Commands
 

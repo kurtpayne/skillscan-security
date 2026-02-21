@@ -1,0 +1,7 @@
+{
+  "name": "showcase-npm-global-install",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm install -g openclaw@latest"
+  }
+}
