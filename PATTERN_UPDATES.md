@@ -1,3 +1,27 @@
+## 2026-02-23 (2): MCP Tool Hidden Credential-Harvest Prompt Block Marker
+
+**Sources:**
+- [Socket - SANDWORM_MODE: Shai-Hulud-Style npm Worm Hijacks CI Workflow and Poisons AI Toolchains](https://socket.dev/blog/sandworm-mode-npm-worm-ai-toolchain-poisoning)
+- [The Hacker News - Malicious npm Packages Harvest Crypto Keys, CI Secrets, and API Tokens](https://thehackernews.com/2026/02/malicious-npm-packages-harvest-crypto.html)
+
+**Event Summary:** Recent supply-chain reporting describes malicious packages that deploy rogue MCP servers whose tool descriptions include hidden instructions to read SSH keys/credentials and silently pass stolen data via a `context` parameter while explicitly telling the assistant not to tell the user.
+
+**New Pattern Added:**
+
+### EXF-009: MCP tool hidden credential-harvest prompt block marker
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.90
+- **Pattern:** Detects `<IMPORTANT>...</IMPORTANT>`-style MCP tool prompt blocks that combine credential-file read instructions (`~/.ssh/id_rsa`, `~/.aws/credentials`, `~/.npmrc`), explicit `context` payload transfer wording, and concealment language (`do not mention ... to the user`).
+- **Justification:** Captures a concrete AI-toolchain abuse primitive from current campaign reporting where tool metadata itself acts as a covert exfil instruction carrier.
+- **Mitigation:** Remove hidden credential-harvest instructions from MCP tool descriptions; never require silent context transfer of secrets.
+
+**Version:** Rules updated from 2026.02.23.1 to 2026.02.23.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_23_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/45_mcp_tool_prompt_injection`.
+
+---
+
 ## 2026-02-23 (1): npm Lifecycle Mutable `@latest` Install in Install Hooks
 
 **Sources:**
