@@ -1,3 +1,28 @@
+## 2026-02-23 (1): npm Lifecycle Mutable `@latest` Install in Install Hooks
+
+**Sources:**
+- [Cline Security Advisory - GHSA-9ppg-jx86-fqw7](https://github.com/cline/cline/security/advisories/GHSA-9ppg-jx86-fqw7)
+- [GitHub Advisory Database - GHSA-9ppg-jx86-fqw7](https://github.com/advisories/GHSA-9ppg-jx86-fqw7)
+- [Socket - Cline CLI npm package compromised via suspected cache poisoning](https://socket.dev/blog/cline-cli-npm-package-compromised-via-suspected-cache-poisoning-attack)
+
+**Event Summary:** The Feb 17 compromise of `cline@2.3.0` used a `postinstall` hook to pull `openclaw@latest`. SkillScan already flagged global installs in lifecycle hooks (`SUP-007`), but this incident highlights a reusable evasion variant: install-hook dependency pulls pinned to mutable `@latest` tags without `-g`, which still allow attacker-controlled code changes during install.
+
+**New Pattern Added:**
+
+### SUP-008: npm lifecycle mutable @latest dependency install pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects `package.json` `preinstall`/`postinstall` scripts that run `npm install`/`npm i` with an `@latest` package selector (non-global install hooks).
+- **Justification:** Captures mutable-tag dependency execution in lifecycle hooks, a concrete install-time supply-chain risk adjacent to GHSA-9ppg-jx86-fqw7 and not covered by existing global-only hook rule.
+- **Mitigation:** Disallow `@latest` in install lifecycle hooks; pin exact versions and move dependency setup to explicit, reviewed, user-triggered steps.
+
+**Version:** Rules updated from 2026.02.21.2 to 2026.02.23.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_23`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/44_npm_lifecycle_latest_install`.
+
+---
+
 ## 2026-02-21 (2): GitHub Actions Issue/Comment Metadata Interpolation in Shell Context
 
 **Sources:**

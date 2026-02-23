@@ -1,0 +1,8 @@
+{
+  "name": "showcase-lifecycle-latest-install",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install openclaw@latest --no-audit"
+  }
+}

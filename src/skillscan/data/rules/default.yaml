@@ -1,4 +1,4 @@
-version: "2026.02.21.2"
+version: "2026.02.23.1"
 
 static_rules:
   - id: MAL-001
@@ -233,6 +233,14 @@ static_rules:
     title: npm preinstall/postinstall global package install pattern
     pattern: '(?i)"(?:preinstall|postinstall)"\s*:\s*"[^"\n]{0,260}\bnpm\s+(?:install|i)\s+-g\s+[^"\n]+'
     mitigation: Remove global package installation from npm install lifecycle hooks. Keep dependency setup explicit, pinned, and user-initiated outside preinstall/postinstall.
+
+  - id: SUP-008
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: npm lifecycle mutable @latest dependency install pattern
+    pattern: '(?i)"(?:preinstall|postinstall)"\s*:\s*"[^"\n]{0,300}\bnpm\s+(?:install|i)\b(?![^"\n]*(?:\s-g\b|\s--global\b))[^"\n]*@[^\s"\n]*latest\b[^"\n]*"'
+    mitigation: Avoid `npm install ...@latest` inside install lifecycle hooks. Use pinned versions and explicit user-initiated install/update steps outside preinstall/postinstall.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

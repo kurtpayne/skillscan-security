@@ -56,6 +56,7 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "SUP-006" for f in _scan("examples/showcase/41_env_newline_injection").findings)
     assert any(f.id == "SUP-007" for f in _scan("examples/showcase/42_npm_lifecycle_global_install").findings)
     assert any(f.id == "MAL-010" for f in _scan("examples/showcase/43_gh_issue_metadata_injection").findings)
+    assert any(f.id == "SUP-008" for f in _scan("examples/showcase/44_npm_lifecycle_latest_install").findings)
 
 
 def test_showcase_policy_block_domain() -> None:

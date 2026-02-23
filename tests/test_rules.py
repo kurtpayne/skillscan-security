@@ -343,3 +343,35 @@ def test_new_patterns_2026_02_21_patch2() -> None:
         is not None
     )
     assert mal010.pattern.search("run: echo safe") is None
+
+
+def test_new_patterns_2026_02_23() -> None:
+    """Test npm lifecycle mutable @latest dependency install marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    sup008 = next((r for r in compiled.static_rules if r.id == "SUP-008"), None)
+    assert sup008 is not None
+    assert (
+        sup008.pattern.search(
+            '"postinstall": "npm install openclaw@latest"'
+        )
+        is not None
+    )
+    assert (
+        sup008.pattern.search(
+            '"preinstall": "npm i @scope/agent-helper@latest --no-audit"'
+        )
+        is not None
+    )
+    assert (
+        sup008.pattern.search(
+            '"postinstall": "npm install -g openclaw@latest"'
+        )
+        is None
+    )
+    assert (
+        sup008.pattern.search(
+            '"postinstall": "npm install openclaw@2.3.1"'
+        )
+        is None
+    )

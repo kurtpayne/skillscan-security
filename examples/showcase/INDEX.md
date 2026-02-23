@@ -45,6 +45,7 @@ Each folder demonstrates one major detection or behavior.
 41. `41_env_newline_injection`: dotenv newline env-var injection payload in token update input (`SUP-006`)
 42. `42_npm_lifecycle_global_install`: npm lifecycle script performing global package install (`npm install -g` / `npm i -g`) from install hooks (`SUP-007`)
 43. `43_gh_issue_metadata_injection`: untrusted issue/comment metadata interpolation in shell/script workflow steps (command-injection risk, `MAL-010`)
+44. `44_npm_lifecycle_latest_install`: npm lifecycle script with mutable `@latest` package install in install hooks (`SUP-008`)
 
 ## Run examples
 
