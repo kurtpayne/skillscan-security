@@ -47,6 +47,7 @@ Each folder demonstrates one major detection or behavior.
 43. `43_gh_issue_metadata_injection`: untrusted issue/comment metadata interpolation in shell/script workflow steps (command-injection risk, `MAL-010`)
 44. `44_npm_lifecycle_latest_install`: npm lifecycle script with mutable `@latest` package install in install hooks (`SUP-008`)
 45. `45_mcp_tool_prompt_injection`: MCP tool description with hidden credential-harvest instructions and silent context exfiltration wording (`EXF-009`)
+46. `46_pr_target_cache_key_poisoning`: `pull_request_target` workflow deriving `actions/cache` key from untrusted PR metadata (`EXF-010`, `CHN-007`)
 
 ## Run examples
 

@@ -1,3 +1,35 @@
+## 2026-02-24 (1): pull_request_target Cache-Key Poisoning Marker
+
+**Sources:**
+- [The Hacker News - Cline CLI 2.3.0 Supply Chain Attack Installed OpenClaw on Developer Systems](https://thehackernews.com/2026/02/cline-cli-230-supply-chain-attack.html)
+- [GitHub Security Lab Advisories Index (Poisoned Pipeline Execution / cache-poisoning workflow class)](https://securitylab.github.com/advisories/)
+
+**Event Summary:** Reporting on the Cline compromise describes a workflow chain where attacker-controlled issue/PR input can help poison CI cache state and pivot into privileged publish paths. Existing rules covered direct shell interpolation and untrusted head checkout, but not untrusted PR metadata used in `actions/cache` key derivation under `pull_request_target`.
+
+**New Patterns Added:**
+
+### EXF-010: GitHub Actions cache key interpolation from untrusted PR metadata
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects `actions/cache` (`cache`, `cache/restore`, `cache/save`) steps whose `key:` includes `${{ github.event.pull_request.* }}` untrusted metadata fields (`title`, `body`, `head.ref`, etc.).
+- **Justification:** Captures a concrete cache-poisoning precursor in privileged workflows that can bridge untrusted input into trusted CI state.
+- **Mitigation:** Never derive privileged cache keys from untrusted PR metadata; scope and separate caches between untrusted and trusted workflows.
+
+### CHN-007: pull_request_target with untrusted PR-derived Actions cache key
+- **Category:** exfiltration
+- **Severity:** critical
+- **Confidence:** 0.90
+- **Pattern:** Chains `pull_request_target` with the untrusted cache-key marker to reduce noise and prioritize high-impact CI abuse paths.
+- **Justification:** Privileged workflow context plus untrusted cache-key derivation is a stronger indicator of actionable pipeline abuse risk than either signal alone.
+- **Mitigation:** Use unprivileged triggers for untrusted events and isolate cache namespaces/keys for trusted release jobs.
+
+**Version:** Rules updated from 2026.02.23.2 to 2026.02.24.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_24`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/46_pr_target_cache_key_poisoning`.
+
+---
+
 ## 2026-02-23 (2): MCP Tool Hidden Credential-Harvest Prompt Block Marker
 
 **Sources:**

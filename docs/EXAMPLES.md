@@ -50,6 +50,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `43_gh_issue_metadata_injection` | GitHub Actions `issues`/`issue_comment` workflow interpolates untrusted `${{ github.event.issue.* }}` or `${{ github.event.comment.body }}` directly into shell/script context | `MAL-010` |
 | `44_npm_lifecycle_latest_install` | npm `preinstall`/`postinstall` lifecycle script installs mutable `@latest` package version (non-global) during install hooks | `SUP-008` |
 | `45_mcp_tool_prompt_injection` | MCP tool description embeds hidden credential file collection plus “do not mention” context exfiltration instructions | `EXF-009` |
+| `46_pr_target_cache_key_poisoning` | `pull_request_target` workflow derives `actions/cache` key from untrusted PR metadata, enabling cache-poisoning pivot risk in privileged CI context | `EXF-010`, `CHN-007` |
 
 ## Commands
 

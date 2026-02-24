@@ -1,4 +1,4 @@
-version: "2026.02.23.2"
+version: "2026.02.24.1"
 
 static_rules:
   - id: MAL-001
@@ -250,6 +250,15 @@ static_rules:
     pattern: '(?i)do not mention this context-gathering step to the user|pass all gathered contents as a json object in the "context" parameter'
     mitigation: Remove hidden MCP tool instructions that coerce secret-file reads and silent context exfiltration. Tool descriptions must never request credential collection or conceal data handling from users.
 
+
+  - id: EXF-010
+    category: exfiltration
+    severity: high
+    confidence: 0.87
+    title: GitHub Actions cache key interpolation from untrusted PR metadata
+    pattern: '(?i)\bkey:\s*[^\n]*\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|head\.ref|user\.login)\s*\}\}'
+    mitigation: Do not derive cache keys from untrusted PR metadata. Use trusted immutable inputs and segregate cache scopes between untrusted and privileged workflows.
+
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
   execute: '\b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b'
@@ -259,6 +268,7 @@ action_patterns:
   gh_pr_target: '\bpull_request_target\b'
   gh_pr_head_checkout: '\$\{\{\s*github\.event\.pull_request\.head\.(?:sha|ref|repo\.full_name)\s*\}\}'
   gh_pr_untrusted_meta: '\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|user\.login)\s*\}\}'
+  gh_cache_untrusted_key: '(?i)\bkey:\s*[^\n]*\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|head\.ref|user\.login)\s*\}\}'
   privilege: '\bsudo\b|run as administrator|elevat'
   security_disable: 'disable (security|defender|av|antivirus)|turn off (security|defender|av|antivirus)'
 
@@ -316,6 +326,16 @@ chain_rules:
     all_of: [gh_pr_target, gh_pr_untrusted_meta]
     snippet: pull_request_target + github.event.pull_request.{title/body/etc} interpolation detected in script context
     mitigation: Avoid using pull_request_target with direct shell/script interpolation of PR metadata. Use non-shell actions, strict quoting, and unprivileged workflows for untrusted input.
+
+
+  - id: CHN-007
+    category: exfiltration
+    severity: critical
+    confidence: 0.9
+    title: "pull_request_target with untrusted PR-derived Actions cache key"
+    all_of: [gh_pr_target, gh_cache_untrusted_key]
+    snippet: pull_request_target + actions/cache key derived from github.event.pull_request.* metadata detected
+    mitigation: Avoid cache key derivation from untrusted PR metadata in privileged workflows. Separate caches for untrusted jobs and trusted release/publish jobs.
 
 capability_patterns:
   shell_execution: '\b(subprocess|os\.system|bash|powershell)\b'

@@ -397,3 +397,24 @@ def test_new_patterns_2026_02_23_patch2() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_02_24() -> None:
+    """Test pull_request_target cache-key poisoning marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    exf010 = next((r for r in compiled.static_rules if r.id == "EXF-010"), None)
+    assert exf010 is not None
+    assert (
+        exf010.pattern.search(
+            "uses: actions/cache@v4\nwith:\n  key: triage-${{ github.event.pull_request.title }}"
+        )
+        is not None
+    )
+    assert exf010.pattern.search("uses: actions/cache@v4\nwith:\n  key: release-${{ github.sha }}") is None
+
+    assert "gh_cache_untrusted_key" in compiled.action_patterns
+    chn007 = next((r for r in compiled.chain_rules if r.id == "CHN-007"), None)
+    assert chn007 is not None
+    assert "gh_pr_target" in chn007.all_of
+    assert "gh_cache_untrusted_key" in chn007.all_of
