@@ -48,6 +48,7 @@ Each folder demonstrates one major detection or behavior.
 44. `44_npm_lifecycle_latest_install`: npm lifecycle script with mutable `@latest` package install in install hooks (`SUP-008`)
 45. `45_mcp_tool_prompt_injection`: MCP tool description with hidden credential-harvest instructions and silent context exfiltration wording (`EXF-009`)
 46. `46_pr_target_cache_key_poisoning`: `pull_request_target` workflow deriving `actions/cache` key from untrusted PR metadata (`EXF-010`, `CHN-007`)
+47. `47_pr_target_unpinned_action`: `pull_request_target` workflow using mutable third-party action refs (tag/branch instead of full SHA) (`MAL-011`, `CHN-008`)
 
 ## Run examples
 

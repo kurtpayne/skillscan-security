@@ -1,3 +1,36 @@
+## 2026-02-25 (1): pull_request_target Unpinned Third-Party Action Ref Marker
+
+**Sources:**
+- [The Hacker News - Cline CLI 2.3.0 Supply Chain Attack Installed OpenClaw on Developer Systems](https://thehackernews.com/2026/02/cline-cli-230-supply-chain-attack.html)
+- [GitHub Advisory Database - tj-actions/changed-files through 45.0.7 allows remote attackers to discover secrets by reading actions logs (GHSA-mrrh-fwg8-r2c3)](https://github.com/advisories/ghsa-mrrh-fwg8-r2c3)
+- [Unit 42 - GitHub Actions Supply Chain Attack: Coinbase targeting and tj-actions compromise](https://unit42.paloaltonetworks.com/github-actions-supply-chain-attack/)
+
+**Event Summary:** Recent CI/CD incident reporting continues to show attacker success after compromising mutable GitHub Action refs (retargeted tags/branches) in privileged workflows. Existing SkillScan rules covered untrusted checkout refs, metadata interpolation, and cache-key poisoning in `pull_request_target`, but not mutable third-party `uses:` refs in the same privileged context.
+
+**New Patterns Added:**
+
+### MAL-011: pull_request_target workflow using unpinned third-party action ref
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects `uses: owner/action@...` references not pinned to a full 40-character commit SHA.
+- **Justification:** Mutable refs (`@v4`, `@main`) can be retargeted during or after upstream compromise, creating a reusable supply-chain execution primitive in privileged workflows.
+- **Mitigation:** Pin third-party actions to immutable full commit SHAs and review provenance before updates.
+
+### CHN-008: pull_request_target with unpinned third-party GitHub Action
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.88
+- **Pattern:** Chains `pull_request_target` with mutable third-party `uses:` references.
+- **Justification:** Tightens signal to privileged CI workflows where tag-retarget abuse is high impact.
+- **Mitigation:** Avoid mutable action refs in privileged workflows; use SHA pinning and controlled update cadence.
+
+**Version:** Rules updated from 2026.02.24.1 to 2026.02.25.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_25`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/47_pr_target_unpinned_action`.
+
+---
+
 ## 2026-02-24 (1): pull_request_target Cache-Key Poisoning Marker
 
 **Sources:**

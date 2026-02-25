@@ -1,4 +1,4 @@
-version: "2026.02.24.1"
+version: "2026.02.25.1"
 
 static_rules:
   - id: MAL-001
@@ -259,6 +259,14 @@ static_rules:
     pattern: '(?i)\bkey:\s*[^\n]*\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|head\.ref|user\.login)\s*\}\}'
     mitigation: Do not derive cache keys from untrusted PR metadata. Use trusted immutable inputs and segregate cache scopes between untrusted and privileged workflows.
 
+  - id: MAL-011
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: pull_request_target workflow using unpinned third-party action ref
+    pattern: "(?im)^\\s*-?\\s*uses:\\s*[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@(?![0-9a-f]{40}\\b)[^\\s#]+"
+    mitigation: In privileged workflows (especially pull_request_target), pin third-party actions to immutable full commit SHAs instead of mutable tags (v1, v4, main) to prevent tag-retarget supply-chain abuse.
+
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
   execute: '\b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b'
@@ -269,6 +277,7 @@ action_patterns:
   gh_pr_head_checkout: '\$\{\{\s*github\.event\.pull_request\.head\.(?:sha|ref|repo\.full_name)\s*\}\}'
   gh_pr_untrusted_meta: '\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|user\.login)\s*\}\}'
   gh_cache_untrusted_key: '(?i)\bkey:\s*[^\n]*\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|head\.ref|user\.login)\s*\}\}'
+  gh_unpinned_action_ref: '(?im)^\s*-?\s*uses:\s*[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@(?![0-9a-f]{40}\b)[^\s#]+'
   privilege: '\bsudo\b|run as administrator|elevat'
   security_disable: 'disable (security|defender|av|antivirus)|turn off (security|defender|av|antivirus)'
 
@@ -336,6 +345,15 @@ chain_rules:
     all_of: [gh_pr_target, gh_cache_untrusted_key]
     snippet: pull_request_target + actions/cache key derived from github.event.pull_request.* metadata detected
     mitigation: Avoid cache key derivation from untrusted PR metadata in privileged workflows. Separate caches for untrusted jobs and trusted release/publish jobs.
+
+  - id: CHN-008
+    category: malware_pattern
+    severity: critical
+    confidence: 0.88
+    title: "pull_request_target with unpinned third-party GitHub Action"
+    all_of: [gh_pr_target, gh_unpinned_action_ref]
+    snippet: pull_request_target + third-party action reference pinned to mutable tag/branch detected
+    mitigation: In pull_request_target workflows, pin third-party actions to full 40-char commit SHAs and review upstream provenance before updates.
 
 capability_patterns:
   shell_execution: '\b(subprocess|os\.system|bash|powershell)\b'
