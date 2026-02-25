@@ -418,3 +418,25 @@ def test_new_patterns_2026_02_24() -> None:
     assert chn007 is not None
     assert "gh_pr_target" in chn007.all_of
     assert "gh_cache_untrusted_key" in chn007.all_of
+
+
+def test_new_patterns_2026_02_25() -> None:
+    """Test pull_request_target unpinned third-party action marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal011 = next((r for r in compiled.static_rules if r.id == "MAL-011"), None)
+    assert mal011 is not None
+    assert mal011.pattern.search("uses: actions/checkout@v4") is not None
+    assert mal011.pattern.search("uses: docker/login-action@main") is not None
+    assert (
+        mal011.pattern.search(
+            "uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608"
+        )
+        is None
+    )
+
+    assert "gh_unpinned_action_ref" in compiled.action_patterns
+    chn008 = next((r for r in compiled.chain_rules if r.id == "CHN-008"), None)
+    assert chn008 is not None
+    assert "gh_pr_target" in chn008.all_of
+    assert "gh_unpinned_action_ref" in chn008.all_of

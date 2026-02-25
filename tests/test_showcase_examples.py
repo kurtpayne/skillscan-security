@@ -61,6 +61,9 @@ def test_showcase_detection_rules() -> None:
     findings_46 = _scan("examples/showcase/46_pr_target_cache_key_poisoning").findings
     assert any(f.id == "EXF-010" for f in findings_46)
     assert any(f.id == "CHN-007" for f in findings_46)
+    findings_47 = _scan("examples/showcase/47_pr_target_unpinned_action").findings
+    assert any(f.id == "MAL-011" for f in findings_47)
+    assert any(f.id == "CHN-008" for f in findings_47)
 
 
 def test_showcase_policy_block_domain() -> None:
