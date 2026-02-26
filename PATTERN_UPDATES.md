@@ -1,3 +1,27 @@
+## 2026-02-26 (2): Claude Code Project MCP Auto-Approval Marker
+
+**Sources:**
+- [Check Point Research - Caught in the Hook: RCE and API Token Exfiltration Through Claude Code Project Files (CVE-2025-59536 / CVE-2026-21852)](https://research.checkpoint.com/2026/rce-and-api-token-exfiltration-through-claude-code-project-files-cve-2025-59536/)
+- [The Hacker News - Claude Code Flaws Allow Remote Code Execution and API Key Exfiltration](https://thehackernews.com/2026/02/claude-code-flaws-allow-remote-code.html)
+
+**Event Summary:** Recent disclosure shows repository-controlled Claude Code settings can auto-approve project MCP servers (`enableAllProjectMcpServers` / `enabledMcpjsonServers`) and initialize untrusted `.mcp.json` commands before users meaningfully review trust prompts.
+
+**New Pattern Added:**
+
+### ABU-003: Claude Code project MCP auto-approval marker
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects repository settings that enable MCP auto-approval (`"enableAllProjectMcpServers": true` or populated `"enabledMcpjsonServers"`).
+- **Justification:** Captures a concrete, high-signal configuration abuse primitive in AI coding tool artifacts, with lower false positives than generic MCP text matching.
+- **Mitigation:** Do not commit MCP auto-approval settings at repo scope; require explicit user consent before project MCP server initialization.
+
+**Version:** Rules updated from 2026.02.26.1 to 2026.02.26.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_26_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/50_claude_mcp_autoapprove`.
+
+---
+
 ## 2026-02-26 (1): macOS osascript JXA Loader Marker
 
 **Sources:**

@@ -466,3 +466,17 @@ def test_new_patterns_2026_02_26() -> None:
         is not None
     )
     assert mal013.pattern.search("osascript ./local.applescript") is None
+
+
+def test_new_patterns_2026_02_26_patch2() -> None:
+    """Test Claude Code project MCP auto-approval marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    abu003 = next((r for r in compiled.static_rules if r.id == "ABU-003"), None)
+    assert abu003 is not None
+    assert abu003.pattern.search('"enableAllProjectMcpServers": true') is not None
+    assert (
+        abu003.pattern.search('"enabledMcpjsonServers": ["filesystem", "git"]')
+        is not None
+    )
+    assert abu003.pattern.search('"enableAllProjectMcpServers": false') is None

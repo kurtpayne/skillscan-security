@@ -51,6 +51,7 @@ Each folder demonstrates one major detection or behavior.
 47. `47_pr_target_unpinned_action`: `pull_request_target` workflow using mutable third-party action refs (tag/branch instead of full SHA) (`MAL-011`, `CHN-008`)
 48. `48_vscode_tasks_folderopen_autorun`: VS Code `tasks.json` auto-run on folder open combined with shell/bootstrap command execution (`MAL-012`)
 49. `49_osascript_jxa_loader`: macOS `osascript` JavaScript for Automation (JXA) execution marker often used in malware loaders (`MAL-013`)
+50. `50_claude_mcp_autoapprove`: repository-level Claude Code MCP auto-approval settings that can bypass expected MCP consent review (`ABU-003`)
 
 ## Run examples
 

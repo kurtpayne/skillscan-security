@@ -1,4 +1,4 @@
-version: "2026.02.26.1"
+version: "2026.02.26.2"
 
 static_rules:
   - id: MAL-001
@@ -282,6 +282,14 @@ static_rules:
     title: macOS osascript JavaScript (JXA) execution marker
     pattern: '(?i)\bosascript\b[^\n]{0,180}(?:-l\s*JavaScript|ObjC\.import\(|doShellScript)'
     mitigation: Remove osascript JXA execution flows from install/setup paths. Avoid running JavaScript for Automation payloads from untrusted sources.
+
+  - id: ABU-003
+    category: instruction_abuse
+    severity: high
+    confidence: 0.84
+    title: Claude Code project MCP auto-approval marker
+    pattern: '(?i)"(?:enableAllProjectMcpServers|enabledMcpjsonServers)"\s*:\s*(?:true|\[[^\]]+\])'
+    mitigation: Do not commit repository-level MCP auto-approval settings. Require explicit per-project user consent before initializing MCP servers from untrusted repos.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

@@ -68,6 +68,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-012" for f in findings_48)
     findings_49 = _scan("examples/showcase/49_osascript_jxa_loader").findings
     assert any(f.id == "MAL-013" for f in findings_49)
+    findings_50 = _scan("examples/showcase/50_claude_mcp_autoapprove").findings
+    assert any(f.id == "ABU-003" for f in findings_50)
 
 
 def test_showcase_policy_block_domain() -> None:

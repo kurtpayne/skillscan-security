@@ -54,6 +54,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `47_pr_target_unpinned_action` | `pull_request_target` workflow uses third-party GitHub Actions pinned to mutable tags/branches (for example `@v4`, `@main`) instead of immutable full SHAs, increasing tag-retarget supply-chain risk | `MAL-011`, `CHN-008` |
 | `48_vscode_tasks_folderopen_autorun` | Repository-supplied VS Code `tasks.json` task uses `runOn: folderOpen` and an auto-executed shell/bootstrap command, enabling code execution when a workspace is opened | `MAL-012` |
 | `49_osascript_jxa_loader` | macOS `osascript` command executes JavaScript for Automation (`-l JavaScript`) and shell payload staging (`ObjC.import` / `doShellScript`) seen in npm malware chains | `MAL-013` |
+| `50_claude_mcp_autoapprove` | Repository-level Claude Code settings auto-approve project MCP servers (`enableAllProjectMcpServers` / `enabledMcpjsonServers`) and reduce user-consent friction for untrusted tool init | `ABU-003` |
 
 ## Commands
 
