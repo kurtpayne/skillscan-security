@@ -1,3 +1,27 @@
+## 2026-02-26 (1): macOS osascript JXA Loader Marker
+
+**Sources:**
+- [The Hacker News - Malicious NuGet Packages Stole ASP.NET Data; npm Package Dropped Malware](https://thehackernews.com/2026/02/malicious-nuget-packages-stole-aspnet.html)
+- [The Hacker News - Malicious npm Packages Harvest Crypto Keys, CI Secrets, and API Tokens](https://thehackernews.com/2026/02/malicious-npm-packages-harvest-crypto.html)
+
+**Event Summary:** Current npm malware reporting includes macOS stage loaders that invoke `osascript` with JavaScript for Automation (JXA) to execute secondary shell payloads (`ObjC.import`, `doShellScript`) and deploy post-exploitation agents. Existing SkillScan rules covered npm lifecycle hooks and PowerShell/MSHTA chains, but lacked a dedicated static marker for JXA loader execution.
+
+**New Pattern Added:**
+
+### MAL-013: macOS osascript JavaScript (JXA) execution marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.85
+- **Pattern:** Detects `osascript` command lines invoking JavaScript/JXA execution (`-l JavaScript`) and common loader primitives (`ObjC.import(`, `doShellScript`).
+- **Justification:** Captures a concrete, reusable macOS execution primitive observed in active npm malware campaigns and applicable to skill/tool setup artifacts that embed shellable JXA loaders.
+- **Mitigation:** Remove JXA-based `osascript` execution from setup/install content and avoid scripted shell execution from untrusted package flows.
+
+**Version:** Rules updated from 2026.02.25.2 to 2026.02.26.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_26`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/49_osascript_jxa_loader`.
+
+---
+
 ## 2026-02-25 (1): pull_request_target Unpinned Third-Party Action Ref Marker
 
 **Sources:**
