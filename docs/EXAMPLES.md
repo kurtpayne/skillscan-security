@@ -55,6 +55,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `48_vscode_tasks_folderopen_autorun` | Repository-supplied VS Code `tasks.json` task uses `runOn: folderOpen` and an auto-executed shell/bootstrap command, enabling code execution when a workspace is opened | `MAL-012` |
 | `49_osascript_jxa_loader` | macOS `osascript` command executes JavaScript for Automation (`-l JavaScript`) and shell payload staging (`ObjC.import` / `doShellScript`) seen in npm malware chains | `MAL-013` |
 | `50_claude_mcp_autoapprove` | Repository-level Claude Code settings auto-approve project MCP servers (`enableAllProjectMcpServers` / `enabledMcpjsonServers`) and reduce user-consent friction for untrusted tool init | `ABU-003` |
+| `51_double_extension_lnk_masquerade` | Attachment/lure names that masquerade as media or documents via double-extension Windows shortcuts (for example `incident-photo.jpg.lnk`, `street-protest-footage.mp4.lnk`) | `MAL-014` |
 
 ## Commands
 
