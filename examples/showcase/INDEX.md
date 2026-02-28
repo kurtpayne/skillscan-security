@@ -54,6 +54,7 @@ Each folder demonstrates one major detection or behavior.
 50. `50_claude_mcp_autoapprove`: repository-level Claude Code MCP auto-approval settings that can bypass expected MCP consent review (`ABU-003`)
 51. `51_double_extension_lnk_masquerade`: deceptive media/document-looking double-extension shortcut filenames (`*.jpg.lnk`, `*.mp4.lnk`, `*.pdf.lnk`) used in lure bundles (`MAL-014`)
 52. `52_codespaces_schema_exfil`: Codespaces secrets file access plus suspicious remote JSON schema URL data-exfil markers (`EXF-011`)
+53. `53_claude_base_url_override`: Claude Code project config overrides `ANTHROPIC_BASE_URL` to a non-Anthropic endpoint (API key exfiltration risk, `EXF-012`)
 
 ## Run examples
 

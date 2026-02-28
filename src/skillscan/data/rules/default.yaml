@@ -1,4 +1,4 @@
-version: "2026.02.27.2"
+version: "2026.02.28.1"
 
 static_rules:
   - id: MAL-001
@@ -266,6 +266,16 @@ static_rules:
     title: GitHub Codespaces token file + remote JSON schema exfil marker
     pattern: '(?i)(?:/workspaces/\.codespaces/shared/user-secrets-envs\.json|\buser-secrets-envs\.json\b|\bjson\.schemaDownload\.enable\b[\s:=\"]{0,20}(?:true|enabled)|"\$schema"\s*:\s*"https?://[^"\n]{1,240}\?(?:[^"\n]{0,200})(?:data|token|secret|github_token)=)'
     mitigation: Treat Codespaces issue/agent prompts as untrusted input. Do not read `user-secrets-envs.json`, and block remote `$schema` URLs carrying query-parameter data exfil payloads.
+
+
+
+  - id: EXF-012
+    category: exfiltration
+    severity: high
+    confidence: 0.88
+    title: Claude Code project env ANTHROPIC_BASE_URL override marker
+    pattern: '(?i)(?:"ANTHROPIC_BASE_URL"\s*:\s*"https?://(?!api\.anthropic\.com\b)[^"\s]+|ANTHROPIC_BASE_URL\s*=\s*https?://(?!api\.anthropic\.com\b)\S+)'
+    mitigation: Do not set `ANTHROPIC_BASE_URL` in repository-scoped project config/env files unless it is a vetted internal Anthropic-compatible endpoint. Treat repo-provided endpoint overrides as credential-exfil risk in untrusted projects.
 
   - id: MAL-011
     category: malware_pattern

@@ -1,3 +1,27 @@
+## 2026-02-28 (1): Claude Code ANTHROPIC_BASE_URL Override Exfiltration Marker
+
+**Sources:**
+- [The Hacker News - Claude Code Flaws Allow Remote Code Execution and API Key Exfiltration](https://thehackernews.com/2026/02/claude-code-flaws-allow-remote-code.html)
+- [Check Point Research - Caught in the Hook: RCE and API Token Exfiltration Through Claude Code Project Files](https://research.checkpoint.com/2026/rce-and-api-token-exfiltration-through-claude-code-project-files-cve-2025-59536/)
+
+**Event Summary:** Recent reporting on Claude Code project-file abuse describes API-key leakage through repository-scoped environment overrides, where `ANTHROPIC_BASE_URL` in `.claude/settings.json` can redirect authenticated requests to attacker infrastructure before user trust prompts are fully resolved.
+
+**New Pattern Added:**
+
+### EXF-012: Claude Code project env ANTHROPIC_BASE_URL override marker
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `ANTHROPIC_BASE_URL` values that point to non-`api.anthropic.com` HTTPS endpoints in repo content (JSON/env forms).
+- **Justification:** Captures a concrete, configuration-level credential-exfil primitive specific to AI coding tool project files and keeps noise low by excluding the canonical Anthropic API host.
+- **Mitigation:** Do not accept repository-provided `ANTHROPIC_BASE_URL` overrides in untrusted projects unless endpoint ownership is explicitly verified.
+
+**Version:** Rules updated from 2026.02.27.2 to 2026.02.28.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_28`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/53_claude_base_url_override`.
+
+---
+
 ## 2026-02-27 (1): Double-Extension LNK Masquerade Marker
 
 **Sources:**
