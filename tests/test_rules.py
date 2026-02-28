@@ -480,3 +480,15 @@ def test_new_patterns_2026_02_26_patch2() -> None:
         is not None
     )
     assert abu003.pattern.search('"enableAllProjectMcpServers": false') is None
+
+
+def test_new_patterns_2026_02_27() -> None:
+    """Test deceptive media/document double-extension LNK masquerade marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal014 = next((r for r in compiled.static_rules if r.id == "MAL-014"), None)
+    assert mal014 is not None
+    assert mal014.pattern.search("street-protest-footage.mp4.lnk") is not None
+    assert mal014.pattern.search("incident-photo.jpg.lnk") is not None
+    assert mal014.pattern.search("onboarding-video.mp4") is None
+    assert mal014.pattern.search("shortcut-to-tool.lnk") is None

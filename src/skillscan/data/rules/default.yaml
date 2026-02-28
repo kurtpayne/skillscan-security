@@ -1,4 +1,4 @@
-version: "2026.02.26.2"
+version: "2026.02.27.1"
 
 static_rules:
   - id: MAL-001
@@ -290,6 +290,14 @@ static_rules:
     title: Claude Code project MCP auto-approval marker
     pattern: '(?i)"(?:enableAllProjectMcpServers|enabledMcpjsonServers)"\s*:\s*(?:true|\[[^\]]+\])'
     mitigation: Do not commit repository-level MCP auto-approval settings. Require explicit per-project user consent before initializing MCP servers from untrusted repos.
+
+  - id: MAL-014
+    category: malware_pattern
+    severity: high
+    confidence: 0.86
+    title: Deceptive media/document double-extension LNK masquerade
+    pattern: '(?i)\b[\w .-]+\.(?:jpe?g|png|gif|bmp|webp|mp4|mov|avi|mkv|pdf|docx?|xlsx?|pptx?)\.lnk\b'
+    mitigation: Treat media/document-looking `.lnk` files as suspicious. Block or quarantine double-extension shortcut artifacts and require verified non-shortcut originals.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

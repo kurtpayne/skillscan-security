@@ -1,3 +1,27 @@
+## 2026-02-27 (1): Double-Extension LNK Masquerade Marker
+
+**Sources:**
+- [The Hacker News - CRESCENTHARVEST Campaign Targets Iran Protest Supporters With RAT Malware](https://thehackernews.com/2026/02/crescentharvest-campaign-targets-iran.html)
+- [Acronis TRU - CRESCENTHARVEST: Iranian protestors and dissidents targeted in cyberespionage campaign](https://www.acronis.com/en/tru/posts/crescentharvest-iranian-protestors-and-dissidents-targeted-in-cyberespionage-campaign/)
+
+**Event Summary:** This week’s campaign reporting describes lure archives that include Windows shortcuts disguised as benign media/document files via double extensions (for example `*.jpg.lnk`, `*.mp4.lnk`). Existing rules already covered command-level execution chains, but did not include a focused static marker for this filename masquerade tactic used in initial-access bundles.
+
+**New Pattern Added:**
+
+### MAL-014: Deceptive media/document double-extension LNK masquerade
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects file names that end in media/document extension + `.lnk` (for example `.jpg.lnk`, `.mp4.lnk`, `.pdf.lnk`, `.docx.lnk`).
+- **Justification:** High-signal, low-noise marker for social-engineering lure artifacts that execute shortcut behavior while appearing as non-executable content.
+- **Mitigation:** Quarantine double-extension `.lnk` artifacts and require verified non-shortcut originals for media/document delivery flows.
+
+**Version:** Rules updated from 2026.02.26.2 to 2026.02.27.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_27`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/51_double_extension_lnk_masquerade`.
+
+---
+
 ## 2026-02-26 (2): Claude Code Project MCP Auto-Approval Marker
 
 **Sources:**
