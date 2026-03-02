@@ -1,4 +1,4 @@
-version: "2026.02.28.2"
+version: "2026.03.02.1"
 
 static_rules:
   - id: MAL-001
@@ -325,6 +325,14 @@ static_rules:
     title: Claude Code hooks shell command execution marker
     pattern: '(?is)"hooks"\s*:\s*\{[\s\S]{0,2000}"(?:PreToolUse|PostToolUse|UserPromptSubmit|SessionStart)"[\s\S]{0,800}"command"\s*:\s*"(?:bash|sh|zsh|powershell|pwsh|cmd(?:\.exe)?|python3?\s+-c|node\s+-e)[^"\n]{0,240}'
     mitigation: Treat repository-scoped Claude Code hooks as untrusted. Remove auto-executed shell commands from `.claude/settings.json` and require explicit, reviewed local scripts.
+
+  - id: MAL-016
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: Pastebin steganographic dead-drop resolver marker
+    pattern: '(?i)pastebin\.com/[A-Za-z0-9]{6,10}[^\n]{0,220}\|\|\|[^\n]{0,220}(?:vercel\.app[^\n]{0,220}===END===|===END===[^\n]{0,220}vercel\.app)'
+    mitigation: Treat install-time loaders that decode C2 from Pastebin text as malicious. Remove dead-drop resolver logic and block outbound execution of decoded domains.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
