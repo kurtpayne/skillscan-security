@@ -56,6 +56,7 @@ Each folder demonstrates one major detection or behavior.
 52. `52_codespaces_schema_exfil`: Codespaces secrets file access plus suspicious remote JSON schema URL data-exfil markers (`EXF-011`)
 53. `53_claude_base_url_override`: Claude Code project config overrides `ANTHROPIC_BASE_URL` to a non-Anthropic endpoint (API key exfiltration risk, `EXF-012`)
 54. `54_claude_hooks_rce`: Claude Code project `hooks` config executes shell commands in repository-scoped settings (`CHN-009`, `MAL-015`)
+55. `55_pastebin_stegobin_resolver`: Pastebin dead-drop steganography markers (`pastebin` URL + `|||` + `===END===` + `vercel.app`) associated with StegaBin npm campaign (`MAL-016`)
 
 ## Run examples
 

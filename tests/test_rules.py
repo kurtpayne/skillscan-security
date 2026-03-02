@@ -564,3 +564,24 @@ def test_new_patterns_2026_02_28_patch2() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_03_02() -> None:
+    """Test Pastebin steganographic dead-drop resolver marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal016 = next((r for r in compiled.static_rules if r.id == "MAL-016"), None)
+    assert mal016 is not None
+    assert (
+        mal016.pattern.search(
+            "const p='https://pastebin.com/CJ5PrtNk'; const s='|||'; "
+            "const e='===END==='; const c2='ext-checkdin.vercel.app';"
+        )
+        is not None
+    )
+    assert (
+        mal016.pattern.search(
+            "const p='https://pastebin.com/CJ5PrtNk'; const c2='ext-checkdin.vercel.app';"
+        )
+        is None
+    )

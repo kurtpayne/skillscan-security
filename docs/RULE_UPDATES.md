@@ -1,5 +1,15 @@
 # Rule Updates
 
+## 2026-03-02
+
+- Added `MAL-016` (high): **Pastebin steganographic dead-drop resolver marker**.
+- Rationale: multiple newly reported npm packages (StegaBin cluster) used hardcoded Pastebin dead-drop URLs with `|||` + `===END===` decoding markers to reconstruct Vercel C2 domains before staging payload execution.
+- Rule scope intentionally requires all core markers (`pastebin.com/<id>`, `|||`, `===END===`, and `vercel.app`) in the same artifact to keep false positives low.
+
+Sources:
+- Socket (2026-03-02), *StegaBin: 26 Malicious npm Packages Use Pastebin Steganography*: https://socket.dev/blog/stegabin-26-malicious-npm-packages-use-pastebin-steganography
+- The Hacker News (2026-03-02), *North Korean Hackers Publish 26 npm Packages Hiding Pastebin C2 for Cross-Platform RAT*: https://thehackernews.com/2026/03/north-korean-hackers-publish-26-npm.html
+
 ## 2026-02-25
 
 - Added `MAL-012` (high): **VS Code task autorun-on-folder-open marker**.
