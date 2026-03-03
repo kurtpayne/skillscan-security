@@ -82,6 +82,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-016" for f in findings_55)
     findings_56 = _scan("examples/showcase/56_hex_decode_exec").findings
     assert any(f.id == "SUP-009" for f in findings_56)
+    findings_57 = _scan("examples/showcase/57_install_websocket_c2").findings
+    assert any(f.id == "MAL-017" for f in findings_57)
 
 
 def test_showcase_policy_block_domain() -> None:

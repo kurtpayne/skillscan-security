@@ -1,5 +1,15 @@
 # Rule Updates
 
+## 2026-03-03
+
+- Added `MAL-017` (high): **WebSocket C2 shell execution marker**.
+- Rationale: newly reported npm malware clusters include install-time RAT behavior that opens persistent WebSocket channels and executes attacker-delivered shell commands in developer environments.
+- Rule scope is intentionally constrained to install-script context (`preinstall`/`postinstall` or `install.js`-style loader markers) plus explicit WebSocket C2 and shell-exec indicators to keep false positives low.
+
+Sources:
+- The Hacker News (2026-03-02), *North Korean Hackers Publish 26 npm Packages Hiding Pastebin C2 for Cross-Platform RAT*: https://thehackernews.com/2026/03/north-korean-hackers-publish-26-npm.html
+- Socket (2026-03-02), *StegaBin: 26 Malicious npm Packages Use Pastebin Steganography*: https://socket.dev/blog/stegabin-26-malicious-npm-packages-use-pastebin-steganography
+
 ## 2026-03-02
 
 - Added `MAL-016` (high): **Pastebin steganographic dead-drop resolver marker**.
