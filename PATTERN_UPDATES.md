@@ -745,3 +745,27 @@
 **Version:** Rules updated from 2026.02.19.1 to 2026.02.19.2
 
 **Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_19_patch2` and `tests/test_showcase_examples.py`.
+
+---
+
+## 2026-03-04: Tool Auto-Approve Package-Install Command Pattern
+
+**Sources:**
+- https://github.com/RooCodeInc/Roo-Code/security/advisories/GHSA-c292-qxq4-4p2v
+- https://docs.roocode.com/update-notes/v3.26.0
+
+**Event Summary:** A disclosed Roo Code issue shows that enabling auto-approval for terminal commands can permit `npm install` execution without an explicit approval step. Because package installs can execute lifecycle scripts (`preinstall`/`postinstall`), this creates a realistic arbitrary-code-execution path when opening untrusted repositories.
+
+**New Pattern Added:**
+
+### ABU-004: Tool auto-approve allowlist includes package-install command
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects package-install commands (`npm/pnpm/yarn/bun install`) in proximity to auto-approve/command-allowlist markers.
+- **Justification:** Captures high-signal tool settings that lower consent barriers before install-time script execution.
+- **Mitigation:** Remove package-install commands from auto-approved command lists; require explicit human confirmation for install actions.
+
+**Version:** Rules updated from 2026.03.03.1 to 2026.03.04.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_04` and `tests/test_showcase_examples.py` with showcase fixture `examples/showcase/58_tool_autoapprove_pkg_install`.

@@ -59,6 +59,7 @@ Each folder demonstrates one major detection or behavior.
 55. `55_pastebin_stegobin_resolver`: Pastebin dead-drop steganography markers (`pastebin` URL + `|||` + `===END===` + `vercel.app`) associated with StegaBin npm campaign (`MAL-016`)
 56. `56_hex_decode_exec`: Hex-decoded command strings immediately executed via `child_process` (`Buffer.from(...,'hex').toString()` + `exec/spawn`) as seen in recent npm malware install chains (`SUP-009`)
 57. `57_install_websocket_c2`: npm install-script (`preinstall` + `install.js`) opens WebSocket C2 and executes received shell commands (`spawn`/`exec`) (`MAL-017`)
+58. `58_tool_autoapprove_pkg_install`: tool/extension auto-approve settings that allow package-install commands (`npm/pnpm/yarn/bun install`) without confirmation (`ABU-004`)
 
 ## Run examples
 

@@ -608,3 +608,29 @@ def test_new_patterns_2026_03_02_patch2() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_03_04() -> None:
+    """Test tool auto-approve + package-install command marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    abu004 = next((r for r in compiled.static_rules if r.id == "ABU-004"), None)
+    assert abu004 is not None
+    assert (
+        abu004.pattern.search(
+            '{"autoApprove":true,"allowedCommands":["npm install","git status"]}'
+        )
+        is not None
+    )
+    assert (
+        abu004.pattern.search(
+            "Always approve terminal commands: pnpm install --frozen-lockfile"
+        )
+        is not None
+    )
+    assert (
+        abu004.pattern.search(
+            '{"autoApprove":true,"allowedCommands":["git status","npm test"]}'
+        )
+        is None
+    )

@@ -62,6 +62,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `55_pastebin_stegobin_resolver` | Pastebin dead-drop steganography markers (`pastebin` URL + `|||` + `===END===` + `vercel.app`) observed in recent StegaBin npm malware loaders | `MAL-016` |
 | `56_hex_decode_exec` | Hex-decoded command string (`Buffer.from(...,'hex').toString()`) followed by immediate `child_process` execution (`exec`/`spawn`) as seen in recent npm malware install chains | `SUP-009` |
 | `57_install_websocket_c2` | npm install script (`preinstall` + `install.js`) opens a WebSocket C2 channel and executes received commands via shell-capable process spawn | `MAL-017` |
+| `58_tool_autoapprove_pkg_install` | Tool/extension auto-approve command settings include package-install commands (`npm/pnpm/yarn/bun install`), reducing user-consent guardrails before install-time script execution | `ABU-004` |
 
 ## Commands
 
