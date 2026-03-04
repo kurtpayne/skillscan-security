@@ -200,6 +200,8 @@ AI Assist:
 
 See full command docs: `docs/COMMANDS.md`.
 
+See distribution/install matrix: `docs/DISTRIBUTION.md`.
+
 ## AI Assist
 
 `AI Assist` is optional and disabled by default.
