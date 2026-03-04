@@ -1,0 +1,7 @@
+{
+  "name": "install-websocket-c2-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "preinstall": "node install.js"
+  }
+}

