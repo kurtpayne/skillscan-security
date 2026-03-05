@@ -26,6 +26,20 @@ def test_scan_invalid_options() -> None:
     invalid_format = runner.invoke(app, ["scan", target, "--format", "bad"])
     assert invalid_format.exit_code == 2
 
+    junit_ok = runner.invoke(
+        app,
+        ["scan", target, "--format", "junit", "--fail-on", "never", "--no-auto-intel"],
+    )
+    assert junit_ok.exit_code == 0
+    assert "<testsuites>" in junit_ok.stdout
+
+    compact_ok = runner.invoke(
+        app,
+        ["scan", target, "--format", "compact", "--fail-on", "never", "--no-auto-intel"],
+    )
+    assert compact_ok.exit_code == 0
+    assert "skillscan verdict=" in compact_ok.stdout
+
     invalid_fail_on = runner.invoke(app, ["scan", target, "--fail-on", "bad"])
     assert invalid_fail_on.exit_code == 2
 

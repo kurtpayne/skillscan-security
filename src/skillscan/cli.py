@@ -11,6 +11,7 @@ from rich.panel import Panel
 from skillscan import __version__
 from skillscan.ai import load_dotenv
 from skillscan.analysis import ScanError, scan
+from skillscan.compact import report_to_compact_text
 from skillscan.intel import (
     add_source,
     clear_runtime,
@@ -21,6 +22,7 @@ from skillscan.intel import (
     set_enabled,
 )
 from skillscan.intel_update import sync_managed
+from skillscan.junit import report_to_junit_xml
 from skillscan.policies import BUILTIN_PROFILES, load_builtin_policy, load_policy_file, policy_summary
 from skillscan.render import render_report
 from skillscan.sarif import report_to_sarif
@@ -45,7 +47,7 @@ def scan_cmd(
         "strict", "--policy-profile", "--profile", help="Built-in policy profile"
     ),
     policy_file: Path | None = typer.Option(None, "--policy", help="Custom policy file"),
-    format: str = typer.Option("text", "--format", help="Output format: text|json|sarif"),
+    format: str = typer.Option("text", "--format", help="Output format: text|json|sarif|junit|compact"),
     out: Path | None = typer.Option(None, "--out", help="Write report to file"),
     fail_on: str = typer.Option("block", "--fail-on", help="Exit non-zero on warn or block"),
     auto_intel: bool = typer.Option(True, "--auto-intel/--no-auto-intel", help="Auto-refresh managed intel"),
@@ -101,8 +103,8 @@ def scan_cmd(
             f"Expected one of: {', '.join(BUILTIN_PROFILES)}"
         )
         raise typer.Exit(2)
-    if format not in {"text", "json", "sarif"}:
-        console.print("[bold red]Invalid --format:[/] expected text, json, or sarif")
+    if format not in {"text", "json", "sarif", "junit", "compact"}:
+        console.print("[bold red]Invalid --format:[/] expected text, json, sarif, junit, or compact")
         raise typer.Exit(2)
     if fail_on not in {"warn", "block", "never"}:
         console.print("[bold red]Invalid --fail-on:[/] expected warn, block, or never")
@@ -160,6 +162,20 @@ def scan_cmd(
             console.print(payload)
     elif format == "sarif":
         payload = json.dumps(report_to_sarif(report), indent=2)
+        if out:
+            out.write_text(payload, encoding="utf-8")
+            console.print(f"Wrote report to {out}")
+        else:
+            console.print(payload)
+    elif format == "junit":
+        payload = report_to_junit_xml(report)
+        if out:
+            out.write_text(payload, encoding="utf-8")
+            console.print(f"Wrote report to {out}")
+        else:
+            console.print(payload)
+    elif format == "compact":
+        payload = report_to_compact_text(report)
         if out:
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
