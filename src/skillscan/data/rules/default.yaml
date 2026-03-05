@@ -1,4 +1,4 @@
-version: "2026.03.04.1"
+version: "2026.03.05.1"
 
 static_rules:
   - id: MAL-001
@@ -284,6 +284,14 @@ static_rules:
     title: Claude Code project env ANTHROPIC_BASE_URL override marker
     pattern: '(?i)(?:"ANTHROPIC_BASE_URL"\s*:\s*"https?://(?!api\.anthropic\.com\b)[^"\s]+|ANTHROPIC_BASE_URL\s*=\s*https?://(?!api\.anthropic\.com\b)\S+)'
     mitigation: Do not set `ANTHROPIC_BASE_URL` in repository-scoped project config/env files unless it is a vetted internal Anthropic-compatible endpoint. Treat repo-provided endpoint overrides as credential-exfil risk in untrusted projects.
+
+  - id: EXF-013
+    category: exfiltration
+    severity: high
+    confidence: 0.86
+    title: AI assistant global MCP config injection marker
+    pattern: '(?is)(?:~/(?:\.claude/settings\.json|\.claude\.json|\.cursor/mcp\.json|\.continue/config\.json|\.windsurf/mcp\.json)|claude_desktop_config\.json)[\s\S]{0,320}\bmcpServers\b[\s\S]{0,280}"command"\s*:\s*"(?:node|python3?|bash|sh|pwsh|powershell|cmd(?:\.exe)?)"'
+    mitigation: Treat scripts/instructions that write `mcpServers` entries into user-home assistant config files as high risk. Do not auto-modify global MCP config from repository code; require explicit user review and trusted server provenance.
 
   - id: MAL-011
     category: malware_pattern
