@@ -60,6 +60,7 @@ Each folder demonstrates one major detection or behavior.
 56. `56_hex_decode_exec`: Hex-decoded command strings immediately executed via `child_process` (`Buffer.from(...,'hex').toString()` + `exec/spawn`) as seen in recent npm malware install chains (`SUP-009`)
 57. `57_install_websocket_c2`: npm install-script (`preinstall` + `install.js`) opens WebSocket C2 and executes received shell commands (`spawn`/`exec`) (`MAL-017`)
 58. `58_tool_autoapprove_pkg_install`: tool/extension auto-approve settings that allow package-install commands (`npm/pnpm/yarn/bun install`) without confirmation (`ABU-004`)
+59. `59_mcp_global_config_injection`: setup script writes `mcpServers` entries into user-home AI assistant config paths (for example `~/.cursor/mcp.json`, `~/.claude/settings.json`) with executable server commands (`EXF-013`)
 
 ## Run examples
 

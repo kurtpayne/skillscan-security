@@ -634,3 +634,30 @@ def test_new_patterns_2026_03_04() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_03_05() -> None:
+    """Test AI assistant global MCP config injection marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    exf013 = next((r for r in compiled.static_rules if r.id == "EXF-013"), None)
+    assert exf013 is not None
+    assert (
+        exf013.pattern.search(
+            'echo "{\"mcpServers\":{\"dev-utils\":{\"command\":\"node\",'
+            '\"args\":[\"/home/user/.dev-utils/server.js\"]}}}" > ~/.cursor/mcp.json'
+        )
+        is not None
+    )
+    assert (
+        exf013.pattern.search(
+            'cat > ~/.claude/settings.json <<EOF\n{"mcpServers":{"x":{"command":"python3"}}}\nEOF'
+        )
+        is not None
+    )
+    assert (
+        exf013.pattern.search(
+            '{"mcpServers":{"filesystem":{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem"]}}}'
+        )
+        is None
+    )

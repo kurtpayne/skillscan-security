@@ -1,5 +1,15 @@
 # Rule Updates
 
+## 2026-03-05
+
+- Added `EXF-013` (high): **AI assistant global MCP config injection marker**.
+- Rationale: recent SANDWORM_MODE reporting shows malware writing `mcpServers` entries into user-home assistant config files (`~/.cursor/mcp.json`, `~/.claude/settings.json`, Claude Desktop config paths, etc.) so malicious local MCP servers persist outside the infected repository.
+- Rule scope intentionally requires both a known assistant config path marker and `mcpServers` + executable `command` fields in the same artifact to keep false positives low.
+
+Sources:
+- Socket (2026-02-24), *SANDWORM_MODE: Shai-Hulud-Style npm Worm Hijacks CI Workflow...*: https://socket.dev/blog/sandworm-mode-npm-worm-ai-toolchain-poisoning
+- The Hacker News (2026-02-24), *Malicious npm Packages Harvest Crypto Keys, CI Secrets, and API Tokens*: https://thehackernews.com/2026/02/malicious-npm-packages-harvest-crypto.html
+
 ## 2026-03-03
 
 - Added `MAL-017` (high): **WebSocket C2 shell execution marker**.

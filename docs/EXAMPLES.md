@@ -63,6 +63,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `56_hex_decode_exec` | Hex-decoded command string (`Buffer.from(...,'hex').toString()`) followed by immediate `child_process` execution (`exec`/`spawn`) as seen in recent npm malware install chains | `SUP-009` |
 | `57_install_websocket_c2` | npm install script (`preinstall` + `install.js`) opens a WebSocket C2 channel and executes received commands via shell-capable process spawn | `MAL-017` |
 | `58_tool_autoapprove_pkg_install` | Tool/extension auto-approve command settings include package-install commands (`npm/pnpm/yarn/bun install`), reducing user-consent guardrails before install-time script execution | `ABU-004` |
+| `59_mcp_global_config_injection` | Repository/setup instructions write `mcpServers` entries directly into user-home assistant config files (`~/.cursor/mcp.json`, `~/.claude/settings.json`, etc.) with executable server commands | `EXF-013` |
 
 ## Commands
 
