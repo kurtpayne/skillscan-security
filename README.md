@@ -102,6 +102,10 @@ Save JSON report:
 skillscan scan ./examples/suspicious_skill --format json --out report.json --fail-on never
 # SARIF output for GitHub code scanning
 skillscan scan ./examples/suspicious_skill --format sarif --out skillscan.sarif --fail-on never
+# JUnit XML output for CI test report ingestion
+skillscan scan ./examples/suspicious_skill --format junit --out skillscan-junit.xml --fail-on never
+# Compact output for terse CI logs
+skillscan scan ./examples/suspicious_skill --format compact --fail-on never
 ```
 
 Render saved report:

@@ -26,6 +26,60 @@ def test_scan_invalid_options() -> None:
     invalid_format = runner.invoke(app, ["scan", target, "--format", "bad"])
     assert invalid_format.exit_code == 2
 
+    junit_ok = runner.invoke(
+        app,
+        ["scan", target, "--format", "junit", "--fail-on", "never", "--no-auto-intel"],
+    )
+    assert junit_ok.exit_code == 0
+    assert "<testsuites>" in junit_ok.stdout
+
+    compact_ok = runner.invoke(
+        app,
+        ["scan", target, "--format", "compact", "--fail-on", "never", "--no-auto-intel"],
+    )
+    assert compact_ok.exit_code == 0
+    assert "skillscan verdict=" in compact_ok.stdout
+
+    junit_out = Path("/tmp/skillscan-junit.xml")
+    if junit_out.exists():
+        junit_out.unlink()
+    junit_out_result = runner.invoke(
+        app,
+        [
+            "scan",
+            target,
+            "--format",
+            "junit",
+            "--out",
+            str(junit_out),
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert junit_out_result.exit_code == 0
+    assert "Wrote report to" in junit_out_result.stdout
+
+    compact_out = Path("/tmp/skillscan-compact.txt")
+    if compact_out.exists():
+        compact_out.unlink()
+    compact_out_result = runner.invoke(
+        app,
+        [
+            "scan",
+            target,
+            "--format",
+            "compact",
+            "--out",
+            str(compact_out),
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert compact_out_result.exit_code == 0
+    assert "Wrote report to" in compact_out_result.stdout
+
     invalid_fail_on = runner.invoke(app, ["scan", target, "--fail-on", "bad"])
     assert invalid_fail_on.exit_code == 2
 
