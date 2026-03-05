@@ -13,7 +13,7 @@ from skillscan.models import (
     Severity,
     Verdict,
 )
-from skillscan.render import render_report
+from skillscan.render import _finding_narrative, render_report
 
 
 def _base_metadata() -> ScanMetadata:
@@ -42,6 +42,23 @@ def test_render_report_minimal() -> None:
     render_report(report, console=console)
     output = console.export_text()
     assert "Verdict" in output
+
+
+def test_finding_narrative() -> None:
+    finding = Finding(
+        id="ABU-001",
+        category="instruction_abuse",
+        severity=Severity.MEDIUM,
+        confidence=0.7,
+        title="test",
+        evidence_path="a",
+        snippet="bad",
+        mitigation="explicit fix",
+    )
+    why, impact, next_action = _finding_narrative(finding)
+    assert "ABU-001" in why
+    assert "medium" in impact
+    assert next_action == "explicit fix"
 
 
 def test_render_report_full_sections() -> None:
@@ -84,6 +101,7 @@ def test_render_report_full_sections() -> None:
     render_report(report, console=console)
     output = console.export_text()
     assert "Top Findings" in output
+    assert "Action" in output
     assert "Network Indicators" in output
     assert "Dependency Vulnerabilities" in output
     assert "AI Assist" in output

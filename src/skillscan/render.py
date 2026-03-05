@@ -4,13 +4,20 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from skillscan.models import ScanReport, Verdict
+from skillscan.models import Finding, ScanReport, Verdict
 
 VERDICT_STYLE = {
     Verdict.ALLOW: "bold green",
     Verdict.WARN: "bold yellow",
     Verdict.BLOCK: "bold red",
 }
+
+
+def _finding_narrative(finding: Finding) -> tuple[str, str, str]:
+    why = f"Matched {finding.id} ({finding.category})"
+    impact = f"Potential {finding.severity.value}-severity security risk"
+    next_action = finding.mitigation or "Review the flagged snippet and remove/contain risky behavior"
+    return why, impact, next_action
 
 
 def render_report(report: ScanReport, console: Console | None = None) -> None:
@@ -37,15 +44,20 @@ def render_report(report: ScanReport, console: Console | None = None) -> None:
     findings.add_column("Category")
     findings.add_column("Evidence")
     findings.add_column("Snippet")
-    findings.add_column("Mitigation")
+    findings.add_column("Why")
+    findings.add_column("Impact")
+    findings.add_column("Next Action")
     for finding in report.findings[:20]:
+        why, impact, next_action = _finding_narrative(finding)
         findings.add_row(
             finding.id,
             finding.severity.value,
             finding.category,
             f"{finding.evidence_path}:{finding.line or '-'}",
             finding.snippet[:90],
-            (finding.mitigation or "")[:110],
+            why[:80],
+            impact[:80],
+            next_action[:110],
         )
     if report.findings:
         console.print(findings)
