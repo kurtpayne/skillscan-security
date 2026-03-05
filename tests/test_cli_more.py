@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 import yaml
-
 from typer.testing import CliRunner
 
 from skillscan.cli import app
