@@ -1,3 +1,27 @@
+## 2026-03-05 (2): node-glob CLI `-c/--cmd` Shell Injection Sink Marker
+
+**Sources:**
+- [GitHub Advisory Database - CVE-2025-64756 (GHSA-5j98-mcp5-4vw2)](https://github.com/advisories/GHSA-5j98-mcp5-4vw2)
+- [node-glob Security Advisory - GHSA-5j98-mcp5-4vw2](https://github.com/isaacs/node-glob/security/advisories/GHSA-5j98-mcp5-4vw2)
+
+**Event Summary:** The `glob` CLI advisory describes command injection when `glob -c/--cmd` executes matched file names with shell semantics (`shell: true`). In untrusted repos/archives, attacker-controlled file names containing shell metacharacters can trigger arbitrary command execution in developer or CI environments.
+
+**New Pattern Added:**
+
+### MAL-018: node-glob CLI --cmd shell execution sink marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects `glob` CLI invocations that enable command mode via `-c` or `--cmd`, including common `npx glob -c ...` forms.
+- **Justification:** High-signal, low-noise command-shape marker directly tied to a recent disclosed exploit path in tool/setup scripts.
+- **Mitigation:** Avoid `glob -c/--cmd` on untrusted file sets; upgrade to patched versions and prefer non-shell argument passing (`--cmd-arg/-g`).
+
+**Version:** Rules updated from 2026.03.05.1 to 2026.03.05.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_05_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/60_glob_cmd_shell_injection`.
+
+---
+
 ## 2026-03-02 (2): Hex-Decoded Command Execution Marker in npm Malware Install Chains
 
 **Sources:**

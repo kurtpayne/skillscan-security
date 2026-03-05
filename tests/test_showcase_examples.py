@@ -88,6 +88,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "ABU-004" for f in findings_58)
     findings_59 = _scan("examples/showcase/59_mcp_global_config_injection").findings
     assert any(f.id == "EXF-013" for f in findings_59)
+    findings_60 = _scan("examples/showcase/60_glob_cmd_shell_injection").findings
+    assert any(f.id == "MAL-018" for f in findings_60)
 
 
 def test_showcase_policy_block_domain() -> None:

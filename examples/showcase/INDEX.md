@@ -74,3 +74,4 @@ skillscan scan examples/showcase/27_github_actions_secrets_exfil --fail-on never
 skillscan scan examples/showcase/28_npx_registry_fallback --fail-on never
 skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 ```
+60. `60_glob_cmd_shell_injection`: node-glob CLI `-c/--cmd` usage that can evaluate attacker-controlled filename metacharacters via shell execution context (`MAL-018`)

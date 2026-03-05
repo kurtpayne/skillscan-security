@@ -661,3 +661,14 @@ def test_new_patterns_2026_03_05() -> None:
         )
         is None
     )
+
+
+def test_new_patterns_2026_03_05_patch2() -> None:
+    """Test node-glob CLI --cmd shell execution sink marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal018 = next((r for r in compiled.static_rules if r.id == "MAL-018"), None)
+    assert mal018 is not None
+    assert mal018.pattern.search('npx glob -c echo "**/*"') is not None
+    assert mal018.pattern.search('glob --cmd "echo" "src/**/*.ts"') is not None
+    assert mal018.pattern.search('glob "src/**/*.ts"') is None

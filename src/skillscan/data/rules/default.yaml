@@ -1,4 +1,4 @@
-version: "2026.03.05.1"
+version: "2026.03.05.2"
 
 static_rules:
   - id: MAL-001
@@ -358,6 +358,15 @@ static_rules:
     pattern: '(?is)(?:new\s+WebSocket\s*\(|\bWebSocket\s*\(|\bwss?://(?:\d{1,3}\.){3}\d{1,3}:\d{2,5})[\s\S]{0,320}(?:exec|execSync|spawn|spawnSync)\s*\([^
 ]{0,180}(?:/bin/sh|cmd(?:\.exe)?|powershell(?:\.exe)?|pwsh)?'
     mitigation: Treat WebSocket command channels that launch shell/process execution as malicious. Remove package/runtime code that combines outbound WebSocket control paths with command execution primitives.
+
+
+  - id: MAL-018
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: node-glob CLI --cmd shell execution sink marker
+    pattern: '(?i)\b(?:npx\s+)?glob(?:\.cmd|\.m?js)?\b[^\n]{0,140}\s(?:-c|--cmd)\b'
+    mitigation: Avoid `glob -c/--cmd` on untrusted file paths. Upgrade glob CLI to patched versions and prefer `--cmd-arg/-g` (non-shell argument passing) when command templating is required.
 
   - id: ABU-004
     category: instruction_abuse
