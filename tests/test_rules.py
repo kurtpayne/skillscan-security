@@ -724,3 +724,25 @@ def test_rulepack_channel_filtering() -> None:
         "new.preview.yaml",
         "exp.labs.yaml",
     ]
+
+
+def test_rulepack_channel_filtering_rejects_unknown_channel() -> None:
+    class _P:
+        def __init__(self, name: str):
+            self.name = name
+
+    files = [_P("default.yaml")]
+    import pytest
+
+    with pytest.raises(ValueError, match="Unknown rulepack channel"):
+        _filter_rule_files_for_channel(files, "beta")
+
+
+def test_rulepack_channel_filtering_skips_non_yaml() -> None:
+    class _P:
+        def __init__(self, name: str):
+            self.name = name
+
+    files = [_P("notes.txt"), _P("default.yaml")]
+    stable = _filter_rule_files_for_channel(files, "stable")
+    assert [f.name for f in stable] == ["default.yaml"]
