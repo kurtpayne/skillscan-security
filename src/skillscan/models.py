@@ -118,6 +118,7 @@ class Policy(BaseModel):
     block_domains: list[str] = Field(default_factory=list)
     ai_block_on_critical: bool = True
     ai_block_min_confidence: float = Field(default=0.85, ge=0.0, le=1.0)
+    block_min_confidence: float = Field(default=0.0, ge=0.0, le=1.0)
     limits: dict[str, int] = Field(
         default_factory=lambda: {
             "max_files": 4000,

@@ -913,9 +913,13 @@ def scan(
                 )
 
         score = 0
+        block_score = 0
         for finding in findings:
             weight = policy.weights.get(finding.category, 1)
-            score += SEVERITY_SCORE[finding.severity] * weight
+            contribution = SEVERITY_SCORE[finding.severity] * weight
+            score += contribution
+            if finding.confidence >= policy.block_min_confidence:
+                block_score += contribution
 
         ai_critical_block = any(
             f.category == "ai_semantic_risk"
@@ -924,11 +928,13 @@ def scan(
             for f in findings
         )
 
-        if any(f.id in policy.hard_block_rules for f in findings):
+        if any(
+            f.id in policy.hard_block_rules and f.confidence >= policy.block_min_confidence for f in findings
+        ):
             verdict = Verdict.BLOCK
         elif policy.ai_block_on_critical and ai_critical_block:
             verdict = Verdict.BLOCK
-        elif score >= policy.thresholds["block"]:
+        elif block_score >= policy.thresholds["block"]:
             verdict = Verdict.BLOCK
         elif score >= policy.thresholds["warn"]:
             verdict = Verdict.WARN

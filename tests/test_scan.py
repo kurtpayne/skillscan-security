@@ -250,3 +250,41 @@ def test_python_bytecode_is_flagged(tmp_path: Path) -> None:
     policy = load_builtin_policy("strict")
     report = scan(target, policy, "builtin:strict")
     assert any(f.id == "BIN-004" for f in report.findings)
+
+
+def test_block_min_confidence_prevents_hard_block_for_low_confidence_rule() -> None:
+    policy = Policy.model_validate(
+        {
+            "name": "strict-conf",
+            "description": "strict with confidence gate",
+            "thresholds": {"warn": 10000, "block": 1},
+            "weights": {"instruction_abuse": 1},
+            "hard_block_rules": ["ABU-001"],
+            "block_min_confidence": 0.95,
+            "allow_domains": [],
+            "block_domains": [],
+            "limits": {"max_files": 1000, "max_depth": 6, "max_bytes": 5000000, "timeout_seconds": 30},
+        }
+    )
+    report = scan("examples/showcase/03_instruction_abuse", policy, "custom")
+    assert any(f.id == "ABU-001" for f in report.findings)
+    assert report.verdict != Verdict.BLOCK
+
+
+def test_block_min_confidence_allows_block_when_threshold_met() -> None:
+    policy = Policy.model_validate(
+        {
+            "name": "strict-conf",
+            "description": "strict with confidence gate",
+            "thresholds": {"warn": 10000, "block": 1},
+            "weights": {"instruction_abuse": 1},
+            "hard_block_rules": ["ABU-001"],
+            "block_min_confidence": 0.5,
+            "allow_domains": [],
+            "block_domains": [],
+            "limits": {"max_files": 1000, "max_depth": 6, "max_bytes": 5000000, "timeout_seconds": 30},
+        }
+    )
+    report = scan("examples/showcase/03_instruction_abuse", policy, "custom")
+    assert any(f.id == "ABU-001" for f in report.findings)
+    assert report.verdict == Verdict.BLOCK
