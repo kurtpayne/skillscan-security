@@ -92,6 +92,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-018" for f in findings_60)
     findings_61 = _scan("examples/showcase/61_bracket_glob_secret_path_bypass").findings
     assert any(f.id == "EXF-014" for f in findings_61)
+    findings_62 = _scan("examples/showcase/62_stegabin_shared_payload_path").findings
+    assert any(f.id == "MAL-019" for f in findings_62)
 
 
 def test_showcase_policy_block_domain() -> None:

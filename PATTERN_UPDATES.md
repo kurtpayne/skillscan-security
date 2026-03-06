@@ -1,3 +1,27 @@
+## 2026-03-06 (2): StegaBin Shared npm Payload-Path Marker
+
+**Sources:**
+- [Socket - StegaBin: 26 Malicious npm Packages Use Pastebin Steganography](https://socket.dev/blog/stegabin-26-malicious-npm-packages-use-pastebin-steganography)
+- [The Hacker News - North Korean Hackers Publish 26 npm Packages Hiding Pastebin C2 for Cross-Platform RAT](https://thehackernews.com/2026/03/north-korean-hackers-publish-26-npm.html)
+
+**Event Summary:** Socket’s March 2026 write-up documents 26 typosquat npm packages that shared a common malicious loader component at `vendor/scrypt-js/version.js`, executed through install-hook chains. Existing SkillScan rules covered generalized install-hook abuse and steganographic dead-drop behavior but did not include a focused static marker for this concrete, campaign-linked payload path.
+
+**New Pattern Added:**
+
+### MAL-019: StegaBin npm shared payload path marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects references to `vendor/scrypt-js/version.js` in repository/package artifacts.
+- **Justification:** High-signal and low-noise campaign marker tied to recent public reporting; suitable as an explicit static signature alongside broader behavioral patterns.
+- **Mitigation:** Remove package content referencing this path, verify package provenance, and avoid installing typosquat dependencies from untrusted publishers.
+
+**Version:** Rules updated from 2026.03.06.1 to 2026.03.06.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_06_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/62_stegabin_shared_payload_path`.
+
+---
+
 ## 2026-03-06 (1): Bracket-Glob Sensitive Path Obfuscation Marker
 
 **Sources:**

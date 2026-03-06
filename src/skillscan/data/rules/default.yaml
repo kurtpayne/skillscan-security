@@ -1,4 +1,4 @@
-version: "2026.03.06.1"
+version: "2026.03.06.2"
 
 static_rules:
   - id: MAL-001
@@ -375,6 +375,14 @@ static_rules:
     title: Tool auto-approve allowlist includes package-install command
     pattern: '(?is)(?:auto[- ]?approve|always\s+approve|allowed\s+commands|command\s+allowlist)[\s\S]{0,220}\b(?:npm\s+(?:install|i)|pnpm\s+install|yarn\s+install|bun\s+install)\b|\b(?:npm\s+(?:install|i)|pnpm\s+install|yarn\s+install|bun\s+install)\b[\s\S]{0,220}(?:auto[- ]?approve|always\s+approve|allowed\s+commands|command\s+allowlist)'
     mitigation: Do not auto-approve package-install commands in AI tool/extension settings. Require explicit user confirmation for install actions because lifecycle scripts can execute arbitrary code.
+
+  - id: MAL-019
+    category: malware_pattern
+    severity: high
+    confidence: 0.86
+    title: StegaBin npm shared payload path marker
+    pattern: '(?i)\bvendor/scrypt-js/version\.js\b'
+    mitigation: Treat references to `vendor/scrypt-js/version.js` in install/setup flows as high-risk campaign-linked malware markers. Remove package and investigate publisher provenance before installation.
 
   - id: EXF-014
     category: exfiltration

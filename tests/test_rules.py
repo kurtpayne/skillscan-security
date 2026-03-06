@@ -684,3 +684,13 @@ def test_new_patterns_2026_03_06() -> None:
     assert exf014.pattern.search("cat /etc/shad[o]w") is not None
     assert exf014.pattern.search("cat ~/.ssh/id_r[s]a") is not None
     assert exf014.pattern.search("cat /etc/passwd") is None
+
+
+def test_new_patterns_2026_03_06_patch2() -> None:
+    """Test StegaBin shared payload-path marker from recent npm campaign reporting."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal019 = next((r for r in compiled.static_rules if r.id == "MAL-019"), None)
+    assert mal019 is not None
+    assert mal019.pattern.search("vendor/scrypt-js/version.js") is not None
+    assert mal019.pattern.search("vendor/scrypt-js/version.jsx") is None

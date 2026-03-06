@@ -66,6 +66,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `59_mcp_global_config_injection` | Repository/setup instructions write `mcpServers` entries directly into user-home assistant config files (`~/.cursor/mcp.json`, `~/.claude/settings.json`, etc.) with executable server commands | `EXF-013` |
 | `60_glob_cmd_shell_injection` | `glob` CLI command execution mode (`-c`/`--cmd`) on untrusted filenames, where shell metacharacters in file paths can trigger arbitrary command execution | `MAL-018` |
 | `61_bracket_glob_secret_path_bypass` | Bracket-glob obfuscation of sensitive file paths (for example `/etc/pass[w]d`, `/etc/shad[o]w`, `~/.ssh/id_r[s]a`) used to bypass literal denylist checks in shell/tool security guards | `EXF-014` |
+| `62_stegabin_shared_payload_path` | Campaign-linked shared npm malware loader payload path (`vendor/scrypt-js/version.js`) observed across recent StegaBin typosquat packages | `MAL-019` |
 
 ## Commands
 

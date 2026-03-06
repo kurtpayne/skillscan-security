@@ -76,3 +76,5 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 ```
 60. `60_glob_cmd_shell_injection`: node-glob CLI `-c/--cmd` usage that can evaluate attacker-controlled filename metacharacters via shell execution context (`MAL-018`)
 61. `61_bracket_glob_secret_path_bypass`: bracket-glob obfuscation of sensitive file paths (`/etc/pass[w]d`, `/etc/shad[o]w`, `~/.ssh/id_r[s]a`) used to evade literal denylist checks (`EXF-014`)
+
+62. `62_stegabin_shared_payload_path`: campaign-linked shared malicious payload path (`vendor/scrypt-js/version.js`) seen across recent StegaBin typosquat npm packages (`MAL-019`)
