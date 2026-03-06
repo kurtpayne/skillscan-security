@@ -259,11 +259,18 @@ def _classify_non_text(path: Path) -> BinaryArtifact | None:
     return None
 
 
-def iter_text_files(root: Path, max_files: int, max_bytes: int) -> FileInventory:
+def iter_text_files(
+    root: Path,
+    max_files: int,
+    max_bytes: int,
+    max_binary_artifacts: int,
+    max_binary_bytes: int,
+) -> FileInventory:
     files: list[Path] = []
     binary_artifacts: list[BinaryArtifact] = []
     total_bytes = 0
     total_files = 0
+    total_binary_bytes = 0
     for path in root.rglob("*"):
         if not path.is_file():
             continue
@@ -280,6 +287,11 @@ def iter_text_files(root: Path, max_files: int, max_bytes: int) -> FileInventory
         classification = _classify_non_text(path)
         if classification is not None:
             binary_artifacts.append(classification)
+            total_binary_bytes += size
+            if len(binary_artifacts) > max_binary_artifacts:
+                raise ScanError("Binary artifact count exceeded max_binary_artifacts policy limit")
+            if total_binary_bytes > max_binary_bytes:
+                raise ScanError("Binary artifact bytes exceeded max_binary_bytes policy limit")
             continue
         files.append(path)
     return FileInventory(text_files=files, binary_artifacts=binary_artifacts)
@@ -606,7 +618,13 @@ def scan(
     )
     try:
         ruleset: CompiledRulePack = load_compiled_builtin_rulepack()
-        inventory = iter_text_files(prepared.root, policy.limits["max_files"], policy.limits["max_bytes"])
+        inventory = iter_text_files(
+            prepared.root,
+            policy.limits["max_files"],
+            policy.limits["max_bytes"],
+            policy.limits.get("max_binary_artifacts", 500),
+            policy.limits.get("max_binary_bytes", 100_000_000),
+        )
         files = inventory.text_files
         findings: list[Finding] = []
         iocs: list[IOC] = []

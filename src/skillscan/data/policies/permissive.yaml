@@ -18,3 +18,5 @@ limits:
   max_depth: 10
   max_bytes: 350000000
   timeout_seconds: 90
+  max_binary_artifacts: 1000
+  max_binary_bytes: 175000000
