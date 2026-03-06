@@ -91,3 +91,14 @@ def test_diff_text_and_json(tmp_path: Path) -> None:
     assert payload["new_count"] == 1
     assert payload["resolved_count"] == 0
     assert payload["persistent_count"] == 1
+
+
+def test_diff_invalid_format(tmp_path: Path) -> None:
+    base = tmp_path / "base.json"
+    curr = tmp_path / "curr.json"
+    _write_report(base, [])
+    _write_report(curr, [])
+
+    result = runner.invoke(app, ["diff", str(base), str(curr), "--format", "bad"])
+    assert result.exit_code == 2
+    assert "Invalid --format" in result.stdout
