@@ -125,6 +125,8 @@ class Policy(BaseModel):
             "max_depth": 8,
             "max_bytes": 200_000_000,
             "timeout_seconds": 60,
+            "max_binary_artifacts": 500,
+            "max_binary_bytes": 100_000_000,
         }
     )
 

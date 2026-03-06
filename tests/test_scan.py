@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from skillscan.ai import AIResult
-from skillscan.analysis import scan
+from skillscan.analysis import ScanError, scan
 from skillscan.intel import add_source
 from skillscan.models import AIAssessment, Finding, Policy, Severity, Verdict
 from skillscan.policies import load_builtin_policy
@@ -250,6 +250,38 @@ def test_python_bytecode_is_flagged(tmp_path: Path) -> None:
     policy = load_builtin_policy("strict")
     report = scan(target, policy, "builtin:strict")
     assert any(f.id == "BIN-004" for f in report.findings)
+
+
+def test_binary_artifact_count_limit(tmp_path: Path) -> None:
+    target = tmp_path / "bundle"
+    target.mkdir(parents=True)
+    (target / "a.bin").write_bytes(b"\x00\x01\x02\x03")
+    (target / "b.bin").write_bytes(b"\x00\x01\x02\x03")
+
+    policy = load_builtin_policy("strict")
+    policy.limits["max_binary_artifacts"] = 1
+
+    try:
+        scan(target, policy, "builtin:strict")
+        assert False, "expected ScanError"
+    except ScanError as exc:
+        assert "max_binary_artifacts" in str(exc)
+
+
+def test_binary_artifact_bytes_limit(tmp_path: Path) -> None:
+    target = tmp_path / "bundle"
+    target.mkdir(parents=True)
+    (target / "a.bin").write_bytes(b"\x00" * 50)
+    (target / "b.bin").write_bytes(b"\x00" * 60)
+
+    policy = load_builtin_policy("strict")
+    policy.limits["max_binary_bytes"] = 100
+
+    try:
+        scan(target, policy, "builtin:strict")
+        assert False, "expected ScanError"
+    except ScanError as exc:
+        assert "max_binary_bytes" in str(exc)
 
 
 def test_block_min_confidence_prevents_hard_block_for_low_confidence_rule() -> None:
