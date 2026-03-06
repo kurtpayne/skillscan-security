@@ -25,3 +25,16 @@ def test_clamav_detects_signature(monkeypatch, tmp_path: Path) -> None:
     assert result.available is True
     assert len(result.detections) == 1
     assert result.detections[0].signature == "Win.Test.Eicar"
+
+
+def test_clamav_timeout(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr("skillscan.clamav.shutil.which", lambda _x: "/usr/bin/clamscan")
+
+    def _raise_timeout(*_a, **_k):
+        raise __import__("subprocess").TimeoutExpired(cmd="clamscan", timeout=30)
+
+    monkeypatch.setattr("skillscan.clamav.subprocess.run", _raise_timeout)
+    result = scan_paths(tmp_path)
+    assert result.available is True
+    assert result.detections == []
+    assert "timed out" in (result.message or "")
