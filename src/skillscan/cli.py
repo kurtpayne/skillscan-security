@@ -35,6 +35,14 @@ app.add_typer(intel_app, name="intel")
 console = Console()
 
 
+def _finding_key(finding: dict) -> tuple[str, str, int | None]:
+    return (
+        finding.get("id", ""),
+        finding.get("evidence_path", ""),
+        finding.get("line"),
+    )
+
+
 @app.command("version")
 def version() -> None:
     console.print(f"skillscan {__version__}")
@@ -199,6 +207,57 @@ def explain_cmd(report: Path = typer.Argument(..., exists=True, readable=True)) 
     from skillscan.models import ScanReport
 
     render_report(ScanReport.model_validate(data), console=console)
+
+
+@app.command("diff")
+def diff_cmd(
+    baseline: Path = typer.Argument(..., exists=True, readable=True, help="Baseline report JSON"),
+    current: Path = typer.Argument(..., exists=True, readable=True, help="Current report JSON"),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+) -> None:
+    if format not in {"text", "json"}:
+        console.print("[bold red]Invalid --format:[/] expected text or json")
+        raise typer.Exit(2)
+
+    baseline_data = json.loads(baseline.read_text(encoding="utf-8"))
+    current_data = json.loads(current.read_text(encoding="utf-8"))
+
+    baseline_findings = baseline_data.get("findings", [])
+    current_findings = current_data.get("findings", [])
+
+    baseline_map = {_finding_key(f): f for f in baseline_findings}
+    current_map = {_finding_key(f): f for f in current_findings}
+
+    new_keys = sorted(set(current_map) - set(baseline_map))
+    resolved_keys = sorted(set(baseline_map) - set(current_map))
+    persistent_keys = sorted(set(baseline_map) & set(current_map))
+
+    payload = {
+        "baseline": str(baseline),
+        "current": str(current),
+        "new_count": len(new_keys),
+        "resolved_count": len(resolved_keys),
+        "persistent_count": len(persistent_keys),
+        "new": [current_map[k] for k in new_keys],
+        "resolved": [baseline_map[k] for k in resolved_keys],
+    }
+
+    if format == "json":
+        console.print(json.dumps(payload, indent=2))
+        return
+
+    console.print(
+        Panel(
+            (
+                f"[bold]Baseline:[/bold] {baseline}\n"
+                f"[bold]Current:[/bold] {current}\n"
+                f"[bold green]New:[/bold green] {len(new_keys)}\n"
+                f"[bold yellow]Resolved:[/bold yellow] {len(resolved_keys)}\n"
+                f"[bold cyan]Persistent:[/bold cyan] {len(persistent_keys)}"
+            ),
+            title="SkillScan Diff",
+        )
+    )
 
 
 @policy_app.command("show-default")
