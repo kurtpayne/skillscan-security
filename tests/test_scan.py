@@ -188,6 +188,40 @@ def test_ai_critical_can_block(monkeypatch, tmp_path: Path) -> None:
     assert report.verdict == Verdict.BLOCK
 
 
+def test_ai_critical_non_blocking_mode_does_not_block(monkeypatch, tmp_path: Path) -> None:
+    target = tmp_path / "skill"
+    target.mkdir(parents=True)
+    (target / "SKILL.md").write_text("benign wording", encoding="utf-8")
+
+    def fake_ai(*_args, **_kwargs):
+        return AIResult(
+            assessment=AIAssessment(
+                provider="openai",
+                model="gpt-4o-mini",
+                summary="critical risk",
+                findings_added=1,
+            ),
+            findings=[
+                Finding(
+                    id="AI-SEM-001",
+                    category="ai_semantic_risk",
+                    severity=Severity.CRITICAL,
+                    confidence=0.95,
+                    title="Critical semantic abuse",
+                    evidence_path=str(target / "SKILL.md"),
+                    snippet="x",
+                    mitigation="y",
+                )
+            ],
+            raw_response='{"summary":"x","risks":[]}',
+        )
+
+    monkeypatch.setattr("skillscan.analysis.run_ai_assist", fake_ai)
+    policy = load_builtin_policy("strict")
+    report = scan(target, policy, "builtin:strict", ai_assist=True, ai_non_blocking=True)
+    assert report.verdict != Verdict.BLOCK
+
+
 def test_npm_lifecycle_script_abuse_detected(tmp_path: Path) -> None:
     target = tmp_path / "pkg"
     target.mkdir(parents=True)

@@ -379,6 +379,49 @@ def test_scan_deprecated_extended_ai_alias(monkeypatch) -> None:
     assert calls["kwargs"]["ai_assist"] is True
 
 
+def test_scan_passes_ai_non_blocking_flag(monkeypatch) -> None:
+    calls: dict[str, object] = {}
+
+    def fake_scan(target, policy, policy_source, **kwargs):
+        calls["kwargs"] = kwargs
+        return __import__("skillscan.models", fromlist=["ScanReport"]).ScanReport.model_validate(
+            {
+                "metadata": {
+                    "scanner_version": "0.1.0",
+                    "target": str(target),
+                    "target_type": "directory",
+                    "ecosystem_hints": ["generic"],
+                    "rulepack_version": "x",
+                    "policy_profile": "strict",
+                    "policy_source": policy_source,
+                    "intel_sources": [],
+                },
+                "verdict": "allow",
+                "score": 0,
+                "findings": [],
+                "iocs": [],
+                "dependency_findings": [],
+                "capabilities": [],
+            }
+        )
+
+    monkeypatch.setattr("skillscan.cli.scan", fake_scan)
+    result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--ai-assist",
+            "--ai-non-blocking",
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert result.exit_code == 0
+    assert calls["kwargs"]["ai_non_blocking"] is True
+
+
 def test_scan_passes_rulepack_channel(monkeypatch) -> None:
     calls: dict[str, object] = {}
 

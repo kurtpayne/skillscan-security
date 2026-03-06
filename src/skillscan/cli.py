@@ -97,6 +97,11 @@ def scan_cmd(
         "--ai-required/--ai-optional",
         help="Fail scan if AI assist is requested but unavailable",
     ),
+    ai_non_blocking: bool = typer.Option(
+        False,
+        "--ai-non-blocking/--ai-blocking",
+        help="Treat AI semantic findings as advisory only (cannot produce BLOCK verdict)",
+    ),
     ai_report_out: Path | None = typer.Option(
         None,
         "--ai-report-out",
@@ -187,6 +192,7 @@ def scan_cmd(
             ai_base_url=ai_base_url,
             ai_timeout_seconds=ai_timeout_seconds,
             ai_required=ai_required,
+            ai_non_blocking=ai_non_blocking,
             ai_report_out=ai_report_out,
             clamav=clamav,
             clamav_timeout_seconds=clamav_timeout_seconds,

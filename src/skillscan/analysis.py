@@ -608,6 +608,7 @@ def scan(
     ai_base_url: str | None = None,
     ai_timeout_seconds: int = 20,
     ai_required: bool = False,
+    ai_non_blocking: bool = False,
     ai_report_out: Path | None = None,
     clamav: bool = False,
     clamav_timeout_seconds: int = 30,
@@ -974,9 +975,11 @@ def scan(
             contribution = SEVERITY_SCORE[finding.severity] * weight
             score += contribution
             if finding.confidence >= policy.block_min_confidence:
+                if ai_non_blocking and finding.category == "ai_semantic_risk":
+                    continue
                 block_score += contribution
 
-        ai_critical_block = any(
+        ai_critical_block = (not ai_non_blocking) and any(
             f.category == "ai_semantic_risk"
             and f.severity == Severity.CRITICAL
             and f.confidence >= policy.ai_block_min_confidence
