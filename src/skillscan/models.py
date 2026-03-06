@@ -32,6 +32,26 @@ class Finding(BaseModel):
     mitigation: str | None = None
 
 
+
+
+class ConfidenceLabel(StrEnum):
+    EXPERIMENTAL = "experimental"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
+def confidence_label(confidence: float) -> ConfidenceLabel:
+    """Map a 0.0-1.0 confidence score to a human-readable label."""
+    if confidence < 0.5:
+        return ConfidenceLabel.EXPERIMENTAL
+    if confidence < 0.7:
+        return ConfidenceLabel.LOW
+    if confidence < 0.85:
+        return ConfidenceLabel.MEDIUM
+    return ConfidenceLabel.HIGH
+
+
 class IOC(BaseModel):
     value: str
     kind: str

@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from skillscan.models import Finding, ScanReport, Verdict
+from skillscan.models import Finding, ScanReport, Verdict, confidence_label
 
 VERDICT_STYLE = {
     Verdict.ALLOW: "bold green",
@@ -16,7 +16,8 @@ VERDICT_STYLE = {
 
 
 def _finding_narrative(finding: Finding) -> tuple[str, str, str]:
-    why = f"Matched {finding.id} ({finding.category})"
+    clabel = confidence_label(finding.confidence)
+    why = f"Matched {finding.id} ({finding.category}) [{clabel.value} confidence]"
     impact = f"Potential {finding.severity.value}-severity security risk"
     next_action = finding.mitigation or "Review the flagged snippet and remove/contain risky behavior"
     return why, impact, next_action
@@ -63,6 +64,7 @@ def render_report(report: ScanReport, console: Console | None = None) -> None:
     findings.add_column("Severity")
     findings.add_column("Category")
     findings.add_column("Evidence")
+    findings.add_column("Confidence", style="dim")
     findings.add_column("Snippet")
     findings.add_column("Why")
     findings.add_column("Impact")
@@ -74,6 +76,7 @@ def render_report(report: ScanReport, console: Console | None = None) -> None:
             finding.severity.value,
             finding.category,
             f"{finding.evidence_path}:{finding.line or '-'}",
+            confidence_label(finding.confidence).value,
             finding.snippet[:90],
             why[:80],
             impact[:80],
