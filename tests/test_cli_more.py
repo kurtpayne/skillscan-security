@@ -609,6 +609,156 @@ def test_scan_with_suppressions_and_strict_expiry(tmp_path: Path) -> None:
     assert "Expired suppressions" in strict_result.stdout
 
 
+def test_scan_with_baseline_report_text_and_json(tmp_path: Path) -> None:
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text(
+        json.dumps(
+            {
+                "metadata": {
+                    "scanner_version": "0.1.0",
+                    "target": "x",
+                    "target_type": "directory",
+                    "ecosystem_hints": ["generic"],
+                    "rulepack_version": "x",
+                    "policy_profile": "strict",
+                    "policy_source": "builtin:strict",
+                    "intel_sources": [],
+                },
+                "verdict": "warn",
+                "score": 10,
+                "findings": [
+                    {
+                        "id": "ABU-001",
+                        "category": "instruction_abuse",
+                        "severity": "high",
+                        "confidence": 0.8,
+                        "title": "a",
+                        "evidence_path": "a.md",
+                        "line": 1,
+                        "snippet": "x",
+                    }
+                ],
+                "iocs": [],
+                "dependency_findings": [],
+                "capabilities": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    text_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(baseline),
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert text_result.exit_code == 0
+    assert "Baseline Delta" in text_result.stdout
+
+    json_out = tmp_path / "scan-with-delta.json"
+    json_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(baseline),
+            "--format",
+            "json",
+            "--delta-format",
+            "json",
+            "--out",
+            str(json_out),
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert json_result.exit_code == 0
+    payload = json.loads(json_out.read_text(encoding="utf-8"))
+    assert "report" in payload
+    assert "delta" in payload
+    assert "new_count" in payload["delta"]
+
+
+def test_scan_baseline_option_validation_errors(tmp_path: Path) -> None:
+    missing = tmp_path / "missing.json"
+    missing_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(missing),
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert missing_result.exit_code == 2
+    assert "Baseline report not found" in missing_result.stdout
+
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text('{"findings": []}', encoding="utf-8")
+
+    bad_delta_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(baseline),
+            "--delta-format",
+            "bad",
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert bad_delta_result.exit_code == 2
+    assert "Invalid --delta-format" in bad_delta_result.stdout
+
+    incompatible_format_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(baseline),
+            "--format",
+            "sarif",
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert incompatible_format_result.exit_code == 2
+    assert "--baseline-report is supported only" in incompatible_format_result.stdout
+
+    json_without_delta_json_result = runner.invoke(
+        app,
+        [
+            "scan",
+            "tests/fixtures/benign/basic_skill",
+            "--baseline-report",
+            str(baseline),
+            "--format",
+            "json",
+            "--fail-on",
+            "never",
+            "--no-auto-intel",
+        ],
+    )
+    assert json_without_delta_json_result.exit_code == 2
+    assert "set --delta-format json" in json_without_delta_json_result.stdout
+
+
 def test_scan_text_out_and_intel_enable_disable_fail(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.setattr("skillscan.cli.set_enabled", lambda _name, _enabled: False)
     en = runner.invoke(app, ["intel", "enable", "missing"])

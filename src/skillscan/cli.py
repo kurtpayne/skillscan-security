@@ -50,6 +50,27 @@ def _safe_ratio(numerator: int, denominator: int) -> float:
     return numerator / denominator
 
 
+def _build_delta_payload(baseline_data: dict, current_data: dict, baseline_label: str) -> dict:
+    baseline_findings = baseline_data.get("findings", [])
+    current_findings = current_data.get("findings", [])
+
+    baseline_map = {_finding_key(f): f for f in baseline_findings}
+    current_map = {_finding_key(f): f for f in current_findings}
+
+    new_keys = sorted(set(current_map) - set(baseline_map))
+    resolved_keys = sorted(set(baseline_map) - set(current_map))
+    persistent_keys = sorted(set(baseline_map) & set(current_map))
+
+    return {
+        "baseline": baseline_label,
+        "new_count": len(new_keys),
+        "resolved_count": len(resolved_keys),
+        "persistent_count": len(persistent_keys),
+        "new": [current_map[k] for k in new_keys],
+        "resolved": [baseline_map[k] for k in resolved_keys],
+    }
+
+
 @app.command("version")
 def version() -> None:
     console.print(f"skillscan {__version__}")
@@ -138,6 +159,16 @@ def scan_cmd(
         "--clamav-timeout-seconds",
         help="ClamAV scan timeout in seconds",
     ),
+    baseline_report: Path | None = typer.Option(
+        None,
+        "--baseline-report",
+        help="Baseline report JSON to compare against this scan (new/resolved findings)",
+    ),
+    delta_format: str = typer.Option(
+        "text",
+        "--delta-format",
+        help="Baseline delta output format: text|json",
+    ),
 ) -> None:
     load_dotenv()
     if extended_ai_checks is not None:
@@ -168,6 +199,18 @@ def scan_cmd(
         raise typer.Exit(2)
     if clamav_timeout_seconds < 1:
         console.print("[bold red]Invalid --clamav-timeout-seconds:[/] expected >= 1")
+        raise typer.Exit(2)
+    if delta_format not in {"text", "json"}:
+        console.print("[bold red]Invalid --delta-format:[/] expected text or json")
+        raise typer.Exit(2)
+    if baseline_report is not None and not baseline_report.exists():
+        console.print(f"[bold red]Baseline report not found:[/] {baseline_report}")
+        raise typer.Exit(2)
+    if baseline_report is not None and format in {"sarif", "junit", "compact"}:
+        console.print("[bold red]--baseline-report is supported only with --format text or json[/]")
+        raise typer.Exit(2)
+    if baseline_report is not None and format == "json" and delta_format != "json":
+        console.print("[bold red]When using --format json with --baseline-report, set --delta-format json[/]")
         raise typer.Exit(2)
 
     if policy_file:
@@ -220,8 +263,21 @@ def scan_cmd(
             f"[dim]suppressions applied={result.suppressed_count} expired={result.expired_count}[/dim]"
         )
 
+    report_dict = report.model_dump(mode="json")
+    delta_payload: dict | None = None
+    if baseline_report is not None:
+        baseline_data = json.loads(baseline_report.read_text(encoding="utf-8"))
+        delta_payload = _build_delta_payload(
+            baseline_data=baseline_data,
+            current_data=report_dict,
+            baseline_label=str(baseline_report),
+        )
+
     if format == "json":
-        payload = report.to_json()
+        if delta_payload is not None:
+            payload = json.dumps({"report": report_dict, "delta": delta_payload}, indent=2)
+        else:
+            payload = report.to_json()
         if out:
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
@@ -250,9 +306,28 @@ def scan_cmd(
             console.print(payload)
     else:
         render_report(report, console=console)
+        if delta_payload is not None:
+            if delta_format == "json":
+                console.print(json.dumps(delta_payload, indent=2))
+            else:
+                console.print(
+                    Panel(
+                        (
+                            f"[bold]Baseline:[/bold] {delta_payload['baseline']}\n"
+                            f"[bold green]New:[/bold green] {delta_payload['new_count']}\n"
+                            f"[bold yellow]Resolved:[/bold yellow] {delta_payload['resolved_count']}\n"
+                            f"[bold cyan]Persistent:[/bold cyan] {delta_payload['persistent_count']}"
+                        ),
+                        title="Baseline Delta",
+                    )
+                )
         if out:
-            out.write_text(report.to_json(), encoding="utf-8")
-            console.print(f"[cyan]Saved JSON report:[/] {out}")
+            if delta_payload is not None and delta_format == "json":
+                out.write_text(json.dumps({"report": report_dict, "delta": delta_payload}, indent=2), encoding="utf-8")
+                console.print(f"Wrote report to {out}")
+            else:
+                out.write_text(report.to_json(), encoding="utf-8")
+                console.print(f"[cyan]Saved JSON report:[/] {out}")
 
     if strict_suppressions and expired_suppressions > 0:
         console.print("[bold red]Expired suppressions found in strict mode[/]")
