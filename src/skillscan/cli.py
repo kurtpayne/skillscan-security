@@ -323,7 +323,11 @@ def scan_cmd(
                 )
         if out:
             if delta_payload is not None and delta_format == "json":
-                out.write_text(json.dumps({"report": report_dict, "delta": delta_payload}, indent=2), encoding="utf-8")
+                out_payload = json.dumps(
+                    {"report": report_dict, "delta": delta_payload},
+                    indent=2,
+                )
+                out.write_text(out_payload, encoding="utf-8")
                 console.print(f"Wrote report to {out}")
             else:
                 out.write_text(report.to_json(), encoding="utf-8")
