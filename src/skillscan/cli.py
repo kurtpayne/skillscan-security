@@ -256,12 +256,24 @@ def scan_cmd(
         if not suppressions.exists():
             console.print(f"[bold red]Suppressions file not found:[/] {suppressions}")
             raise typer.Exit(2)
-        result = apply_suppressions(report.findings, suppressions)
+        try:
+            result = apply_suppressions(report.findings, suppressions)
+        except ValueError as exc:
+            console.print(f"[bold red]Invalid suppressions file:[/] {exc}")
+            raise typer.Exit(2)
         report.findings = result.findings
         expired_suppressions = result.expired_count
         console.print(
-            f"[dim]suppressions applied={result.suppressed_count} expired={result.expired_count}[/dim]"
+            "[dim]"
+            f"suppressions total={result.total_entries} "
+            f"active={result.active_entries} "
+            f"applied={result.suppressed_count} "
+            f"expired={result.expired_count}"
+            "[/dim]"
         )
+        if result.expired_entries:
+            expired_ids = ", ".join(sorted({entry.id for entry in result.expired_entries}))
+            console.print(f"[dim]expired suppression ids: {expired_ids}[/dim]")
 
     report_dict = report.model_dump(mode="json")
     delta_payload: dict | None = None
