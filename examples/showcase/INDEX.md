@@ -78,3 +78,4 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 61. `61_bracket_glob_secret_path_bypass`: bracket-glob obfuscation of sensitive file paths (`/etc/pass[w]d`, `/etc/shad[o]w`, `~/.ssh/id_r[s]a`) used to evade literal denylist checks (`EXF-014`)
 
 62. `62_stegabin_shared_payload_path`: campaign-linked shared malicious payload path (`vendor/scrypt-js/version.js`) seen across recent StegaBin typosquat npm packages (`MAL-019`)
+63. `63_vscode_hidden_whitespace_task`: VS Code `tasks.json` shell command padded with extreme leading whitespace to hide remote bootstrap execution in task viewers (`MAL-020`)

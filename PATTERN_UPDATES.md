@@ -1,3 +1,27 @@
+## 2026-03-06 (3): VS Code Hidden-Whitespace Task Command Marker
+
+**Sources:**
+- [Socket - StegaBin: 26 Malicious npm Packages Use Pastebin Steganography](https://socket.dev/blog/stegabin-26-malicious-npm-packages-use-pastebin-steganography)
+- [The Hacker News - North Korean Hackers Publish 26 npm Packages Hiding Pastebin C2 for Cross-Platform RAT](https://thehackernews.com/2026/03/north-korean-hackers-publish-26-npm.html)
+
+**Event Summary:** Recent campaign reporting describes VS Code persistence where malicious `tasks.json` entries hide shell/bootstrap commands behind very large leading whitespace, making payloads hard to spot in task viewers and quick reviews. Existing SkillScan coverage already flagged `runOn: "folderOpen"` and StegaBin dead-drop indicators, but lacked a focused static marker for the off-screen whitespace concealment technique itself.
+
+**New Pattern Added:**
+
+### MAL-020: VS Code task off-screen whitespace command padding marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects `tasks.json` command fields containing extreme leading whitespace followed by shell/bootstrap downloader primitives (`curl`, `wget`, `iwr`, `powershell`, `cmd /c`, `bash -c`, `sh -c`).
+- **Justification:** High-signal stealth marker tied to a concrete 2026 campaign TTP; scoped to suspicious task-command shape to keep false positives low.
+- **Mitigation:** Treat repo-supplied VS Code tasks as untrusted. Remove concealed command padding and require explicit review before enabling task automation.
+
+**Version:** Rules updated from 2026.03.06.2 to 2026.03.06.3
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_06_patch3`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/63_vscode_hidden_whitespace_task`.
+
+---
+
 ## 2026-03-06 (2): StegaBin Shared npm Payload-Path Marker
 
 **Sources:**
