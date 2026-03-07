@@ -23,26 +23,48 @@ class SuppressionResult:
     findings: list[Finding]
     suppressed_count: int
     expired_count: int
+    total_entries: int
+    active_entries: int
+    expired_entries: list[SuppressionEntry]
 
 
 def _parse_date_utc(value: str) -> datetime:
-    return datetime.fromisoformat(f"{value}T00:00:00+00:00")
+    try:
+        return datetime.fromisoformat(f"{value}T00:00:00+00:00")
+    except ValueError as exc:
+        raise ValueError(f"Invalid suppression expiry date: {value!r} (expected YYYY-MM-DD)") from exc
 
 
 def _load_entries(path: Path) -> list[SuppressionEntry]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not data:
         return []
+
     items = data if isinstance(data, list) else data.get("suppressions", [])
+    if not isinstance(items, list):
+        raise ValueError("Suppressions file must be a list or a mapping with 'suppressions' list")
+
     entries: list[SuppressionEntry] = []
-    for item in items:
+    for idx, item in enumerate(items, 1):
+        if not isinstance(item, dict):
+            raise ValueError(f"Suppression entry #{idx} must be a mapping")
+
+        missing = [k for k in ("id", "reason", "expires") if k not in item]
+        if missing:
+            missing_str = ", ".join(missing)
+            raise ValueError(f"Suppression entry #{idx} missing required field(s): {missing_str}")
+
+        line = item.get("line")
+        if line is not None and not isinstance(line, int):
+            raise ValueError(f"Suppression entry #{idx} field 'line' must be an integer")
+
         entries.append(
             SuppressionEntry(
-                id=item["id"],
-                reason=item["reason"],
-                expires=item["expires"],
+                id=str(item["id"]),
+                reason=str(item["reason"]),
+                expires=str(item["expires"]),
                 evidence_path=item.get("evidence_path"),
-                line=item.get("line"),
+                line=line,
             )
         )
     return entries
@@ -63,10 +85,10 @@ def apply_suppressions(findings: list[Finding], path: Path) -> SuppressionResult
     now = datetime.now(UTC)
 
     active: list[SuppressionEntry] = []
-    expired_count = 0
+    expired_entries: list[SuppressionEntry] = []
     for entry in entries:
         if _parse_date_utc(entry.expires) < now:
-            expired_count += 1
+            expired_entries.append(entry)
             continue
         active.append(entry)
 
@@ -81,5 +103,8 @@ def apply_suppressions(findings: list[Finding], path: Path) -> SuppressionResult
     return SuppressionResult(
         findings=filtered,
         suppressed_count=suppressed_count,
-        expired_count=expired_count,
+        expired_count=len(expired_entries),
+        total_entries=len(entries),
+        active_entries=len(active),
+        expired_entries=expired_entries,
     )
