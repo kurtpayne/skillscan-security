@@ -50,6 +50,8 @@ def test_report_to_sarif_basic() -> None:
     result = sarif["runs"][0]["results"][0]
     assert result["ruleId"] == "MAL-001"
     assert result["level"] == "error"
+    assert result["properties"]["confidenceLabel"] == "critical"
+    assert "confidence=critical" in result["message"]["text"]
     assert result["locations"][0]["physicalLocation"]["artifactLocation"]["uri"] == (
         "examples/showcase/01_download_execute/SKILL.md"
     )

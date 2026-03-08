@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import OrderedDict
 
-from skillscan.models import ScanReport, Severity
+from skillscan.models import ScanReport, Severity, confidence_label
 
 
 def _level_from_severity(severity: Severity) -> str:
@@ -27,6 +27,7 @@ def report_to_sarif(report: ScanReport) -> dict:
                     "category": finding.category,
                     "defaultSeverity": finding.severity.value,
                     "confidence": finding.confidence,
+                    "confidenceLabel": confidence_label(finding.confidence).value,
                 },
             }
 
@@ -34,10 +35,11 @@ def report_to_sarif(report: ScanReport) -> dict:
         if finding.snippet:
             message = f"{message}: {finding.snippet.strip()}"
 
+        clabel = confidence_label(finding.confidence).value
         result: dict = {
             "ruleId": finding.id,
             "level": _level_from_severity(finding.severity),
-            "message": {"text": message},
+            "message": {"text": f"{message} [confidence={clabel}]"},
             "locations": [
                 {
                     "physicalLocation": {
@@ -50,6 +52,7 @@ def report_to_sarif(report: ScanReport) -> dict:
                 "category": finding.category,
                 "severity": finding.severity.value,
                 "confidence": finding.confidence,
+                "confidenceLabel": clabel,
                 "mitigation": finding.mitigation,
             },
         }

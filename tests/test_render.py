@@ -113,14 +113,14 @@ def test_recommended_actions_and_categories() -> None:
 
 
 def test_confidence_label_bands() -> None:
-    assert confidence_label(0.3) == ConfidenceLabel.EXPERIMENTAL
-    assert confidence_label(0.49) == ConfidenceLabel.EXPERIMENTAL
-    assert confidence_label(0.5) == ConfidenceLabel.LOW
-    assert confidence_label(0.69) == ConfidenceLabel.LOW
-    assert confidence_label(0.7) == ConfidenceLabel.MEDIUM
-    assert confidence_label(0.84) == ConfidenceLabel.MEDIUM
-    assert confidence_label(0.85) == ConfidenceLabel.HIGH
-    assert confidence_label(1.0) == ConfidenceLabel.HIGH
+    assert confidence_label(0.3) == ConfidenceLabel.LOW
+    assert confidence_label(0.49) == ConfidenceLabel.LOW
+    assert confidence_label(0.5) == ConfidenceLabel.MEDIUM
+    assert confidence_label(0.69) == ConfidenceLabel.MEDIUM
+    assert confidence_label(0.7) == ConfidenceLabel.HIGH
+    assert confidence_label(0.89) == ConfidenceLabel.HIGH
+    assert confidence_label(0.9) == ConfidenceLabel.CRITICAL
+    assert confidence_label(1.0) == ConfidenceLabel.CRITICAL
 
 
 def test_finding_narrative_includes_confidence() -> None:
@@ -135,7 +135,7 @@ def test_finding_narrative_includes_confidence() -> None:
         mitigation="remove it",
     )
     why, impact, next_action = _finding_narrative(finding)
-    assert "high confidence" in why
+    assert "critical confidence" in why
     assert "critical" in impact
 
 

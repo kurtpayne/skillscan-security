@@ -35,21 +35,21 @@ class Finding(BaseModel):
 
 
 class ConfidenceLabel(StrEnum):
-    EXPERIMENTAL = "experimental"
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
+    CRITICAL = "critical"
 
 
 def confidence_label(confidence: float) -> ConfidenceLabel:
     """Map a 0.0-1.0 confidence score to a human-readable label."""
     if confidence < 0.5:
-        return ConfidenceLabel.EXPERIMENTAL
-    if confidence < 0.7:
         return ConfidenceLabel.LOW
-    if confidence < 0.85:
+    if confidence < 0.7:
         return ConfidenceLabel.MEDIUM
-    return ConfidenceLabel.HIGH
+    if confidence < 0.9:
+        return ConfidenceLabel.HIGH
+    return ConfidenceLabel.CRITICAL
 
 
 class IOC(BaseModel):

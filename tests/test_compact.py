@@ -38,6 +38,7 @@ def test_compact_render() -> None:
     text = report_to_compact_text(report)
     assert "verdict=block" in text
     assert "ABU-001" in text
+    assert "[high/high]" in text
     assert "SKILL.md:2" in text
 
 

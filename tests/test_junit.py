@@ -49,6 +49,10 @@ def test_junit_with_findings() -> None:
     assert suite is not None
     assert suite.attrib["tests"] == "1"
     assert suite.attrib["failures"] == "1"
+    failure = root.find("testsuite/testcase/failure")
+    assert failure is not None
+    assert failure.attrib["type"] == "high/critical"
+    assert "[critical]" in failure.attrib["message"]
 
 
 def test_junit_without_findings() -> None:

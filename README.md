@@ -108,6 +108,8 @@ skillscan scan ./examples/suspicious_skill --format junit --out skillscan-junit.
 skillscan scan ./examples/suspicious_skill --format compact --fail-on never
 ```
 
+Confidence labels in findings are rendered as: `low`, `medium`, `high`, `critical`.
+
 Render saved report:
 
 ```bash

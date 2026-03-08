@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import xml.etree.ElementTree as ET
 
-from skillscan.models import ScanReport
+from skillscan.models import ScanReport, confidence_label
 
 
 def report_to_junit_xml(report: ScanReport) -> str:
@@ -34,12 +34,13 @@ def report_to_junit_xml(report: ScanReport) -> str:
                     "file": finding.evidence_path,
                 },
             )
+            clabel = confidence_label(finding.confidence).value
             failure = ET.SubElement(
                 case,
                 "failure",
                 {
-                    "message": finding.title,
-                    "type": finding.severity.value,
+                    "message": f"{finding.title} [{clabel}]",
+                    "type": f"{finding.severity.value}/{clabel}",
                 },
             )
             detail = finding.snippet.strip() if finding.snippet else finding.title
