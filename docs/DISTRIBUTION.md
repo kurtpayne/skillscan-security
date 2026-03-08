@@ -119,6 +119,8 @@ docker pull <image>:<previous-tag>
 
 ---
 
+See also: `docs/RELEASE_ONBOARDING.md` for first-time account and publisher setup.
+
 ## Release Automation Notes
 
 - PyPI publish runs on `v*` tags via `.github/workflows/release-pypi.yml`.
