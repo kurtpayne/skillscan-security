@@ -1,5 +1,16 @@
 # Rule Updates
 
+## 2026-03-09
+
+- Added `MAL-021` (high): **GitHub Actions branch/ref metadata interpolation in run/script**.
+- Added `CHN-010` (critical): **`pull_request_target` + branch/ref metadata interpolation chain**.
+- Rationale: fresh incident reporting on the `hackerbot-claw` campaign documented branch-name command-substitution payloads executing in privileged workflows when branch refs were interpolated directly into `run:` shell steps.
+- Rule scope is intentionally constrained to shell/script contexts (`run:`/`script:`) and high-signal branch/ref metadata fields (`github.head_ref`, `github.ref_name`, `github.event.pull_request.head.ref`, `steps.*.outputs.pr_head_ref`) to reduce false positives.
+
+Sources:
+- StepSecurity (2026-03-02), *hackerbot-claw: An AI-Powered Bot Actively Exploiting GitHub Actions*: https://www.stepsecurity.io/blog/hackerbot-claw-github-actions-exploitation
+- Orca Security (2026-03-04), *HackerBot-Claw: An AI-Assisted Campaign Targeting GitHub Actions Pipelines*: https://orca.security/resources/blog/hackerbot-claw-github-actions-attack/
+
 ## 2026-03-05
 
 - Added `EXF-013` (high): **AI assistant global MCP config injection marker**.

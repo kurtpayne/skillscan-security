@@ -96,6 +96,9 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-019" for f in findings_62)
     findings_63 = _scan("examples/showcase/63_vscode_hidden_whitespace_task").findings
     assert any(f.id == "MAL-020" for f in findings_63)
+    findings_64 = _scan("examples/showcase/64_pr_target_branch_ref_injection").findings
+    assert any(f.id == "MAL-021" for f in findings_64)
+    assert any(f.id == "CHN-010" for f in findings_64)
 
 
 def test_showcase_policy_block_domain() -> None:

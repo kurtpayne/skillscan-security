@@ -1,4 +1,4 @@
-version: "2026.03.06.3"
+version: "2026.03.09.1"
 
 static_rules:
   - id: MAL-001
@@ -209,6 +209,14 @@ static_rules:
     pattern: '\$\{\{\s*github\.event\.(?:issue\.(?:title|body)|comment\.body|discussion\.(?:title|body)|discussion_comment\.body)\s*\}\}'
     mitigation: Do not interpolate untrusted issue/comment/discussion content directly into shell or script blocks. Route via environment variables and treat values as untrusted data.
 
+  - id: MAL-021
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: GitHub Actions branch/ref metadata interpolation in run/script
+    pattern: '\$\{\{\s*(?:github\.(?:head_ref|ref_name)|github\.event\.pull_request\.head\.ref|steps\.[A-Za-z0-9_-]+\.outputs\.pr_head_ref)\s*\}\}'
+    mitigation: Do not interpolate untrusted branch/ref metadata directly into shell/script steps. Treat branch names as attacker-controlled input and pass through strict quoting/sanitization.
+
   - id: MAL-009
     category: malware_pattern
     severity: high
@@ -409,6 +417,7 @@ action_patterns:
   gh_pr_target: '\bpull_request_target\b'
   gh_pr_head_checkout: '\$\{\{\s*github\.event\.pull_request\.head\.(?:sha|ref|repo\.full_name)\s*\}\}'
   gh_pr_untrusted_meta: '\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|user\.login)\s*\}\}'
+  gh_pr_ref_meta: '\$\{\{\s*(?:github\.(?:head_ref|ref_name)|github\.event\.pull_request\.head\.ref|steps\.[A-Za-z0-9_-]+\.outputs\.pr_head_ref)\s*\}\}'
   gh_cache_untrusted_key: '(?i)\bkey:\s*[^\n]*\$\{\{\s*github\.event\.pull_request\.(?:title|body|head\.label|head\.ref|user\.login)\s*\}\}'
   gh_unpinned_action_ref: '(?im)^\s*-?\s*uses:\s*[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+@(?![0-9a-f]{40}\b)[^\s#]+'
   privilege: '\bsudo\b|run as administrator|elevat'
@@ -498,6 +507,15 @@ chain_rules:
     all_of: [claude_hooks_marker, hook_shell_command_field]
     snippet: hook configuration marker + shell-capable command payload detected
     mitigation: Treat repository hook configuration as untrusted and block shell-capable `command` payloads unless explicitly reviewed and approved.
+
+  - id: CHN-010
+    category: malware_pattern
+    severity: critical
+    confidence: 0.89
+    title: "pull_request_target with branch/ref metadata interpolation in shell/script"
+    all_of: [gh_pr_target, gh_pr_ref_meta]
+    snippet: pull_request_target + branch/ref metadata interpolation marker detected
+    mitigation: Do not combine `pull_request_target` with direct shell/script interpolation of PR branch/ref values. Quote safely, avoid shell evaluation, and run untrusted PR data in unprivileged workflows.
 
 capability_patterns:
   shell_execution: '\b(subprocess|os\.system|bash|powershell)\b'

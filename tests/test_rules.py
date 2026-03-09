@@ -723,6 +723,33 @@ def test_new_patterns_2026_03_06_patch3() -> None:
     )
 
 
+def test_new_patterns_2026_03_09() -> None:
+    """Test pull_request_target branch/ref metadata interpolation marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal021 = next((r for r in compiled.static_rules if r.id == "MAL-021"), None)
+    assert mal021 is not None
+    assert (
+        mal021.pattern.search(
+            "run: |\n  echo \"${{ github.event.pull_request.head.ref }}\" > ref.txt"
+        )
+        is not None
+    )
+    assert (
+        mal021.pattern.search(
+            "run: |\n  echo \"${{ steps.pr_info.outputs.pr_head_ref }}\" > ref.txt"
+        )
+        is not None
+    )
+    assert mal021.pattern.search("run: echo safe") is None
+
+    assert "gh_pr_ref_meta" in compiled.action_patterns
+    chn010 = next((r for r in compiled.chain_rules if r.id == "CHN-010"), None)
+    assert chn010 is not None
+    assert "gh_pr_target" in chn010.all_of
+    assert "gh_pr_ref_meta" in chn010.all_of
+
+
 def test_rulepack_channel_filtering() -> None:
     class _P:
         def __init__(self, name: str):

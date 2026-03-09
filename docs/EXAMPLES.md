@@ -68,6 +68,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `61_bracket_glob_secret_path_bypass` | Bracket-glob obfuscation of sensitive file paths (for example `/etc/pass[w]d`, `/etc/shad[o]w`, `~/.ssh/id_r[s]a`) used to bypass literal denylist checks in shell/tool security guards | `EXF-014` |
 | `62_stegabin_shared_payload_path` | Campaign-linked shared npm malware loader payload path (`vendor/scrypt-js/version.js`) observed across recent StegaBin typosquat packages | `MAL-019` |
 | `63_vscode_hidden_whitespace_task` | VS Code `tasks.json` shell command padded with extreme leading whitespace to hide remote bootstrap execution in task viewers/review panes | `MAL-020` |
+| `64_pr_target_branch_ref_injection` | `pull_request_target` workflow interpolates untrusted branch/ref metadata (for example `pr_head_ref`, `github.event.pull_request.head.ref`) directly into shell `run:` steps, enabling branch-name command substitution injection | `MAL-021`, `CHN-010` |
 
 ## Commands
 

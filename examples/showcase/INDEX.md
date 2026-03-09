@@ -79,3 +79,4 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 
 62. `62_stegabin_shared_payload_path`: campaign-linked shared malicious payload path (`vendor/scrypt-js/version.js`) seen across recent StegaBin typosquat npm packages (`MAL-019`)
 63. `63_vscode_hidden_whitespace_task`: VS Code `tasks.json` shell command padded with extreme leading whitespace to hide remote bootstrap execution in task viewers (`MAL-020`)
+64. `64_pr_target_branch_ref_injection`: `pull_request_target` workflow interpolating untrusted branch/ref metadata into shell script steps (`MAL-021`, `CHN-010`)
