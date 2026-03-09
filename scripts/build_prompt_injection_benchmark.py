@@ -58,7 +58,9 @@ def _extract_text_label(record: dict) -> tuple[str, bool] | None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build prompt-injection benchmark manifest from local datasets")
+    parser = argparse.ArgumentParser(
+        description="Build prompt-injection benchmark manifest from local datasets"
+    )
     parser.add_argument("--pint-root", type=Path, required=True)
     parser.add_argument("--openpi-root", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, default=Path("tests/benchmark/generated_prompt_injection"))
