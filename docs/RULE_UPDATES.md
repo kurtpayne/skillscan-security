@@ -1,5 +1,16 @@
 # Rule Updates
 
+## 2026-03-11
+
+- Added `ABU-005` (high): **MCP tool name-collision hijack marker**.
+- Rationale: CVE-2026-30856 disclosures describe malicious remote MCP servers abusing ambiguous client naming conventions (`mcp_{service}_{tool}`) to overwrite trusted tool aliases (for example `tavily_extract`) and hijack tool execution flow.
+- Rule scope intentionally targets explicit collision/hijack phrasing from advisory and incident writeups to keep false positives low.
+
+Sources:
+- GitLab Advisory DB (2026-03-06, updated 2026-03-09), *CVE-2026-30856*: https://advisories.gitlab.com/pkg/golang/github.com/tencent/weknora/CVE-2026-30856/
+- GitHub Advisory DB, *GHSA-67q9-58vj-32qx*: https://github.com/advisories/GHSA-67q9-58vj-32qx
+- NVD, *CVE-2026-30856*: https://nvd.nist.gov/vuln/detail/CVE-2026-30856
+
 ## 2026-03-09
 
 - Added `MAL-021` (high): **GitHub Actions branch/ref metadata interpolation in run/script**.

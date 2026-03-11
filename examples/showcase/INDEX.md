@@ -81,3 +81,5 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 63. `63_vscode_hidden_whitespace_task`: VS Code `tasks.json` shell command padded with extreme leading whitespace to hide remote bootstrap execution in task viewers (`MAL-020`)
 64. `64_pr_target_branch_ref_injection`: `pull_request_target` workflow interpolating untrusted branch/ref metadata into shell script steps (`MAL-021`, `CHN-010`)
 65. `65_dev_credential_harvest_list`: combined references to multiple developer credential stores (`~/.npmrc`, `~/.git-credentials`, `~/.config/gh/hosts.yml`) indicating credential-harvest behavior (`EXF-015`)
+
+66. `66_mcp_tool_name_collision_hijack`: MCP tool-name collision hijack wording (`mcp_{service}_{tool}`, overwrite of trusted tool aliases like `tavily_extract`) associated with CVE-2026-30856 (`ABU-005`)

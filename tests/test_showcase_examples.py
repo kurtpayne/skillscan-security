@@ -101,6 +101,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "CHN-010" for f in findings_64)
     findings_65 = _scan("examples/showcase/65_dev_credential_harvest_list").findings
     assert any(f.id == "EXF-015" for f in findings_65)
+    findings_66 = _scan("examples/showcase/66_mcp_tool_name_collision_hijack").findings
+    assert any(f.id == "ABU-005" for f in findings_66)
 
 
 def test_showcase_policy_block_domain() -> None:

@@ -1,4 +1,4 @@
-version: "2026.03.09.2"
+version: "2026.03.11.1"
 
 static_rules:
   - id: MAL-001
@@ -383,6 +383,15 @@ static_rules:
     title: Tool auto-approve allowlist includes package-install command
     pattern: '(?is)(?:auto[- ]?approve|always\s+approve|allowed\s+commands|command\s+allowlist)[\s\S]{0,220}\b(?:npm\s+(?:install|i)|pnpm\s+install|yarn\s+install|bun\s+install)\b|\b(?:npm\s+(?:install|i)|pnpm\s+install|yarn\s+install|bun\s+install)\b[\s\S]{0,220}(?:auto[- ]?approve|always\s+approve|allowed\s+commands|command\s+allowlist)'
     mitigation: Do not auto-approve package-install commands in AI tool/extension settings. Require explicit user confirmation for install actions because lifecycle scripts can execute arbitrary code.
+
+
+  - id: ABU-005
+    category: instruction_abuse
+    severity: high
+    confidence: 0.84
+    title: MCP tool name-collision hijack marker
+    pattern: '(?i)(?:mcp_\{service\}_\{tool\}|\btool name collision\b|\boverwrites? a legitimate one\s*\(e\.g\.,?\s*tavily_extract\)|\bmalicious remote mcp server\b[^\n]{0,120}\b(?:hijack|overwrite)\b[^\n]{0,80}\btool\b)'
+    mitigation: Treat MCP server/tool registration naming-collision guidance as high risk. Require unique namespaced tool IDs per server and block ambiguous aliases that can shadow trusted tools.
 
   - id: MAL-019
     category: malware_pattern
