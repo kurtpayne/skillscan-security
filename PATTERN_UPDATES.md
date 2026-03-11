@@ -1,3 +1,27 @@
+## 2026-03-11 (2): Bash Parameter-Expansion Command Smuggling Marker
+
+**Sources:**
+- [GitHub Advisory Database - GHSA-g8r9-g2v8-jv6f (CVE-2026-29783)](https://github.com/advisories/GHSA-g8r9-g2v8-jv6f)
+- [GitLab Advisory DB - CVE-2026-29783](https://advisories.gitlab.com/pkg/npm/@github/copilot/CVE-2026-29783/)
+
+**Event Summary:** March 2026 advisory reporting for CVE-2026-29783 documents that crafted bash parameter expansion syntax can hide executable payloads inside commands that may be misclassified as read-only in AI CLI workflows. The disclosed dangerous forms include `${var@P}` prompt expansion and default/assignment expansions that embed command substitutions like `${HOME:-$(whoami)}`. Existing SkillScan rules covered broad download/exec and eval behavior but did not include a focused marker for this bash expansion smuggling shape.
+
+**New Pattern Added:**
+
+### MAL-022: Bash parameter-expansion command smuggling marker
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects `@P` prompt-expansion usage and default/assignment parameter expansions that contain embedded command/process substitutions (for example `$(...)` or `<(...)`) within `${...}` blocks.
+- **Justification:** High-signal marker tied directly to a recent GHSA/CVE affecting AI shell-tool safety classification; scoped to rare bash expansion forms to keep noise low.
+- **Mitigation:** Treat these expansion forms as unsafe in AI-generated shell commands. Require explicit review and block auto-execution for matching commands.
+
+**Version:** Rules updated from 2026.03.11.1 to 2026.03.11.2
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_11_patch2`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/67_bash_param_expansion_smuggling`.
+
+---
+
 ## 2026-03-09 (2): Multi-Target Developer Credential Harvest List Marker
 
 **Sources:**

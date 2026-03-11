@@ -1,4 +1,4 @@
-version: "2026.03.11.1"
+version: "2026.03.11.2"
 
 static_rules:
   - id: MAL-001
@@ -424,6 +424,14 @@ static_rules:
     title: Multi-target developer credential file harvest list marker
     pattern: '(?i)(?:\.npmrc[^\n]{0,320}\.git-credentials|\.git-credentials[^\n]{0,320}\.npmrc|\.config/gh/hosts\.yml[^\n]{0,320}(?:\.npmrc|\.git-credentials)|(?:\.npmrc|\.git-credentials)[^\n]{0,320}\.config/gh/hosts\.yml)'
     mitigation: Treat combined references to multiple developer credential stores (`.npmrc`, `.git-credentials`, GitHub CLI `hosts.yml`) as high-risk exfiltration behavior. Remove unauthorized collection logic and rotate exposed tokens.
+
+  - id: MAL-022
+    category: malware_pattern
+    severity: high
+    confidence: 0.86
+    title: Bash parameter-expansion command smuggling marker
+    pattern: '(?i)\$\{[^}\n]{0,140}@P[^}\n]*\}|\$\{[^}\n]{0,140}(?::?=|:-)\s*(?:\$\(|<\()[^}\n]{1,140}\)[^}\n]*\}'
+    mitigation: Treat bash parameter expansions using `@P` or default/assignment operators with embedded command/process substitutions as unsafe in AI-suggested shell commands. Require explicit user review and block auto-execution.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
