@@ -825,6 +825,7 @@ def test_new_patterns_2026_03_11() -> None:
     assert abu005.pattern.search("normal MCP registry docs") is None
 
 
+
 def test_new_patterns_2026_03_11_patch2() -> None:
     """Test bash parameter-expansion command smuggling marker (CVE-2026-29783 lineage)."""
     compiled = load_compiled_builtin_rulepack()

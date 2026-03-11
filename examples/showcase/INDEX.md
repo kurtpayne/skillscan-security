@@ -83,4 +83,5 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 65. `65_dev_credential_harvest_list`: combined references to multiple developer credential stores (`~/.npmrc`, `~/.git-credentials`, `~/.config/gh/hosts.yml`) indicating credential-harvest behavior (`EXF-015`)
 
 66. `66_mcp_tool_name_collision_hijack`: MCP tool-name collision hijack wording (`mcp_{service}_{tool}`, overwrite of trusted tool aliases like `tavily_extract`) associated with CVE-2026-30856 (`ABU-005`)
+
 67. `67_bash_param_expansion_smuggling`: bash parameter-expansion command smuggling patterns (for example `${var@P}` and `${VAR:-$(cmd)}`) associated with CVE-2026-29783 / GHSA-g8r9-g2v8-jv6f (`MAL-022`)
