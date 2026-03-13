@@ -835,3 +835,30 @@ def test_new_patterns_2026_03_11_patch2() -> None:
     assert mal022.pattern.search('echo ${a="$"}${b="$a(touch /tmp/pwned)"}${b@P}') is not None
     assert mal022.pattern.search('echo ${HOME:-$(whoami)}') is not None
     assert mal022.pattern.search('echo ${HOME:-/tmp}') is None
+
+
+def test_new_patterns_2026_03_12() -> None:
+    """Test macOS Full Disk Access social-engineering prompt marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    abu006 = next((r for r in compiled.static_rules if r.id == "ABU-006"), None)
+    assert abu006 is not None
+    assert (
+        abu006.pattern.search(
+            "osascript -e 'display dialog \"OpenClaw requires Full Disk Access\" "
+            "buttons {\"Skip\",\"Open Settings\"}'"
+        )
+        is not None
+    )
+    assert (
+        abu006.pattern.search(
+            "Grant Full Disk Access to Terminal, then click Open Settings in System Settings to continue."
+        )
+        is not None
+    )
+    assert (
+        abu006.pattern.search(
+            "Open System Settings and review your privacy options."
+        )
+        is None
+    )

@@ -73,6 +73,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `66_mcp_tool_name_collision_hijack` | MCP tool registration naming-collision guidance (`mcp_{service}_{tool}` / "tool name collision") and overwrite-hijack wording for trusted aliases (for example `tavily_extract`) | `ABU-005` |
 
 | `67_bash_param_expansion_smuggling` | Bash parameter-expansion command smuggling patterns (`${var@P}` and `${VAR:-$(cmd)}`) that can bypass read-only shell safety checks in AI CLI tooling | `MAL-022` |
+| `68_fda_terminal_prompt` | AppleScript/instruction text that socially engineers users into granting Terminal Full Disk Access during setup flows | `ABU-006` |
 
 ## Commands
 

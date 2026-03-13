@@ -1,3 +1,27 @@
+## 2026-03-12 (1): macOS Full Disk Access Terminal Social-Engineering Prompt Marker
+
+**Sources:**
+- [JFrog - GhostClaw Unmasked: A Malicious npm Package Impersonating OpenClaw to Steal Everything](https://research.jfrog.com/post/ghostclaw-unmasked/)
+- [The Hacker News - Malicious npm Package Posing as OpenClaw Installer Deploys RAT, Steals macOS Credentials](https://thehackernews.com/2026/03/malicious-npm-package-posing-as.html)
+
+**Event Summary:** March 2026 GhostClaw reporting describes installer-stage social engineering that opens AppleScript dialogs and step-by-step instructions to push developers into granting **Full Disk Access** to Terminal. Existing SkillScan rules already covered `osascript` JXA execution (`MAL-013`) and broad malware execution chains, but did not include a focused marker for this permission-coercion prompt pattern itself.
+
+**New Pattern Added:**
+
+### ABU-006: macOS Full Disk Access social-engineering prompt marker
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.83
+- **Pattern:** Detects AppleScript `display dialog` references that mention `Full Disk Access`, and instruction text that combines `Full Disk Access` + `Terminal` + `Open Settings/System Settings` coercion flow.
+- **Justification:** Concrete, campaign-linked setup-abuse wording with low expected noise in normal skill/tool artifacts.
+- **Mitigation:** Remove installer/setup guidance that asks users to grant FDA to shell tools without explicit security review and trusted provenance.
+
+**Version:** Rules updated from 2026.03.11.2 to 2026.03.12.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_12`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/68_fda_terminal_prompt`.
+
+---
+
 ## 2026-03-11 (2): Bash Parameter-Expansion Command Smuggling Marker
 
 **Sources:**

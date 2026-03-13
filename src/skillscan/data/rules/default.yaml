@@ -1,5 +1,4 @@
-
-version: "2026.03.11.2"
+version: "2026.03.12.1"
 
 static_rules:
   - id: MAL-001
@@ -393,6 +392,14 @@ static_rules:
     title: MCP tool name-collision hijack marker
     pattern: '(?i)(?:mcp_\{service\}_\{tool\}|\btool name collision\b|\boverwrites? a legitimate one\s*\(e\.g\.,?\s*tavily_extract\)|\bmalicious remote mcp server\b[^\n]{0,120}\b(?:hijack|overwrite)\b[^\n]{0,80}\btool\b)'
     mitigation: Treat MCP server/tool registration naming-collision guidance as high risk. Require unique namespaced tool IDs per server and block ambiguous aliases that can shadow trusted tools.
+
+  - id: ABU-006
+    category: instruction_abuse
+    severity: high
+    confidence: 0.83
+    title: macOS Full Disk Access social-engineering prompt marker
+    pattern: '(?is)(?:osascript[^\n]{0,180}display dialog[^\n]{0,260}Full Disk Access|\bFull Disk Access\b[\s\S]{0,220}\bTerminal\b[\s\S]{0,220}\b(?:Open Settings|System (?:Preferences|Settings))\b)'
+    mitigation: Do not include prompts/instructions that coerce users to grant Full Disk Access to Terminal or other shells during installer/setup flows. Require explicit security review for any FDA-related guidance.
 
   - id: MAL-019
     category: malware_pattern
