@@ -1,3 +1,27 @@
+## 2026-03-15 (1): CloudFormation Admin-Role Bootstrap Marker via CAPABILITY_IAM
+
+**Sources:**
+- [Google Cloud - Cloud Threat Horizons Report H1 2026](https://cloud.google.com/security/report/resources/cloud-threat-horizons-report-h1-2026)
+- [The Hacker News - UNC6426 Exploits nx npm Supply-Chain Attack to Gain AWS Admin Access in 72 Hours](https://thehackernews.com/2026/03/unc6426-exploits-nx-npm-supply-chain.html)
+
+**Event Summary:** Recent cloud incident reporting describes rapid escalation from stolen CI/CD credentials to full AWS administration by deploying CloudFormation stacks with IAM-creation capabilities and attaching `AdministratorAccess` to attacker-created roles. Existing SkillScan rules covered PR/workflow abuse and secret theft primitives, but did not include a focused static marker for this CloudFormation privilege-escalation bootstrap shape.
+
+**New Pattern Added:**
+
+### MAL-024: CloudFormation admin-role bootstrap marker via CAPABILITY_IAM
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.84
+- **Pattern:** Detects co-occurrence of `CAPABILITY_IAM`/`CAPABILITY_NAMED_IAM` and `arn:aws:iam::aws:policy/AdministratorAccess` within a short window.
+- **Justification:** High-signal indicator for CI/cloud privilege-escalation templates and commands observed in current incident reporting; scoped to a specific dangerous capability+policy combination to keep false positives low.
+- **Mitigation:** Require explicit approval and least-privilege review for any CloudFormation deployment that can create IAM principals and attach broad managed-admin policies.
+
+**Version:** Rules updated from 2026.03.14.1 to 2026.03.15.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_15`, showcase validation in `tests/test_showcase_examples.py`, and fixture `examples/showcase/69_cloudformation_adminrole_bootstrap`.
+
+---
+
 ## 2026-03-11 (2): Bash Parameter-Expansion Command Smuggling Marker
 
 **Sources:**

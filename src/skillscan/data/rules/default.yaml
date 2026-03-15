@@ -441,6 +441,14 @@ static_rules:
     pattern: '(?is)(?:spawnSync\(\s*["'']dscl["'']\s*,\s*\[\s*["'']\.["'']\s*,\s*["'']-authonly["'']|spawnSync\(\s*["'']powershell["'']\s*,\s*\[[^\]]{0,260}ValidateCredentials\(|spawnSync\(\s*["'']su["'']\s*,\s*\[\s*["'']-c["'']\s*,\s*["'']true["''])'
     mitigation: Treat scripts that validate user-supplied passwords via `dscl -authonly`, `ValidateCredentials`, or `su -c true` as credential-harvest behavior. Remove password-collection flows and use OS-native delegated auth mechanisms.
 
+  - id: MAL-024
+    category: malware_pattern
+    severity: high
+    confidence: 0.84
+    title: CloudFormation admin-role bootstrap marker via CAPABILITY_IAM
+    pattern: '(?is)(?:CAPABILITY_(?:NAMED_)?IAM[\s\S]{0,1200}arn:aws:iam::aws:policy/AdministratorAccess|arn:aws:iam::aws:policy/AdministratorAccess[\s\S]{0,1200}CAPABILITY_(?:NAMED_)?IAM)'
+    mitigation: Treat CloudFormation deployment snippets that combine IAM-creation capabilities with direct `AdministratorAccess` policy attachment as high risk. Require explicit approval, least-privilege templates, and guardrails around CI-issued AWS credentials.
+
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
   execute: '\b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b'

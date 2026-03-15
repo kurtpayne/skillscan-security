@@ -107,6 +107,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-022" for f in findings_67)
     findings_68 = _scan("examples/showcase/68_password_validation_harvest").findings
     assert any(f.id == "MAL-023" for f in findings_68)
+    findings_69 = _scan("examples/showcase/69_cloudformation_adminrole_bootstrap").findings
+    assert any(f.id == "MAL-024" for f in findings_69)
 
 
 def test_showcase_policy_block_domain() -> None:

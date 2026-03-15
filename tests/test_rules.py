@@ -861,3 +861,28 @@ def test_new_patterns_2026_03_14() -> None:
         is not None
     )
     assert mal023.pattern.search('spawnSync("dscl", [".", "-list", "/Users"])') is None
+
+
+def test_new_patterns_2026_03_15() -> None:
+    """Test CloudFormation CAPABILITY_IAM + AdministratorAccess bootstrap marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal024 = next((r for r in compiled.static_rules if r.id == "MAL-024"), None)
+    assert mal024 is not None
+    assert (
+        mal024.pattern.search(
+            'aws cloudformation deploy --stack-name pr-bootstrap '
+            '--capabilities CAPABILITY_NAMED_IAM '
+            '--template-file stack.yaml\n'
+            'ManagedPolicyArns: ["arn:aws:iam::aws:policy/AdministratorAccess"]'
+        )
+        is not None
+    )
+    assert (
+        mal024.pattern.search(
+            'ManagedPolicyArns: ["arn:aws:iam::aws:policy/AdministratorAccess"]\n'
+            'Capabilities: ["CAPABILITY_IAM"]'
+        )
+        is not None
+    )
+    assert mal024.pattern.search('Capabilities: ["CAPABILITY_IAM"]\nManagedPolicyArns: []') is None
