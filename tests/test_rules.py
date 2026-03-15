@@ -834,3 +834,30 @@ def test_new_patterns_2026_03_11_patch2() -> None:
     assert mal022.pattern.search('echo ${a="$"}${b="$a(touch /tmp/pwned)"}${b@P}') is not None
     assert mal022.pattern.search('echo ${HOME:-$(whoami)}') is not None
     assert mal022.pattern.search('echo ${HOME:-/tmp}') is None
+
+
+def test_new_patterns_2026_03_14() -> None:
+    """Test cross-platform password-harvest credential validation marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    mal023 = next((r for r in compiled.static_rules if r.id == "MAL-023"), None)
+    assert mal023 is not None
+    assert (
+        mal023.pattern.search(
+            'spawnSync("dscl", [".", "-authonly", username, password], { stdio: "pipe" })'
+        )
+        is not None
+    )
+    assert (
+        mal023.pattern.search(
+            'spawnSync("powershell", ["-NoProfile", "-Command", "$ctx.ValidateCredentials(user,pass)"])'
+        )
+        is not None
+    )
+    assert (
+        mal023.pattern.search(
+            'spawnSync("su", ["-c", "true", username], { input: password + "\\n" })'
+        )
+        is not None
+    )
+    assert mal023.pattern.search('spawnSync("dscl", [".", "-list", "/Users"])') is None

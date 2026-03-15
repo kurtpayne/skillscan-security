@@ -105,6 +105,8 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "ABU-005" for f in findings_66)
     findings_67 = _scan("examples/showcase/67_bash_param_expansion_smuggling").findings
     assert any(f.id == "MAL-022" for f in findings_67)
+    findings_68 = _scan("examples/showcase/68_password_validation_harvest").findings
+    assert any(f.id == "MAL-023" for f in findings_68)
 
 
 def test_showcase_policy_block_domain() -> None:

@@ -72,6 +72,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `65_dev_credential_harvest_list` | Combined references to multiple developer credential files (`~/.npmrc`, `~/.git-credentials`, `~/.config/gh/hosts.yml`) in one workflow/script, consistent with token-harvest staging observed in recent npm malware reporting | `EXF-015` |
 | `66_mcp_tool_name_collision_hijack` | MCP tool registration naming-collision guidance (`mcp_{service}_{tool}` / "tool name collision") and overwrite-hijack wording for trusted aliases (for example `tavily_extract`) | `ABU-005` |
 | `67_bash_param_expansion_smuggling` | Bash parameter-expansion command smuggling patterns (`${var@P}` and `${VAR:-$(cmd)}`) that can bypass read-only shell safety checks in AI CLI tooling | `MAL-022` |
+| `68_password_validation_harvest` | Cross-platform system password validation calls (`dscl -authonly`, PowerShell `ValidateCredentials`, `su -c true`) used in installer-style credential-harvest malware to verify stolen credentials | `MAL-023` |
 
 ## Commands
 

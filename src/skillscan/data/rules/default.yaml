@@ -1,4 +1,4 @@
-version: "2026.03.11.2"
+version: "2026.03.14.1"
 
 static_rules:
   - id: MAL-001
@@ -432,6 +432,14 @@ static_rules:
     title: Bash parameter-expansion command smuggling marker
     pattern: '(?i)\$\{[^}\n]{0,140}@P[^}\n]*\}|\$\{[^}\n]{0,140}(?::?=|:-)\s*(?:\$\(|<\()[^}\n]{1,140}\)[^}\n]*\}'
     mitigation: Treat bash parameter expansions using `@P` or default/assignment operators with embedded command/process substitutions as unsafe in AI-suggested shell commands. Require explicit user review and block auto-execution.
+
+  - id: MAL-023
+    category: malware_pattern
+    severity: high
+    confidence: 0.85
+    title: Cross-platform password-harvest credential validation marker
+    pattern: '(?is)(?:spawnSync\(\s*["'']dscl["'']\s*,\s*\[\s*["'']\.["'']\s*,\s*["'']-authonly["'']|spawnSync\(\s*["'']powershell["'']\s*,\s*\[[^\]]{0,260}ValidateCredentials\(|spawnSync\(\s*["'']su["'']\s*,\s*\[\s*["'']-c["'']\s*,\s*["'']true["''])'
+    mitigation: Treat scripts that validate user-supplied passwords via `dscl -authonly`, `ValidateCredentials`, or `su -c true` as credential-harvest behavior. Remove password-collection flows and use OS-native delegated auth mechanisms.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'

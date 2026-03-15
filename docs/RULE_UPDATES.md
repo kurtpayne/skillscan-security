@@ -1,5 +1,15 @@
 # Rule Updates
 
+## 2026-03-14
+
+- Added `MAL-023` (high): **Cross-platform password-harvest credential validation marker**.
+- Rationale: fresh reporting on the GhostClaw npm campaign showed installer-stage password collection validated directly through OS authentication commands (`dscl -authonly`, PowerShell `ValidateCredentials`, `su -c true`) before launching second-stage theft/RAT payloads.
+- Rule scope intentionally targets these explicit credential-validation call signatures to reduce false positives versus broad matching on auth-related text.
+
+Sources:
+- JFrog Security Research (2026-03-10), *GhostClaw Unmasked: A Malicious npm Package Impersonating OpenClaw to Steal Everything*: https://research.jfrog.com/post/ghostclaw-unmasked/
+- The Hacker News (2026-03-10), *Malicious npm Package Posing as OpenClaw Installer Deploys RAT, Steals macOS Credentials*: https://thehackernews.com/2026/03/malicious-npm-package-posing-as.html
+
 ## 2026-03-11
 
 - Added `ABU-005` (high): **MCP tool name-collision hijack marker**.
