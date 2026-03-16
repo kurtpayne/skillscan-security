@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/skillscan
+      url: https://pypi.org/p/skillscan-security
     steps:
       - name: Download package artifacts
         uses: actions/download-artifact@v4
