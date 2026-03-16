@@ -937,3 +937,27 @@
 **Version:** Rules updated from 2026.03.03.1 to 2026.03.04.1
 
 **Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_04` and `tests/test_showcase_examples.py` with showcase fixture `examples/showcase/58_tool_autoapprove_pkg_install`.
+
+---
+
+## 2026-03-16: Unicode PUA/Variation-Selector Obfuscation Near Dynamic Execution Sink
+
+**Sources:**
+- https://www.unicode.org/reports/tr51/#Emoji_and_Presentation_Sequences
+- https://www.unicode.org/charts/PDF/UFE00.pdf
+
+**Event Summary:** Recent malware/obfuscation campaigns continue to hide malicious intent using invisible or hard-to-spot Unicode code points. A practical high-signal variant is clustering Unicode variation-selector/PUA-style code points adjacent to dynamic execution sinks (`eval`, `exec`, `Function`) to evade quick visual review while preserving executable behavior.
+
+**New Pattern Added:**
+
+### OBF-003: Unicode PUA obfuscation near dynamic execution sink
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects variation-selector/PUA-range clusters (`U+FE00..U+FE0F`, `U+E0100..U+E01EF`) within close proximity to `eval(` / `exec(` / `Function(` markers.
+- **Justification:** Balances signal and noise by requiring adjacency/proximity to dynamic execution surfaces rather than flagging all Unicode variation selectors.
+- **Mitigation:** Normalize Unicode before policy evaluation, treat hidden-control/presentation-codepoint clusters near execution sinks as suspicious, and reject unsafe dynamic execution paths.
+
+**Version:** Rules updated from 2026.03.14.1 to 2026.03.14.1+2026.03.16.1
+
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_02_09` and `tests/test_showcase_examples.py` with showcase fixture `examples/showcase/70_pua_eval_obfuscation`.
