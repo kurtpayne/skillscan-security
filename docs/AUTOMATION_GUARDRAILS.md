@@ -20,9 +20,11 @@ This document defines how automated pattern discovery/update runs must operate.
    - Never edit files directly on `main`.
 
 3. **Validation gate**
-   - Must pass:
-     - `ruff check src tests`
-     - `pytest -q`
+   - Must pass (repo venv only):
+     - `.venv/bin/ruff check src tests`
+     - `.venv/bin/pytest -q`
+   - Recommended local wrapper for deterministic runs:
+     - `TIMEOUT_SECONDS=900 ./scripts/run_local_validation.sh`
    - CI includes `Pattern Update Guard` workflow with additional policy checks.
 
 4. **PR-first integration**

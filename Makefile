@@ -1,4 +1,4 @@
-.PHONY: setup lint type test check demo
+.PHONY: setup lint type test check demo validate-local
 
 setup:
 	python3 -m venv .venv
@@ -17,3 +17,6 @@ check: lint type test
 
 demo:
 	.venv/bin/skillscan scan examples/suspicious_skill --fail-on never
+
+validate-local:
+	TIMEOUT_SECONDS=900 ./scripts/run_local_validation.sh
