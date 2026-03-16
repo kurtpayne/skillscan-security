@@ -15,7 +15,7 @@ runner = CliRunner()
 def test_version_and_policy_commands() -> None:
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert "skillscan" in result.stdout
+    assert "skillscan-security" in result.stdout
 
     show = runner.invoke(app, ["policy", "show-default", "--profile", "strict"])
     assert show.exit_code == 0

@@ -7,7 +7,7 @@ Use this checklist before creating a `vX.Y.Z` tag.
 - [ ] PyPI trusted publisher is configured for `kurtpayne/skillscan`
   - Workflow: `.github/workflows/release-pypi.yml`
   - Environment: `pypi`
-- [ ] Docker Hub repository exists: `kurtpayne/skillscan`
+- [ ] Docker Hub repository exists: `kurtpayne/skillscan-security`
 - [ ] GitHub secrets are set:
   - [ ] `DOCKERHUB_USERNAME`
   - [ ] `DOCKERHUB_TOKEN`
@@ -37,10 +37,10 @@ Use this checklist before creating a `vX.Y.Z` tag.
 
 - [ ] Verify PyPI install:
   - [ ] `pip install skillscan-security==X.Y.Z`
-  - [ ] `skillscan version`
+  - [ ] `skillscan-security version`
 - [ ] Verify Docker image:
-  - [ ] `docker pull kurtpayne/skillscan:vX.Y.Z`
-  - [ ] `docker run --rm kurtpayne/skillscan:vX.Y.Z version`
+  - [ ] `docker pull kurtpayne/skillscan-security:vX.Y.Z`
+  - [ ] `docker run --rm kurtpayne/skillscan-security:vX.Y.Z version`
 - [ ] Confirm release artifacts include:
   - [ ] wheel + sdist + SHA256SUMS
   - [ ] Python SBOM (`sbom-python.cdx.json`)

@@ -38,8 +38,8 @@ Default policy is `strict`.
 
 - Source/dev install: supported now
 - PyPI install (`pip install skillscan-security`): supported via tag releases (`vX.Y.Z`)
-- CLI command remains `skillscan` for scanning/reporting flows
-- Docker image (`kurtpayne/skillscan`): supported via tag releases (`vX.Y.Z` + `latest`)
+- Primary CLI command: `skillscan-security` (alias `skillscan` retained)
+- Docker image (`kurtpayne/skillscan-security`): supported via tag releases (`vX.Y.Z` + `latest`)
 
 Release process and prerequisites: `docs/RELEASE_CHECKLIST.md` and `docs/RELEASE_ONBOARDING.md`.
 
@@ -68,7 +68,7 @@ pip install -e '.[dev]'
 ## Quick Start
 
 ```bash
-skillscan scan ./examples/suspicious_skill
+skillscan-security scan ./examples/suspicious_skill
 ```
 
 Scan directly from URL (including GitHub blob URLs):
@@ -218,7 +218,7 @@ AI Assist:
 - `skillscan intel status|list|add|remove|enable|disable|rebuild`
 - `skillscan intel sync [--force]`
 - `skillscan uninstall [--keep-data]`
-- `skillscan version`
+- `skillscan-security version`
 
 See full command docs: `docs/COMMANDS.md`.
 

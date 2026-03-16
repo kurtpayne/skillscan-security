@@ -5,12 +5,12 @@ Use this once to complete external account setup before first tagged release.
 ## Canonical publish targets
 
 - PyPI package: `skillscan-security`
-- Docker image: `kurtpayne/skillscan`
+- Docker image: `kurtpayne/skillscan-security`
 
 ## 1) Docker Hub
 
 1. Sign in to Docker Hub account `kurtpayne`.
-2. Create repository: `skillscan` (public).
+2. Create repository: `skillscan-security` (public).
 3. Create an access token with read/write scope.
 4. Add GitHub repo secrets:
    - `DOCKERHUB_USERNAME` = `kurtpayne`
@@ -37,7 +37,7 @@ Use this once to complete external account setup before first tagged release.
    - `Release Docker`
 5. Validate installs:
    - `pip install skillscan-security==X.Y.Z`
-   - `docker pull kurtpayne/skillscan:vX.Y.Z`
+   - `docker pull kurtpayne/skillscan-security:vX.Y.Z`
 6. Verify SBOM artifacts were generated and uploaded:
    - Python: `sbom-python.cdx.json`
    - Docker: `sbom-docker.spdx.json`

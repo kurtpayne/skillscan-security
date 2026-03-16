@@ -33,7 +33,7 @@ Make SkillScan the easiest and most trusted way to gate AI-skill/tool risk in lo
 - Add documented bind-mount scan examples.
 
 **Acceptance criteria**
-- `docker run ... skillscan scan /work` works on both arches.
+- `docker run ... skillscan-security scan /work` works on both arches.
 - Published tags map to app versions.
 - Startup + first scan docs validated in CI smoke job.
 

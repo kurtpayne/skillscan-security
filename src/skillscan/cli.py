@@ -73,7 +73,7 @@ def _build_delta_payload(baseline_data: dict, current_data: dict, baseline_label
 
 @app.command("version")
 def version() -> None:
-    console.print(f"skillscan {__version__}")
+    console.print(f"skillscan-security {__version__}")
 
 
 @app.command("scan")

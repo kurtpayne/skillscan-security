@@ -7,7 +7,7 @@ This document describes supported ways to install and operate SkillScan in local
 | Path | Best for | Command |
 |---|---|---|
 | PyPI | End users / CI | `pip install skillscan-security` |
-| Docker | Reproducible CI, isolated runtime | `docker run --rm -v "$PWD:/work" kurtpayne/skillscan:<tag> scan /work` |
+| Docker | Reproducible CI, isolated runtime | `docker run --rm -v "$PWD:/work" kurtpayne/skillscan-security:<tag> scan /work` |
 | Source/dev | Contributors | `pip install -e '.[dev]'` |
 | Convenience script | Quick local bootstrap | `curl -fsSL .../scripts/install.sh \| bash` |
 
@@ -21,7 +21,7 @@ This document describes supported ways to install and operate SkillScan in local
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
-skillscan version
+skillscan-security version
 ```
 
 Run a quick validation scan:
@@ -46,7 +46,7 @@ If using a fork/private location, set `SKILLSCAN_REPO_URL` first.
 
 ```bash
 pip install skillscan-security
-skillscan version
+skillscan-security version
 ```
 
 Published by: `kurtpayne` (PyPI trusted publishing from `kurtpayne/skillscan`).
@@ -62,7 +62,7 @@ pip install "skillscan-security==X.Y.Z"
 ## Docker Usage
 
 ```bash
-docker run --rm -v "$PWD:/work" kurtpayne/skillscan:<tag> scan /work --fail-on never
+docker run --rm -v "$PWD:/work" kurtpayne/skillscan-security:<tag> scan /work --fail-on never
 ```
 
 Expected tags:
@@ -79,14 +79,14 @@ Expected tags:
 git pull
 source .venv/bin/activate
 pip install -e '.[dev]'
-skillscan version
+skillscan-security version
 ```
 
 ### Future PyPI
 
 ```bash
 pip install --upgrade skillscan-security
-skillscan version
+skillscan-security version
 ```
 
 ### Future Docker

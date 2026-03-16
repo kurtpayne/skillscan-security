@@ -11,5 +11,5 @@ COPY src ./src
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir .
 
-ENTRYPOINT ["skillscan"]
+ENTRYPOINT ["skillscan-security"]
 CMD ["--help"]

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "skillscan-security"
-version = "0.2.3"
+version = "0.3.0"
 description = "Standalone AI skill security scanner"
 readme = "README.md"
 authors = [{name = "SkillScan"}]
@@ -26,6 +26,7 @@ dev = [
 ]
 
 [project.scripts]
+skillscan-security = "skillscan.cli:app"
 skillscan = "skillscan.cli:app"
 
 [tool.setuptools]

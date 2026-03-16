@@ -45,7 +45,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/skillscan
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/skillscan-security
           tags: |
             type=ref,event=tag
             type=raw,value=latest
@@ -63,7 +63,7 @@ jobs:
       - name: Generate Docker image SBOM (SPDX JSON)
         uses: anchore/sbom-action@v0
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/skillscan:${{ github.ref_name }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/skillscan-security:${{ github.ref_name }}
           format: spdx-json
           output-file: sbom-docker.spdx.json
           upload-release-assets: false
