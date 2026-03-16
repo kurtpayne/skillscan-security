@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 import yaml
@@ -19,6 +20,18 @@ def test_version_and_policy_commands() -> None:
     show = runner.invoke(app, ["policy", "show-default", "--profile", "strict"])
     assert show.exit_code == 0
     assert "strict" in show.stdout
+
+
+def test_version_matches_distribution_metadata() -> None:
+    result = runner.invoke(app, ["version"])
+    assert result.exit_code == 0
+
+    try:
+        expected = version("skillscan-security")
+    except PackageNotFoundError:
+        expected = "0.0.0-dev"
+
+    assert expected in result.stdout
 
 
 def test_scan_invalid_options() -> None:
