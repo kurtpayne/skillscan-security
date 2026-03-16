@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://skillscan.dev/schemas/rule-metadata-v0.5.json",
+  "title": "SkillScan Rule Metadata (v0.5 additive)",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "status": { "type": "string", "enum": ["active", "deprecated", "experimental"] },
+        "techniques": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9_-]+-[0-9]{3}$" },
+              "name": { "type": "string" }
+            },
+            "required": ["id"]
+          }
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "applies_to": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "languages": { "type": "array", "items": { "type": "string" } },
+            "file_types": { "type": "array", "items": { "type": "string" } },
+            "contexts": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "lifecycle": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "introduced": { "type": "string", "format": "date" },
+            "last_modified": { "type": "string", "format": "date" },
+            "deprecates": { "type": "array", "items": { "type": "string" } },
+            "superseded_by": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "precision_estimate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "recall_estimate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "benchmark_set": { "type": "string" },
+            "false_positive_notes": { "type": "string" }
+          }
+        },
+        "references": { "type": "array", "items": { "type": "string", "format": "uri" } }
+      },
+      "required": ["version", "status", "techniques", "tags"]
+    }
+  },
+  "additionalProperties": true
+}
