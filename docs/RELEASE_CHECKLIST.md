@@ -36,7 +36,7 @@ Use this checklist before creating a `vX.Y.Z` tag.
 ## Post-release verification
 
 - [ ] Verify PyPI install:
-  - [ ] `pip install skillscan==X.Y.Z`
+  - [ ] `pip install skillscan-security==X.Y.Z`
   - [ ] `skillscan version`
 - [ ] Verify Docker image:
   - [ ] `docker pull kurtpayne/skillscan:vX.Y.Z`

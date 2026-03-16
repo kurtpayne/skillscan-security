@@ -4,7 +4,7 @@ Use this once to complete external account setup before first tagged release.
 
 ## Canonical publish targets
 
-- PyPI package: `skillscan`
+- PyPI package: `skillscan-security`
 - Docker image: `kurtpayne/skillscan`
 
 ## 1) Docker Hub
@@ -36,7 +36,7 @@ Use this once to complete external account setup before first tagged release.
    - `Release PyPI`
    - `Release Docker`
 5. Validate installs:
-   - `pip install skillscan==X.Y.Z`
+   - `pip install skillscan-security==X.Y.Z`
    - `docker pull kurtpayne/skillscan:vX.Y.Z`
 6. Verify SBOM artifacts were generated and uploaded:
    - Python: `sbom-python.cdx.json`
@@ -46,4 +46,4 @@ Use this once to complete external account setup before first tagged release.
 
 - Publish a new patch version that reverts bad behavior.
 - For Docker consumers, pin to prior known-good tag.
-- For pip consumers, pin prior known-good `skillscan==...`.
+- For pip consumers, pin prior known-good `skillscan-security==...`.

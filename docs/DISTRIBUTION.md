@@ -6,7 +6,7 @@ This document describes supported ways to install and operate SkillScan in local
 
 | Path | Best for | Command |
 |---|---|---|
-| PyPI | End users / CI | `pip install skillscan` |
+| PyPI | End users / CI | `pip install skillscan-security` |
 | Docker | Reproducible CI, isolated runtime | `docker run --rm -v "$PWD:/work" kurtpayne/skillscan:<tag> scan /work` |
 | Source/dev | Contributors | `pip install -e '.[dev]'` |
 | Convenience script | Quick local bootstrap | `curl -fsSL .../scripts/install.sh \| bash` |
@@ -45,7 +45,7 @@ If using a fork/private location, set `SKILLSCAN_REPO_URL` first.
 ## PyPI Install
 
 ```bash
-pip install skillscan
+pip install skillscan-security
 skillscan version
 ```
 
@@ -54,7 +54,7 @@ Published by: `kurtpayne` (PyPI trusted publishing from `kurtpayne/skillscan`).
 Pin a specific version in CI:
 
 ```bash
-pip install "skillscan==X.Y.Z"
+pip install "skillscan-security==X.Y.Z"
 ```
 
 ---
@@ -85,7 +85,7 @@ skillscan version
 ### Future PyPI
 
 ```bash
-pip install --upgrade skillscan
+pip install --upgrade skillscan-security
 skillscan version
 ```
 
@@ -110,7 +110,7 @@ pip install -e '.[dev]'
 ### Future PyPI
 
 ```bash
-pip install "skillscan==<previous-version>"
+pip install "skillscan-security==<previous-version>"
 ```
 
 ### Future Docker
