@@ -65,6 +65,16 @@ jobs:
           cd dist
           sha256sum * > SHA256SUMS
 
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.8.1
+
+      - name: Sign SBOM + checksums (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+        run: |
+          cosign sign-blob --yes dist/sbom-python.cdx.json --output-signature dist/sbom-python.cdx.json.sig --output-certificate dist/sbom-python.cdx.json.pem
+          cosign sign-blob --yes dist/SHA256SUMS --output-signature dist/SHA256SUMS.sig --output-certificate dist/SHA256SUMS.pem
+
       - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -73,13 +83,17 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
 
-      - name: Upload release support artifacts (checksums + SBOM)
+      - name: Upload release support artifacts (checksums + SBOM + signatures)
         uses: actions/upload-artifact@v4
         with:
           name: python-release-support
           path: |
             dist/SHA256SUMS
+            dist/SHA256SUMS.sig
+            dist/SHA256SUMS.pem
             dist/sbom-python.cdx.json
+            dist/sbom-python.cdx.json.sig
+            dist/sbom-python.cdx.json.pem
 
   publish:
     needs: build-and-test

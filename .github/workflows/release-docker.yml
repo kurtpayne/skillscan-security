@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   docker:
@@ -71,8 +72,33 @@ jobs:
       - name: Validate Docker SBOM
         run: python scripts/validate_sbom.py --spdx sbom-docker.spdx.json
 
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.8.1
+
+      - name: Sign image tags and attest SBOM (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+        run: |
+          IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/skillscan-security"
+          TAG_VERSION="${{ github.ref_name }}"
+          DIGEST="${{ steps.build.outputs.digest }}"
+
+          cosign sign --yes "$IMAGE:$TAG_VERSION@$DIGEST"
+          cosign sign --yes "$IMAGE:latest@$DIGEST"
+
+          cosign attest --yes --predicate sbom-docker.spdx.json --type spdxjson "$IMAGE:$TAG_VERSION@$DIGEST"
+
+      - name: Sign Docker SBOM blob (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "1"
+        run: |
+          cosign sign-blob --yes sbom-docker.spdx.json --output-signature sbom-docker.spdx.json.sig --output-certificate sbom-docker.spdx.json.pem
+
       - name: Upload Docker SBOM artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-sbom
-          path: sbom-docker.spdx.json
+          path: |
+            sbom-docker.spdx.json
+            sbom-docker.spdx.json.sig
+            sbom-docker.spdx.json.pem
