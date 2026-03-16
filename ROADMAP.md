@@ -23,7 +23,7 @@ Make SkillScan the easiest and most trusted way to gate AI-skill/tool risk in lo
 - Sign artifacts (or provide checksums + provenance notes).
 
 **Acceptance criteria**
-- `pip install skillscan` works on Linux/macOS.
+- `pip install skillscan-security` works on Linux/macOS.
 - Tagged release publishes package and release notes.
 - Install time from clean machine < 5 minutes.
 
