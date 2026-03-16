@@ -47,6 +47,10 @@ SBOMs:
 - Python CycloneDX SBOM is included in release artifacts (`sbom-python.cdx.json`).
 - Docker SPDX SBOM is uploaded as a GitHub Actions artifact in `Release Docker` runs (`sbom-docker.spdx.json`).
 
+Docker default behavior:
+- Docker image includes ClamAV (`clamscan`) and enables ClamAV scan stage by default via `SKILLSCAN_CLAMAV=true`.
+- Override with `--no-clamav` (or set `SKILLSCAN_CLAMAV=false`).
+
 ## Install
 
 ### Option A: convenience installer (curl|bash)

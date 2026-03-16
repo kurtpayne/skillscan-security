@@ -152,7 +152,8 @@ def scan_cmd(
     clamav: bool = typer.Option(
         False,
         "--clamav/--no-clamav",
-        help="Enable optional ClamAV artifact scanning stage",
+        envvar="SKILLSCAN_CLAMAV",
+        help="Enable optional ClamAV artifact scanning stage (also configurable via SKILLSCAN_CLAMAV)",
     ),
     clamav_timeout_seconds: int = typer.Option(
         30,

@@ -1,9 +1,15 @@
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    SKILLSCAN_CLAMAV=true
 
 WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends clamav clamav-freshclam \
+    && rm -rf /var/lib/apt/lists/* \
+    && freshclam || true
 
 COPY pyproject.toml README.md ./
 COPY src ./src
