@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 from pathlib import Path
+from typing import cast
 
 import typer
 from rich.console import Console
@@ -127,8 +128,10 @@ def rule_list(
         return
 
     for row in rows:
-        t = ",".join(row["techniques"]) if row["techniques"] else "-"
-        g = ",".join(row["tags"]) if row["tags"] else "-"
+        techniques_row = cast(list[str], row["techniques"])
+        tags_row = cast(list[str], row["tags"])
+        t = ",".join(techniques_row) if techniques_row else "-"
+        g = ",".join(tags_row) if tags_row else "-"
         console.print(f"{row['id']} [{row['severity']}] {row['title']}")
         console.print(f"  category={row['category']} techniques={t} tags={g}")
 
