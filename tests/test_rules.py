@@ -893,3 +893,29 @@ def test_new_patterns_2026_03_15() -> None:
         is not None
     )
     assert mal024.pattern.search('Capabilities: ["CAPABILITY_IAM"]\nManagedPolicyArns: []') is None
+
+
+def test_new_patterns_2026_03_16() -> None:
+    """Test Azure MCP resource-identifier URL substitution + token-leak marker."""
+    compiled = load_compiled_builtin_rulepack()
+
+    exf016 = next((r for r in compiled.static_rules if r.id == "EXF-016"), None)
+    assert exf016 is not None
+    assert (
+        exf016.pattern.search(
+            "resourceId can be set to https://attacker.example/api and include managed identity token"
+        )
+        is not None
+    )
+    assert (
+        exf016.pattern.search(
+            "Azure resource identifier field mapped to URL https://evil.invalid/c2"
+        )
+        is not None
+    )
+    assert (
+        exf016.pattern.search(
+            "resourceId=/subscriptions/abc/resourceGroups/rg/providers/Microsoft"
+        )
+        is None
+    )

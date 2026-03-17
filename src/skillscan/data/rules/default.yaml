@@ -1,4 +1,4 @@
-version: "2026.03.16.1"
+version: "2026.03.17.1"
 
 static_rules:
   - id: MAL-001
@@ -456,6 +456,14 @@ static_rules:
     title: CloudFormation admin-role bootstrap marker via CAPABILITY_IAM
     pattern: '(?is)(?:CAPABILITY_(?:NAMED_)?IAM[\s\S]{0,1200}arn:aws:iam::aws:policy/AdministratorAccess|arn:aws:iam::aws:policy/AdministratorAccess[\s\S]{0,1200}CAPABILITY_(?:NAMED_)?IAM)'
     mitigation: Treat CloudFormation deployment snippets that combine IAM-creation capabilities with direct `AdministratorAccess` policy attachment as high risk. Require explicit approval, least-privilege templates, and guardrails around CI-issued AWS credentials.
+
+  - id: EXF-016
+    category: exfiltration
+    severity: high
+    confidence: 0.85
+    title: Azure MCP resource-identifier URL substitution token-leak marker
+    pattern: '(?i)(?:\b(?:resource(?:Id|_id|Identifier)|azure resource identifier)\b[^\n]{0,140}(?:https?://|wss?://)|\bmanaged identity token\b[^\n]{0,180}\b(?:include|send|forward|capture|exfil))'
+    mitigation: Treat MCP tool inputs that accept Azure resource identifiers as untrusted and enforce strict identifier format validation. Never allow arbitrary URLs in resource-id fields, and prevent managed-identity tokens from being attached to outbound requests.
 
 action_patterns:
   download: '\b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://'
