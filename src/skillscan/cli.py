@@ -34,9 +34,11 @@ app = typer.Typer(help="SkillScan: standalone AI skill security analyzer")
 policy_app = typer.Typer(help="Policy operations")
 intel_app = typer.Typer(help="Local intel operations")
 rule_app = typer.Typer(help="Rule metadata/query operations")
+corpus_app = typer.Typer(help="Training corpus management")
 app.add_typer(policy_app, name="policy")
 app.add_typer(intel_app, name="intel")
 app.add_typer(rule_app, name="rule")
+app.add_typer(corpus_app, name="corpus")
 console = Console()
 
 
@@ -698,6 +700,86 @@ def uninstall(
     if keep_data:
         msg += f" Data preserved under {data_dir()}"
     console.print(msg)
+
+
+# ---------------------------------------------------------------------------
+# Corpus commands
+# ---------------------------------------------------------------------------
+
+
+@corpus_app.command("sync")
+def corpus_sync(
+    corpus_dir: Path = typer.Option(None, "--corpus-dir", help="Path to corpus/ directory"),
+    min_new: int = typer.Option(50, "--min-new", help="Absolute delta threshold"),
+    min_pct: float = typer.Option(0.10, "--min-pct", help="Relative delta threshold (0–1)"),
+    check: bool = typer.Option(
+        False, "--check", help="Exit 2 if retrain not needed (for CI use)"
+    ),
+) -> None:
+    """Sync corpus manifest and evaluate whether a fine-tune should be triggered."""
+    from skillscan.corpus import CorpusManager
+
+    mgr = CorpusManager(
+        corpus_dir=corpus_dir,
+        min_new_examples=min_new,
+        min_delta_pct=min_pct,
+    )
+    decision = mgr.sync()
+    console.print(decision.summary())
+    if check and not decision.should_retrain:
+        raise typer.Exit(code=2)
+    if decision.should_retrain:
+        console.print("[bold green]\u2713 Fine-tune triggered[/bold green]")
+    else:
+        console.print("[dim]Fine-tune not needed[/dim]")
+
+
+@corpus_app.command("status")
+def corpus_status(
+    corpus_dir: Path = typer.Option(None, "--corpus-dir", help="Path to corpus/ directory"),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+) -> None:
+    """Show corpus status and last fine-tune record."""
+    import json as _json
+
+    from skillscan.corpus import CorpusManager
+
+    mgr = CorpusManager(corpus_dir=corpus_dir)
+    status = mgr.status()
+    if json_output:
+        console.print(_json.dumps(status, indent=2))
+    else:
+        console.print(f"[bold]Corpus directory:[/bold] {status['corpus_dir']}")
+        console.print(f"[bold]Current examples:[/bold] {status['current_examples']}")
+        console.print(f"[bold]Label counts:[/bold] {status['label_counts']}")
+        console.print(f"[bold]Last updated:[/bold] {status['last_updated'] or 'never'}")
+        ft = status["last_finetune"]
+        if ft.get("timestamp"):
+            console.print(
+                f"[bold]Last fine-tune:[/bold] {ft['timestamp']} "
+                f"(corpus size: {ft['corpus_size_at_finetune']}, "
+                f"checkpoint: {ft['model_checkpoint']})"
+            )
+        else:
+            console.print("[bold]Last fine-tune:[/bold] [dim]never[/dim]")
+        console.print(
+            f"[bold]Thresholds:[/bold] "
+            f"\u2265{status['thresholds']['min_new_examples']} new examples OR "
+            f"\u2265{status['thresholds']['min_delta_pct']:.0%} growth"
+        )
+
+
+@corpus_app.command("record-finetune")
+def corpus_record_finetune(
+    checkpoint: str = typer.Argument(..., help="Path or name of the model checkpoint"),
+    corpus_dir: Path = typer.Option(None, "--corpus-dir", help="Path to corpus/ directory"),
+) -> None:
+    """Record a completed fine-tune run in the corpus manifest."""
+    from skillscan.corpus import CorpusManager
+
+    mgr = CorpusManager(corpus_dir=corpus_dir)
+    mgr.record_finetune(checkpoint)
+    console.print(f"[green]Recorded fine-tune checkpoint:[/green] {checkpoint}")
 
 
 if __name__ == "__main__":

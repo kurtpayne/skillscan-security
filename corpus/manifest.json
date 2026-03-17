@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "last_updated": "2026-03-17T19:18:43+00:00",
+  "total_examples": 15,
+  "label_counts": {
+    "injection": 15
+  },
+  "sha256_index": {
+    "malicious/a01_curl_bash.md": "06f67774ba6a6f88419991cdad9945418683a0ea5d6b0594b48f40adfd0c5c81",
+    "malicious/a02_wget_sh.md": "8edf303aed2969d37d29fed5e30534131af62fce0c320c659796ca09065f5d6e",
+    "malicious/a04_disable_security.md": "89cad2d61ad49245711ea5de3543910ae025089aba4329377dc0bdaa787aca61",
+    "malicious/a05_secret_http.md": "a665e08673c5b1f665576c7d4e393264d9dc692a37f81c840fcc57f52a1aa31e",
+    "malicious/a06_ioc_known.md": "fb852530318b7bd125d9f0d3c0e1d32b713962ac8407b09af5df3e9d1623e09e",
+    "malicious/a07_dns_exfil.md": "73166437e891eec342f8a77ba3ba13463ac386819cc594bbc87390043e04c092",
+    "malicious/a08_smtp_exfil.md": "2794c6bfe7411054cf1b0233709971e407f058b07841b51aeec02b927925b72e",
+    "malicious/a09_scp_exfil.md": "f333cc18eeaea6a922ae36957bcb681fe8aa1a98e4e8f72ef6130eb4522a19c0",
+    "malicious/a10_cloud_upload.md": "00eb8ad5ff88551498f51758e6763858666cdc2195a73ed46521a8cf209d81c7",
+    "malicious/a12_defanged_url.md": "5b294e853588fd262a739205b2d6b746b3bb7f50750c7ba492ca793f778b5d0d",
+    "malicious/a20_privilege_disable.md": "51107ab2c451e15b6ff2d5c95f92aa950b034ad068f079886e50c534673d9834",
+    "malicious/a21_alt_download_exec.md": "027bbd2219a9604501d9bda05830d90cc627833d055b1030955d1551f728766c",
+    "malicious/a22_benign.md": "c41d829bc22dd2a4ea6e18db44941546e56703c590e11f5f0e31afcc7bfd0462",
+    "malicious/a25_trojan_source.md": "036f17e88490658118b3ad3f1c0ad18e9a3e60828f443706898d58ada0bfe1b5",
+    "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b"
+  },
+  "last_finetune": {
+    "timestamp": "",
+    "corpus_size_at_finetune": 0,
+    "model_checkpoint": ""
+  }
+}
