@@ -196,6 +196,7 @@ def ml_prompt_injection_findings(path: Path, text: str) -> list[Finding]:
             )
         ]
 
+    assert pipe is not None, "pipe should be set when backend != 'unavailable'"
     chunks = _chunk_text(text)
     best_score = 0.0
     best_snippet = ""
