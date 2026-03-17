@@ -1657,7 +1657,7 @@ static_rules:
   severity: critical
   confidence: 0.92
   title: MCP tool description poisoning via hidden instruction block
-  pattern: (?is)<IMPORTANT>[\s\S]{0,2000}(?:read|access|send|exfil|forward|upload|post)[\s\S]{0,500}</IMPORTANT>
+  pattern: (?i)<IMPORTANT>|</IMPORTANT>
   mitigation: Reject MCP tool descriptions containing hidden instruction blocks (<IMPORTANT> tags). Tool descriptions should
     contain only documentation, not executable instructions for the LLM.
   metadata:
