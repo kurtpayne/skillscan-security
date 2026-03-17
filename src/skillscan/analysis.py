@@ -21,6 +21,7 @@ from skillscan.clamav import scan_paths as clamav_scan_paths
 from skillscan.detectors.ast_flows import detect_python_ast_flows
 from skillscan.ecosystems import detect_ecosystems
 from skillscan.intel import load_store
+from skillscan.ml_detector import ml_prompt_injection_findings
 from skillscan.models import (
     IOC,
     AIAssessment,
@@ -613,6 +614,7 @@ def scan(
     ai_report_out: Path | None = None,
     clamav: bool = False,
     clamav_timeout_seconds: int = 30,
+    ml_detect: bool = False,
     rulepack_channel: str = "stable",
 ) -> ScanReport:
     prepared = prepare_target(
@@ -701,6 +703,8 @@ def scan(
                         break
 
             findings.extend(local_prompt_injection_findings(path, analysis_text))
+            if ml_detect:
+                findings.extend(ml_prompt_injection_findings(path, analysis_text))
 
             for capability_name, pattern in ruleset.capability_patterns:
                 if pattern.search(analysis_text):

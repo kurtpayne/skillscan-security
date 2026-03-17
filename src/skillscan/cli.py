@@ -220,6 +220,18 @@ def scan_cmd(
         "--clamav-timeout-seconds",
         help="ClamAV scan timeout in seconds",
     ),
+    ml_detect: bool = typer.Option(
+        False,
+        "--ml-detect/--no-ml-detect",
+        envvar="SKILLSCAN_ML_DETECT",
+        help=(
+            "Enable offline ML prompt-injection detection using "
+            "protectai/deberta-v3-base-prompt-injection-v2 (Apache 2.0). "
+            "Requires: pip install 'skillscan-security[ml-onnx]' (ONNX, recommended) "
+            "or 'skillscan-security[ml]' (PyTorch). "
+            "Also configurable via SKILLSCAN_ML_DETECT env var."
+        ),
+    ),
     baseline_report: Path | None = typer.Option(
         None,
         "--baseline-report",
@@ -306,6 +318,7 @@ def scan_cmd(
             ai_report_out=ai_report_out,
             clamav=clamav,
             clamav_timeout_seconds=clamav_timeout_seconds,
+            ml_detect=ml_detect,
             rulepack_channel=rulepack_channel,
         )
     except (ScanError, ValueError) as exc:
