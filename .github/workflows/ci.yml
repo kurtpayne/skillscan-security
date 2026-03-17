@@ -21,11 +21,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e '.[dev]'
       - name: Lint
+        if: matrix.python-version == '3.12'
         run: |
           ruff check src tests
       - name: Type Check
+        if: matrix.python-version == '3.12'
         run: |
           mypy src
+      - name: Tests with coverage
+        if: matrix.python-version == '3.12'
+        run: |
+          pytest -q --cov=skillscan --cov-report=xml --cov-report=term
       - name: Tests
+        if: matrix.python-version != '3.12'
         run: |
           pytest -q
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
