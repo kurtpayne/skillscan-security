@@ -1,0 +1,121 @@
+name: Corpus Sync & Model Update Trigger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "corpus/**"
+      - "scripts/finetune.py"
+      - "src/skillscan/corpus.py"
+
+  schedule:
+    - cron: "0 6,18 * * *"
+
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: "Force fine-tune even if below delta threshold"
+        required: false
+        default: "false"
+        type: boolean
+
+jobs:
+  corpus-sync:
+    name: Sync corpus manifest & evaluate delta
+    runs-on: ubuntu-latest
+    outputs:
+      should_retrain: ${{ steps.sync.outputs.should_retrain }}
+      summary: ${{ steps.sync.outputs.summary }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install package (no ML extras needed for sync)
+        run: pip install -e ".[dev]" --quiet
+
+      - name: Run corpus sync
+        id: sync
+        run: |
+          python - <<'EOF'
+          import json, os, sys
+          sys.path.insert(0, "src")
+          from skillscan.corpus import CorpusManager
+          mgr = CorpusManager()
+          decision = mgr.sync()
+          print(decision.summary())
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              fh.write(f"should_retrain={'true' if decision.should_retrain else 'false'}\n")
+              fh.write(f"summary={decision.summary()}\n")
+          EOF
+        env:
+          SKILLSCAN_MIN_NEW_EXAMPLES: ${{ vars.SKILLSCAN_MIN_NEW_EXAMPLES || '50' }}
+          SKILLSCAN_MIN_DELTA_PCT: ${{ vars.SKILLSCAN_MIN_DELTA_PCT || '0.10' }}
+
+      - name: Commit updated manifest
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(corpus): update manifest.json [skip ci]"
+          file_pattern: "corpus/manifest.json"
+          commit_user_name: "skillscan-bot"
+          commit_user_email: "bot@skillscan.sh"
+
+  fine-tune:
+    name: Fine-tune DeBERTa (conditional)
+    needs: corpus-sync
+    if: |
+      needs.corpus-sync.outputs.should_retrain == 'true' ||
+      github.event.inputs.force_retrain == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ML dependencies
+        run: pip install -e ".[ml]" --quiet
+
+      - name: Run fine-tune
+        id: finetune
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ github.event.inputs.force_retrain }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          python scripts/finetune.py \
+            --output-dir checkpoints/ \
+            --epochs 3 \
+            --batch-size 8 \
+            --max-length 256 \
+            $FORCE_FLAG
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: Upload checkpoint artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deberta-ft-checkpoint-${{ github.run_id }}
+          path: checkpoints/
+          retention-days: 30
+
+      - name: Post summary
+        if: always()
+        run: |
+          echo "### Fine-tune Result" >> $GITHUB_STEP_SUMMARY
+          echo "Corpus delta: ${{ needs.corpus-sync.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f checkpoints/*/finetune_summary.json ]; then
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat checkpoints/*/finetune_summary.json >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
