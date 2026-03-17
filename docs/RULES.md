@@ -126,3 +126,23 @@ Final score is the sum of `severity_score * policy_category_weight`.
 3. Else if score >= block threshold => `block`
 4. Else if score >= warn threshold => `warn`
 5. Else => `allow`
+
+## Rule metadata and query
+
+Rules can now include optional additive metadata (for example techniques/tags/status/version) without changing rule IDs.
+
+Explore current rules via CLI:
+
+```bash
+# List rules in text format
+skillscan rule list
+
+# List rules as JSON
+skillscan rule list --format json
+
+# Filter by technique or tag (when metadata is present)
+skillscan rule list --technique EVASION-001
+skillscan rule list --tag exfiltration
+```
+
+This metadata is additive and backward-compatible: existing rules continue to function unchanged even if they do not yet define metadata.

@@ -34,6 +34,26 @@ def test_version_matches_distribution_metadata() -> None:
     assert expected in result.stdout
 
 
+def test_rule_list_text_and_json() -> None:
+    text_result = runner.invoke(app, ["rule", "list"])
+    assert text_result.exit_code == 0
+    assert "MAL-001" in text_result.stdout
+
+    json_result = runner.invoke(app, ["rule", "list", "--format", "json"])
+    assert json_result.exit_code == 0
+    assert '"id": "MAL-001"' in json_result.stdout
+
+
+def test_rule_list_invalid_options() -> None:
+    invalid_channel = runner.invoke(app, ["rule", "list", "--channel", "beta"])
+    assert invalid_channel.exit_code == 2
+    assert "Invalid --channel" in invalid_channel.stdout
+
+    invalid_format = runner.invoke(app, ["rule", "list", "--format", "yaml"])
+    assert invalid_format.exit_code == 2
+    assert "Invalid --format" in invalid_format.stdout
+
+
 def test_scan_invalid_options() -> None:
     target = "tests/fixtures/benign/basic_skill"
     invalid_format = runner.invoke(app, ["scan", target, "--format", "bad"])
