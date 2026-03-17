@@ -1,5 +1,15 @@
 # Rule Updates
 
+## 2026-03-16
+
+- Added `EXF-016` (high): **Azure MCP resource-identifier URL substitution token-leak marker**.
+- Rationale: March 2026 reporting on CVE-2026-26118 described Azure MCP server abuse where attackers submit a malicious URL in place of a normal Azure resource identifier, causing outbound requests that may carry managed identity tokens.
+- Rule scope intentionally targets high-signal wording around `resourceId`/`resourceIdentifier` URL substitution plus managed identity token capture language to reduce false positives.
+
+Sources:
+- Microsoft MSRC (2026-03), *CVE-2026-26118*: https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-26118
+- The Hacker News (2026-03-10), *Microsoft Patches 84 Flaws in March Patch Tuesday, Including Two Public Zero-Days*: https://thehackernews.com/2026/03/microsoft-patches-84-flaws-in-march.html
+
 ## 2026-03-14
 
 - Added `MAL-023` (high): **Cross-platform password-harvest credential validation marker**.
