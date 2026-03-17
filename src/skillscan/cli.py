@@ -25,14 +25,17 @@ from skillscan.intel_update import sync_managed
 from skillscan.junit import report_to_junit_xml
 from skillscan.policies import BUILTIN_PROFILES, load_builtin_policy, load_policy_file, policy_summary
 from skillscan.render import render_report
+from skillscan.rules import load_builtin_rulepack
 from skillscan.sarif import report_to_sarif
 from skillscan.suppressions import apply_suppressions
 
 app = typer.Typer(help="SkillScan: standalone AI skill security analyzer")
 policy_app = typer.Typer(help="Policy operations")
 intel_app = typer.Typer(help="Local intel operations")
+rule_app = typer.Typer(help="Rule metadata/query operations")
 app.add_typer(policy_app, name="policy")
 app.add_typer(intel_app, name="intel")
+app.add_typer(rule_app, name="rule")
 console = Console()
 
 
@@ -74,6 +77,60 @@ def _build_delta_payload(baseline_data: dict, current_data: dict, baseline_label
 @app.command("version")
 def version() -> None:
     console.print(f"skillscan-security {__version__}")
+
+
+@rule_app.command("list")
+def rule_list(
+    channel: str = typer.Option("stable", "--channel", help="Rulepack channel: stable|preview|labs"),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    technique: str | None = typer.Option(None, "--technique", help="Filter by technique id"),
+    tag: str | None = typer.Option(None, "--tag", help="Filter by rule metadata tag"),
+) -> None:
+    if channel not in {"stable", "preview", "labs"}:
+        console.print("[bold red]Invalid --channel:[/] expected stable, preview, or labs")
+        raise typer.Exit(2)
+    if format not in {"text", "json"}:
+        console.print("[bold red]Invalid --format:[/] expected text or json")
+        raise typer.Exit(2)
+
+    rp = load_builtin_rulepack(channel=channel)
+    rows: list[dict[str, object]] = []
+    for r in rp.static_rules:
+        md = getattr(r, "metadata", None)
+        techniques = [t.id for t in (md.techniques if md else [])]
+        tags = list(md.tags) if md else []
+
+        if technique and technique not in techniques:
+            continue
+        if tag and tag not in tags:
+            continue
+
+        rows.append(
+            {
+                "id": r.id,
+                "title": r.title,
+                "severity": r.severity.value,
+                "category": r.category,
+                "techniques": techniques,
+                "tags": tags,
+                "status": (md.status if md else None),
+                "version": (md.version if md else None),
+            }
+        )
+
+    if format == "json":
+        console.print_json(json.dumps(rows, indent=2))
+        return
+
+    if not rows:
+        console.print("No rules matched filter.")
+        return
+
+    for row in rows:
+        t = ",".join(row["techniques"]) if row["techniques"] else "-"
+        g = ",".join(row["tags"]) if row["tags"] else "-"
+        console.print(f"{row['id']} [{row['severity']}] {row['title']}")
+        console.print(f"  category={row['category']} techniques={t} tags={g}")
 
 
 @app.command("scan")
