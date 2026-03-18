@@ -119,7 +119,7 @@
     "prompt_injection/pi41_calendar_indirect.md": "f76c312f8ed66fb17ac773420be38ad9cd89e0ef781ba3e4d78e35f920253619",
     "prompt_injection/pi42_eval_math_helper.md": "2da09f65ce34fa8ed4e05650d74b7d832ee6fdb014bc4d0129c3eb5b68f575a3"
   },
-  "last_finetune": "2026-03-18T02:56:29.671014+00:00",
-  "last_finetune_corpus_size": 113,
+  "last_finetune": "2026-03-18T03:16:18.032306+00:00",
+  "last_finetune_corpus_size": 119,
   "adapter_repo": "kurtpayne/skillscan-deberta-adapter"
 }
