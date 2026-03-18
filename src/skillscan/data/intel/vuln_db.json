@@ -6,6 +6,13 @@
         "severity": "high",
         "fixed": "5.4"
       }
+    },
+    "bittensor-wallet": {
+      "4.0.2": {
+        "id": "PYPI-BACKDOOR-2026-0317",
+        "severity": "critical",
+        "fixed": "4.0.1"
+      }
     }
   },
   "npm": {

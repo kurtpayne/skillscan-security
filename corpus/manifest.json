@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-18T02:53:18+00:00",
-  "total_examples": 111,
+  "last_updated": "2026-03-18T05:36:44+00:00",
+  "total_examples": 115,
   "label_counts": {
     "benign": 54,
-    "injection": 57
+    "injection": 61
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -75,6 +75,9 @@
     "malicious/a21_alt_download_exec.md": "027bbd2219a9604501d9bda05830d90cc627833d055b1030955d1551f728766c",
     "malicious/a22_benign.md": "c41d829bc22dd2a4ea6e18db44941546e56703c590e11f5f0e31afcc7bfd0462",
     "malicious/a25_trojan_source.md": "036f17e88490658118b3ad3f1c0ad18e9a3e60828f443706898d58ada0bfe1b5",
+    "malicious/a26_cursorjack_deeplink.md": "ee0008dc0ef7f851db72a63317bbe3b5c6a9718b6b427ad08ecba7bd25c6c4dc",
+    "malicious/a27_deno_byor.md": "e1040d78c27a9a75e3008fe83c02f505233f91ca2d21e93af43f8a14153c414a",
+    "malicious/a28_glassworm_persistence.md": "1da6de1216e076e96a2c703bd2d7b3384982e9f83e588892f8747d05a6dcd578",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",
@@ -117,7 +120,8 @@
     "prompt_injection/pi39_output_field_hijack.md": "a7a567839c8512cd4f1ec7138fbe77c181b18042003c23a54bf07783c8ede08f",
     "prompt_injection/pi40_fake_system_header.md": "b7d05d2eb322fdad474e6e108a436ebccda501e134db39d3543e750a75f8a881",
     "prompt_injection/pi41_calendar_indirect.md": "f76c312f8ed66fb17ac773420be38ad9cd89e0ef781ba3e4d78e35f920253619",
-    "prompt_injection/pi42_eval_math_helper.md": "2da09f65ce34fa8ed4e05650d74b7d832ee6fdb014bc4d0129c3eb5b68f575a3"
+    "prompt_injection/pi42_eval_math_helper.md": "2da09f65ce34fa8ed4e05650d74b7d832ee6fdb014bc4d0129c3eb5b68f575a3",
+    "prompt_injection/pi43_media_directive_injection.md": "07c30722b516770a16707e84ceca4bfa0d5c75d3da860965c94e1db923ec44d8"
   },
   "last_finetune": "2026-03-18T03:16:18.032306+00:00",
   "last_finetune_corpus_size": 119,

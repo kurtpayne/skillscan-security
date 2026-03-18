@@ -1,4 +1,4 @@
-version: "2026.03.17.3"
+version: "2026.03.18.1"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -1863,6 +1863,126 @@ static_rules:
     references:
     - https://www.koi.ai/blog/glassworm-hits-mcp-5th-wave-with-new-delivery-techniques
     - https://www.aikido.dev/blog/glassworm-strikes-react-packages-phone-numbers
+- id: MAL-030
+  category: malware_pattern
+  severity: high
+  confidence: 0.88
+  title: IDE deeplink MCP server install abuse
+  pattern: (?i)(?:cursor|vscode|vscode-insiders)://[^\s]{0,200}(?:mcp|install|server)
+  mitigation: Do not follow IDE deeplinks from untrusted sources that trigger MCP server
+    installations. Verify the source and review server configuration before approval.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-030
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://www.infosecurity-magazine.com/news/cursor-jack-attack-path-ai/
+- id: MAL-031
+  category: malware_pattern
+  severity: high
+  confidence: 0.87
+  title: Deno bring-your-own-runtime execution pattern
+  pattern: (?i)\bdeno\b[^\n]{0,80}(?:run\s+(?:--allow-|-).*data:|eval\s+['"]|run\s+https?://)
+  mitigation: Treat Deno executing remote URLs, data-URIs, or eval payloads outside
+    development environments as a BYOR loader. Block unexpected Deno invocations in
+    production and CI/CD pipelines.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-031
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.87
+      benchmark_set: core-static-v1
+    references:
+    - https://www.bleepingcomputer.com/news/security/leaknet-ransomware-uses-clickfix-and-deno-runtime-for-stealthy-attacks/
+    - https://reliaquest.com/blog/threat-spotlight-casting-a-wider-net-clickfix-deno-and-leaknets-scaling-threat/
+- id: MAL-032
+  category: malware_pattern
+  severity: high
+  confidence: 0.85
+  title: GlassWorm persistence marker variable
+  pattern: (?i)\blzcdrtfxyqiplpd\b|~/init\.json[^\w]|~/node-v22
+  mitigation: The variable name lzcdrtfxyqiplpd and the file ~/init.json are known
+    GlassWorm persistence indicators. Remove any matching artifacts and audit the
+    installation source.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-032
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://www.bleepingcomputer.com/news/security/glassworm-malware-hits-400-plus-code-repos-on-github-npm-vscode-openvsx/
+- id: PINJ-002
+  category: instruction_abuse
+  severity: high
+  confidence: 0.86
+  title: MCP tool result MEDIA directive injection
+  pattern: (?i)\bMEDIA:\s*(?:/|file://|\\\\|[A-Za-z]:\\)[^\n]{1,300}
+  mitigation: Do not trust MEDIA directives in MCP tool result text content. Validate
+    that file paths originate from the tool's own output directory and are not injected
+    by untrusted input.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: PROMPTINJ-002
+      name: Prompt injection/jailbreak
+    tags:
+    - instruction_abuse
+    - pinj
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.86
+      benchmark_set: core-static-v1
+    references:
+    - https://synscan.net/vuln/openclaw-vulnerable-to-local-file-exfiltration-via-mcp-tool-result-media-directive-injection
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
   execute: \b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b

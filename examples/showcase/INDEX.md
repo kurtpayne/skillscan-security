@@ -99,3 +99,7 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 80. `80_container_escape_host_mount_chain`: privileged container with Docker socket mount and sensitive host path mounts — full container escape chain (`MAL-026`, `CHN-013`)
 81. `81_container_escape_secret_access_chain`: privileged container with AWS credential environment variables and `.env` file access — container escape with credential theft chain (`MAL-027`, `CHN-014`)
 82. `82_solana_rpc_c2_resolution`: Solana blockchain RPC `getSignaturesForAddress` transaction-memo lookup used as dead-drop C2 channel to resolve and execute remote payloads, as seen in GlassWorm Wave 5 (`MAL-029`)
+83. `83_cursorjack_mcp_deeplink`: IDE custom URL scheme (`cursor://`) abused to trigger installation of a rogue MCP server with embedded shell commands, as documented in the CursorJack attack by Proofpoint (`MAL-030`)
+84. `84_deno_byor_execution`: Deno bring-your-own-runtime loader that decodes and executes a base64 JavaScript payload from a `data:` URL, as seen in the LeakNet ransomware campaign (`MAL-031`)
+85. `85_glassworm_persistence_marker`: GlassWorm Wave 6 persistence indicators including the `lzcdrtfxyqiplpd` marker variable, `~/init.json` config, and bundled `~/node-v22` runtime (`MAL-032`)
+86. `86_media_directive_injection`: MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline to external messaging channels (`PINJ-002`)

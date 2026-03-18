@@ -1,3 +1,61 @@
+## 2026-03-18 — CursorJack Deeplinks, LeakNet Deno BYOR, GlassWorm Wave 6, MEDIA Directive Injection
+
+**Sources:**
+- [Infosecurity Magazine — CursorJack Attack Path Exposes Code Execution Risk](https://www.infosecurity-magazine.com/news/cursor-jack-attack-path-ai/)
+- [BleepingComputer — LeakNet ransomware uses ClickFix and Deno runtime](https://www.bleepingcomputer.com/news/security/leaknet-ransomware-uses-clickfix-and-deno-runtime-for-stealthy-attacks/)
+- [ReliaQuest — ClickFix, Deno, and LeakNet's Scaling Threat](https://reliaquest.com/blog/threat-spotlight-casting-a-wider-net-clickfix-deno-and-leaknets-scaling-threat/)
+- [BleepingComputer — GlassWorm malware hits 400+ code repos](https://www.bleepingcomputer.com/news/security/glassworm-malware-hits-400-plus-code-repos-on-github-npm-vscode-openvsx/)
+- [StepSecurity — bittensor-wallet 4.0.2 Compromised on PyPI](https://www.stepsecurity.io/blog/bittensor-wallet-4-0-2-compromised-on-pypi---backdoor-exfiltrates-private-keys)
+- [SynScan — OpenClaw MEDIA: Directive Injection](https://synscan.net/vuln/openclaw-vulnerable-to-local-file-exfiltration-via-mcp-tool-result-media-directive-injection)
+
+**Event Summary:** Four new threat categories were identified. Proofpoint disclosed the CursorJack attack path, where malicious `cursor://` deeplinks trick developers into installing rogue MCP servers that execute arbitrary commands. The LeakNet ransomware gang adopted a "bring your own runtime" (BYOR) technique using the legitimate Deno binary to decode and execute base64 JavaScript payloads from `data:` URLs, minimizing forensic artifacts. GlassWorm Wave 6 expanded to 433 compromised components across GitHub, npm, and VSCode/OpenVSX, with the `lzcdrtfxyqiplpd` marker variable and `~/init.json` persistence file as key indicators. A `MEDIA:` directive injection vulnerability in OpenClaw allows malicious MCP tool servers to exfiltrate local files through the media processing pipeline. Additionally, the `bittensor-wallet` 4.0.2 PyPI package was found backdoored with a 3-layer C2 exfiltration system.
+
+**New Patterns Added:**
+
+### MAL-030: IDE deeplink MCP server install abuse
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `cursor://`, `vscode://`, or `vscode-insiders://` deeplinks containing MCP server install parameters.
+- **Justification:** Direct detection of the CursorJack attack path documented by Proofpoint. Malicious deeplinks embed harmful server configurations that execute commands upon user approval.
+
+### MAL-031: Deno bring-your-own-runtime execution pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects Deno executing remote URLs, `data:` URI payloads, or `eval` with string arguments.
+- **Justification:** Direct detection of the LeakNet BYOR technique. The legitimate Deno runtime is abused to execute malicious JavaScript in memory, bypassing binary blocklists.
+
+### MAL-032: GlassWorm persistence marker variable
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.85
+- **Pattern:** Detects the `lzcdrtfxyqiplpd` marker variable, `~/init.json` persistence config, or `~/node-v22` bundled runtime.
+- **Justification:** Direct detection of GlassWorm Wave 6 persistence indicators. StepSecurity recommends searching for this marker variable as the primary indicator of compromise.
+
+### PINJ-002: MCP tool result MEDIA directive injection
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects `MEDIA:` directives followed by absolute file paths, `file://` URIs, or Windows drive paths in tool result content.
+- **Justification:** Direct detection of the OpenClaw file exfiltration vulnerability (GHSA-jjgj-cpp9-cvpv). Malicious MCP tool servers inject `MEDIA:` directives to exfiltrate local files.
+
+**IOC Updates:**
+- **Domains added:** `finney.opentensor-metrics.com`, `finney.metagraph-stats.com`, `finney.subtensor-telemetry.com`, `opentensor-cdn.com`, `t.opentensor-cdn.com` (bittensor-wallet C2), `serialmenot.com`, `crahdhduf.com`, `weaplink.com` (LeakNet C2)
+- **IPs added:** `144.31.224.98` (LeakNet C2)
+- **URLs added:** `https://fastdlvrss.s3.us-east-1.amazonaws.com`, `https://backupdailyawss.s3.us-east-1.amazonaws.com` (LeakNet S3 staging)
+
+**Vulnerability DB Updates:**
+- **PYPI-BACKDOOR-2026-0317:** `bittensor-wallet` 4.0.2 backdoor (private key exfiltration via 3-layer C2, severity: critical, safe version: 4.0.1)
+
+**Corpus Updates:**
+- `corpus/malicious/a26_cursorjack_deeplink.md` — CursorJack IDE deeplink abuse sample
+- `corpus/malicious/a27_deno_byor.md` — Deno BYOR loader sample
+- `corpus/malicious/a28_glassworm_persistence.md` — GlassWorm persistence marker sample
+- `corpus/prompt_injection/pi43_media_directive_injection.md` — MEDIA directive injection sample
+
+---
+
 ## 2026-03-17 — v0.3.1: Skill Graph Analysis, ML Pipeline, and Distribution Channels
 
 **Summary:** v0.3.1 ships three new structural detection rules (`PINJ-GRAPH-001/002/003`) for skill graph analysis, ML-based prompt injection detection via a DeBERTa-v3-base LoRA adapter (ONNX INT8, 111-example corpus), `skillscan model` and `skillscan rule` command groups, a reusable GitHub Actions workflow, pre-commit hook, and VS Code extension scaffold. The signature-as-data architecture is now fully operational: rules, IOCs, and the ONNX model are versioned data artifacts updated independently of the scanner binary.

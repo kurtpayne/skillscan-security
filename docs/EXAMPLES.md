@@ -87,6 +87,10 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `80_container_escape_host_mount_chain` | Privileged container with Docker socket mount and sensitive host path mounts (`/etc/shadow`, `/root/.ssh`, `/proc`) — full container escape chain | `MAL-026`, `CHN-013` |
 | `81_container_escape_secret_access_chain` | Privileged container with AWS credential environment variables and `.env` file access — container escape with credential theft chain | `MAL-027`, `CHN-014` |
 | `82_solana_rpc_c2_resolution` | Solana blockchain RPC `getSignaturesForAddress` transaction-memo lookup used as dead-drop C2 channel to resolve and execute remote payloads (GlassWorm Wave 5) | `MAL-029` |
+| `83_cursorjack_mcp_deeplink` | IDE custom URL scheme (`cursor://`, `vscode://`) abused to trigger installation of a rogue MCP server with embedded shell commands (CursorJack, Proofpoint) | `MAL-030` |
+| `84_deno_byor_execution` | Deno bring-your-own-runtime loader that decodes and executes a base64 JavaScript payload from a `data:` URL (LeakNet ransomware) | `MAL-031` |
+| `85_glassworm_persistence_marker` | GlassWorm Wave 6 persistence indicators: `lzcdrtfxyqiplpd` marker variable, `~/init.json` config, bundled `~/node-v22` runtime | `MAL-032` |
+| `86_media_directive_injection` | MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline (OpenClaw vuln GHSA-jjgj-cpp9-cvpv) | `PINJ-002` |
 ## Commands
 
 ```bash
