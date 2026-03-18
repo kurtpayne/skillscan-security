@@ -235,6 +235,44 @@ Add a new rule pack `src/skillscan/data/rules/multilang.yaml` covering the highe
 
 ---
 
+## Milestone 13 — Docs & Metadata Consolidation (1 week)
+
+Audit conducted 2026-03-18. The repository has accumulated documentation debt across three categories: stale/redundant files, metadata spread across multiple YAML rule packs, and success metrics that no longer reflect current state. This milestone captures the cleanup work; no code changes are required.
+
+### Issue M1 — Stale and redundant docs
+
+The following files are candidates for deletion or consolidation:
+
+- **`docs/RELEASE_VERIFICATION_0.2.3.md`**: a one-off release verification log for v0.2.3 with no ongoing value. Delete after confirming nothing references it.
+- **`docs/RELEASE_ONBOARDING.md`**: one-time setup instructions for Docker Hub and PyPI trusted publishing. These steps are complete. Condense into a paragraph in `docs/RELEASE_CHECKLIST.md` and delete the file.
+- **`PRD.md` (root)**: a 3-line stub pointing to `docs/PRD.md`. Delete the root stub; `docs/PRD.md` is already canonical.
+- **`docs/THREAT_MODEL.md`**: 29 lines, partially stale (still mentions "Optional AI analysis" in security posture notes). Either expand into a real threat model or absorb into `docs/DETECTION_MODEL.md` Layer 0 section.
+- **`docs/PROMPT_INJECTION_CORPUS.md`**: describes a planned corpus ingestion workflow using `lakeraai/pint-benchmark` and `liu00222/Open-Prompt-Injection`. The script (`scripts/build_prompt_injection_benchmark.py`) does not exist yet. Either implement the script or move this content into Milestone 7 and delete the file.
+- **`docs/OPENCLAW_CONTEXT.md`**: 20-line design-input note fully superseded by `docs/DETECTION_MODEL.md` and `PATTERN_UPDATES.md`. Delete.
+- **`docs/AUTOMATION_GUARDRAILS.md`**: operational instructions for the pattern-scout agent. Useful, but belongs closer to the agent workflow rather than the public docs tree. Consider moving to `scripts/` or a `.manus/` directory.
+
+### Issue M2 — Rule metadata spread across three YAML packs
+
+Rule metadata (techniques, tags, lifecycle, quality, references) is only enforced by `test_rule_metadata_guard.py` on `default.yaml`. The two satellite packs are unguarded:
+
+- **`src/skillscan/data/rules/exfil_channels.yaml`**: contains `EXF-002` and `CHN-003` with no metadata blocks. The pack also has its own `version` field and `action_patterns` section, creating a split between the main pack’s `action_patterns` and the exfil-specific ones. Preferred fix: migrate both rules into `default.yaml`, move the `exfil_channel` action pattern into `default.yaml`’s `action_patterns` block, and delete `exfil_channels.yaml`.
+- **`src/skillscan/data/rules/ast_flows.yaml`**: no static or chain rules, so no metadata issue — but the `version` field (`2026.02.09.1`) is stale and not surfaced in `skillscan rule status`.
+- **14 chain rules in `default.yaml`** currently have no metadata blocks (e.g., `CHN-001`, `CHN-002`, `CHN-004`, `CHN-005`, `ABU-002`). The metadata guard only checks `static_rules`. Extend the guard to cover `chain_rules` and backfill metadata for all chain rules.
+
+### Issue M3 — `docs/EXAMPLES.md` duplicates `examples/showcase/INDEX.md`
+
+Both files list all 86 showcase examples with rule IDs. `EXAMPLES.md` is a coverage-map table; `INDEX.md` is a numbered list with run commands. They will drift unless both are updated on every pattern PR. Consider making `EXAMPLES.md` a generated file (a script reads `INDEX.md` + `default.yaml` and writes the table) or collapsing them into one canonical source.
+
+### Issue M4 — `docs/COMMANDS.md` and `docs/SCAN_OVERVIEW.md` overlap
+
+`COMMANDS.md` is a full CLI flag reference. `SCAN_OVERVIEW.md` also documents the scan pipeline and recommended usage. There is meaningful overlap in the “recommended usage” and “flags” sections. Make `SCAN_OVERVIEW.md` the conceptual guide and `COMMANDS.md` the pure flag reference, with clear cross-links between them.
+
+### Issue M5 — Success metrics are stale
+
+The Success Metrics table uses numbers from before v0.3.2. See the updated table at the bottom of this file.
+
+---
+
 ## Deprioritized / Deferred
 
 The following items from earlier roadmap drafts are explicitly deprioritized until the above milestones are complete.
@@ -267,13 +305,15 @@ The following items from earlier roadmap drafts are explicitly deprioritized unt
 
 ## Success Metrics
 
-| Metric | Current | Target (v0.4.0) | Target (v1.0) |
+*Updated 2026-03-18 to reflect v0.3.2 actuals.*
+
+| Metric | Current (v0.3.2) | Target (v0.4.0) | Target (v1.0) |
 |---|---|---|---|
-| IOC DB entries | 21 | 200+ | 500+ (automated) |
-| Vuln DB packages | 4 | 20+ | 50+ |
-| ML corpus size | 115 | 300+ | 500+ |
-| ML adapter F1 (held-out) | unknown | ≥0.90 | ≥0.93 |
-| Static + chain rules | 84 | 90+ | 100+ |
-| Adversarial cases | 25 | 35+ | 50+ |
+| IOC DB entries | 2,031 (493 domains, 8 IPs, 1,527 CIDRs, 3 URLs) | 5,000+ (automated) | 20,000+ |
+| Vuln DB packages | 27 (23 Python + 4 npm) | 50+ | 150+ |
+| ML corpus size | 138 (54 benign + 84 injection/SE/graph) | 300+ | 500+ |
+| ML adapter F1 (held-out) | unknown (no held-out set yet) | ≥0.90 | ≥0.93 |
+| Static + chain rules | 85 (70 static + 15 chain) | 95+ | 120+ |
+| Adversarial cases | 25 | 40+ | 60+ |
 | VS Code extension | scaffolded | published | 100+ installs |
-| Time-to-first-scan | &lt;5 min | &lt;3 min | &lt;2 min |
+| Time-to-first-scan | <5 min | <3 min | <2 min |
