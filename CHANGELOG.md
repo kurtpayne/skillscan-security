@@ -7,6 +7,21 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.3.2] — 2026-03-18
+
+### Added
+- **SE-001**: social engineering credential harvest static rule (HIGH) — detects instructions that solicit API tokens, passwords, or session cookies from users.
+- **SE-SEM-001**: offline semantic social engineering classifier — stem-and-score classifier for credential solicitation patterns.
+- **Intel DB seeding**: IOC DB expanded from 11 to 1,475 entries (163 domains, 1,310 IPs, 2 CIDRs) from URLhaus, Feodo Tracker, and Spamhaus DROP.
+- **Vuln DB seeding**: vuln DB expanded from 4 to 27 packages with 111 versions from OSV.dev.
+- **docs/DETECTION_MODEL.md**: comprehensive detection architecture documentation covering all 8 layers.
+- **Showcase example 20**: renamed from `20_ai_semantic_risk` to `20_social_engineering_credential_harvest`.
+
+### Removed
+- **AI assist layer** (`--ai-assist`, `--ai-provider`, `--ai-model`, `--ai-base-url`, `--ai-required`): removed entirely. SkillScan is repositioned as a free, offline, privacy-first pre-filter. For nuanced semantic analysis, use Invariant Analyzer or Lakera Guard after SkillScan passes.
+
+---
+
 ## [0.3.1] — 2026-03-17
 
 ### Added
@@ -61,7 +76,7 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Docker Hub release pipeline (`release-docker.yml`).
 - PyPI trusted publisher configuration (`release-pypi.yml`) with SBOM and cosign signing.
 - SARIF output format for GitHub Security tab integration.
-- `--ai-assist` flag for optional LLM-based semantic risk checks.
+- Offline semantic prompt injection classifier (`PINJ-SEM-001`).
 - Policy profiles: `strict`, `balanced`, `permissive`.
 - URL scanning: follow links up to configurable depth.
 
@@ -94,6 +109,7 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `skillscan scan`, `skillscan explain`, `skillscan policy` commands.
 - 29 initial detection rules.
 
+[0.3.2]: https://github.com/kurtpayne/skillscan-security/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/kurtpayne/skillscan-security/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/kurtpayne/skillscan-security/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/kurtpayne/skillscan-security/compare/v0.2.0...v0.2.3

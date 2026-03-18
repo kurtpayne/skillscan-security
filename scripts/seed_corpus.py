@@ -229,10 +229,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    rng = random.Random(args.seed)
+    random.seed(args.seed)
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    domains = list(SKILL_TEMPLATES)  # just for length
     generated = 0
     for i in range(args.count):
         domain = SKILL_DOMAINS[i % len(SKILL_DOMAINS)]

@@ -202,9 +202,6 @@ Activate your virtualenv or ensure install path is on `PATH`.
 ### Slow scans in CI
 Tune policy limits (`max_files`, `max_bytes`, timeout) and avoid scanning giant artifact trees unnecessarily.
 
-### Non-deterministic results from optional AI assist
-Keep AI assist off in strict deterministic CI paths, or pin provider/model and document expected behavior.
-
 ### Verify release signatures/attestations
 Use `cosign` to verify release artifacts and container provenance:
 

@@ -25,7 +25,7 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `17_defanged_ioc` | Defanged IOC normalization (`hxxp`, `[.]`) | IOC extraction + intel matching |
 | `18_split_base64_chain` | Concatenated base64 fragment decoding | `CHN-001` |
 | `19_alt_download_exec` | Non-curl/wget downloader + interpreter exec | `CHN-001` |
-| `20_ai_semantic_risk` | Semantic-only credential request pattern (AI assist) | `AI-SEM-001` with `--ai-assist` |
+| `20_social_engineering_credential_harvest` | Social engineering instruction to harvest user credentials | `SE-001`, `SE-SEM-001` |
 | `21_npm_lifecycle_abuse` | Risky npm lifecycle script (`preinstall` etc.) | `SUP-001` |
 | `22_prompt_injection` | Prompt override/jailbreak language in instructions | `PINJ-001` |
 | `23_trojan_source_bidi` | Bidirectional Unicode obfuscation marker | `OBF-001` |

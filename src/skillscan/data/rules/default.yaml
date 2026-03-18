@@ -2043,6 +2043,41 @@ static_rules:
       benchmark_set: core-static-v1
     references:
     - https://www.clawsecure.ai/blog/clawhavoc-explained
+- id: SE-001
+  category: social_engineering
+  severity: high
+  confidence: 0.85
+  title: Social engineering credential harvest instruction
+  pattern: (?i)(?:request|ask|tell|instruct|direct|have|prompt|convince|persuade|encourage)\b.{0,80}\b(?:paste|provide|share|send|enter|type|give|supply|submit)\b.{0,80}\b(?:token|api[_\s-]?key|password|credential|secret|passphrase|private[_\s-]?key|access[_\s-]?key)
+  mitigation: >
+    Remove instructions that direct the AI to solicit credentials, tokens, or secrets
+    from users. Skills must never instruct the model to collect authentication material
+    on behalf of a service. Use OAuth, delegated auth flows, or environment-variable
+    injection instead.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: SE-001
+      name: Social engineering / credential harvesting via AI intermediary
+    tags:
+    - social_engineering
+    - credential_harvest
+    - instruction_abuse
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+    - https://atlas.mitre.org/techniques/AML.T0051
+
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
   execute: \b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b

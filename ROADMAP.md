@@ -1,6 +1,6 @@
 # SkillScan Security — Roadmap
 
-*Last updated: March 2026. Reflects a full codebase audit conducted at v0.3.1.*
+*Last updated: March 2026. Reflects a full codebase audit conducted at v0.3.1; updated through v0.3.2.*
 
 ---
 
@@ -18,8 +18,8 @@ The scanner is a functioning, well-structured Python CLI with a clean separation
 | Chain rule evaluation | Works, but no proximity constraint (whole-document match) |
 | Instruction hardening | Complete |
 | Policy engine | Complete — 3 profiles + custom YAML |
-| IOC database | Thin — 21 entries total |
-| Vuln database | Thin — 4 package/version entries |
+| IOC database | Seeded — 163 domains, 1,310 IPs, 2 CIDRs (v0.3.2) |
+| Vuln database | Seeded — 23 Python + 4 npm packages, 111 versions (v0.3.2) |
 | ML detection | Operational but undertrained (115 examples) |
 | Skill graph detector | 3 of 4 planned rules implemented |
 | AI assist | **Removed in v0.3.2** — free/offline/private positioning |
@@ -29,7 +29,9 @@ The scanner is a functioning, well-structured Python CLI with a clean separation
 | Docker image | Published (`kurtpayne/skillscan-security:v0.3.1`) |
 | PyPI package | Published (`skillscan-security==0.3.1`) |
 | Homebrew formula | Scaffolded, not submitted to homebrew-core |
-| `docs/DETECTION_MODEL.md` | Does not exist |
+| `docs/DETECTION_MODEL.md` | Written (v0.3.2) |
+| Binary detection | BIN-001–004 exist; opaque archives not warned |
+| Multi-language rules | Python/bash/GH Actions only; no JS/TS/Ruby/Go/Rust |
 | Test coverage | Good on core paths; ML, remote, and ClamAV tests use mocks |
 
 ---
@@ -85,6 +87,18 @@ The engine fires chain rules when constituent patterns appear anywhere in the fu
 Add an optional `window_lines: int` field to `ChainRule` (YAML schema + Pydantic model + engine). When set, the engine only fires if all constituent patterns match within a sliding window of that many lines. CHN-001 and CHN-002 are the first candidates (suggested: 30–50 lines), validated against the benchmark corpus before committing to values.
 
 **Acceptance criteria:** `window_lines` is parsed and respected by the engine. Existing rules without the field are unaffected. CHN-001 and CHN-002 have validated `window_lines` values. False-positive rate on the benign corpus does not increase.
+
+### Issue G4 — Paste-service-as-exfil-channel detection
+
+*Sourced from pattern-update agent feedback, March 2026 (ClawHub Havoc campaign).*
+
+The current architecture detects file access patterns (EXF-017) and secret+network co-occurrence (CHN-002), but has no way to flag "legitimate service used as exfil channel" without a blocklist approach. The ClawHub Havoc campaign uses multi-stage exfiltration where agent memory files are read and then sent to legitimate paste services (`glot.io`, `webhook.site`, `pastebin.com`, `hastebin.com`, `requestbin.com`, `pipedream.net`).
+
+The right approach is a hybrid: a maintained blocklist of known paste/webhook services combined with a proximity rule that fires when a paste-service URL appears within `window_lines` of a file read or credential access pattern. This is a stronger signal than either alone and keeps the false-positive rate low (a bare paste-service URL in a benign skill is unusual but possible; the combination with a file read is much more specific).
+
+Add a new rule pack entry `EXF-PASTE-001` with the paste-service blocklist and a proximity-aware chain rule `CHN-PASTE-001` that fires on `file_read + paste_service_url` co-occurrence within 30 lines. The paste-service blocklist should be maintained in a separate YAML file (`src/skillscan/data/rules/paste_services.yaml`) so the pattern-update agent can extend it independently.
+
+**Acceptance criteria:** `EXF-PASTE-001` fires on a skill that references a paste-service URL. `CHN-PASTE-001` fires when a paste-service URL appears within 30 lines of a file read or credential access pattern. The paste-service list is in a separate maintainable YAML. At least one adversarial fixture covers the ClawHub Havoc pattern.
 
 ---
 
@@ -172,7 +186,7 @@ The roadmap has referenced `docs/DETECTION_MODEL.md` since Milestone 4. It does 
 
 ### Issue L1 — Write docs/DETECTION_MODEL.md
 
-The document should cover: the detection pipeline stages and their order; the static rule schema and confidence calibration policy; the chain rule schema, uplift rationale policy, and (once implemented) windowed-matching semantics; the `action_patterns` classification table (`static_backed` vs `chain_only`); the local semantic classifier (NLTK/Porter stemmer, feature categories, scoring); the ML detector (base model, fine-tune pipeline, staleness policy); the AI assist layer (provider config, prompt version, snippet limits, policy integration); and the policy scoring model (severity weights, threshold semantics, hard-block rules).
+The document should cover: the detection pipeline stages and their order; the static rule schema and confidence calibration policy; the chain rule schema, uplift rationale policy, and (once implemented) windowed-matching semantics; the `action_patterns` classification table (`static_backed` vs `chain_only`); the local semantic classifier (NLTK/Porter stemmer, feature categories, scoring); the ML detector (base model, fine-tune pipeline, staleness policy); and the policy scoring model (severity weights, threshold semantics, hard-block rules).
 
 **Acceptance criteria:** `docs/DETECTION_MODEL.md` exists and covers all seven detection layers. It is linked from `README.md` and `CONTRIBUTING.md`. The `action_patterns` classification table is complete.
 
@@ -193,6 +207,69 @@ These items do not have a fixed milestone but should be addressed before a v1.0 
 **Release smoke test.** The release checklist references smoke tests but there is no automated post-release verification. Add a workflow that triggers on published releases, installs from PyPI and Docker Hub, and runs `skillscan scan tests/fixtures/malicious/openclaw_compromised_like` with an expected `block` verdict.
 
 **`docs/DETECTION_MODEL.md` referenced but missing.** Covered in Milestone 10.
+
+---
+
+## Milestone 12 — Binary Detection & Multi-Language Coverage (2 weeks)
+
+### Issue M1 — Opaque binary and unpackable archive detection
+
+The scanner currently extracts `.zip`, `.tar`, `.gz`, and `.tgz` archives and scans their contents. Any other archive or binary format (`.7z`, `.rar`, `.cab`, `.iso`, `.dmg`, `.whl`, `.nupkg`, `.jar`, `.war`, `.apk`, `.xz`, `.bz2`, `.zst`) either falls through to the binary blob classifier (`BIN-003`, if it has NUL bytes) or is silently treated as a text file. A malicious `.rar` or `.7z` containing an executable would not be extracted and would receive no warning.
+
+The fix is two-layered: (1) extend `is_archive()` to recognise all common archive magic bytes, and attempt extraction with `py7zr` / `rarfile` / `libarchive-c` when available; (2) for formats that cannot be extracted (either unsupported or password-protected), emit a new finding `BIN-OPAQUE-001` (severity: medium) with message "Archive format not extractable — contents unverified". This is a warning, not a block, but it surfaces the gap to the operator.
+
+**Acceptance criteria:** `.7z`, `.rar`, `.xz`, `.bz2`, `.zst`, `.jar`, `.whl` archives are extracted and scanned when the relevant library is available. Unextractable archives emit `BIN-OPAQUE-001`. Password-protected archives emit `BIN-OPAQUE-002`. At least one fixture per format is added to `tests/fixtures/`. The extraction libraries are optional extras (`[archives]`) so the base install stays lightweight.
+
+### Issue M2 — Multi-language static rule coverage
+
+The static rules are heavily Python/bash-centric. There is partial GitHub Actions YAML coverage but no rules for JavaScript/TypeScript, Ruby, Go, or Rust patterns that are commonly found in MCP skill files. Key gaps:
+
+- **JavaScript/TypeScript:** `eval()`, `Function()`, `child_process.exec/spawn/execSync`, `require('child_process')`, dynamic `import()` with user-controlled paths, `fs.readFileSync` on credential paths
+- **Ruby:** `` `backtick execution` ``, `system()`, `exec()`, `open()` with pipe prefix, `Kernel.eval`
+- **Go:** `os/exec.Command`, `syscall.Exec`, `plugin.Open` (dynamic loading)
+- **Rust:** `std::process::Command`, `unsafe` blocks combined with network calls
+
+Add a new rule pack `src/skillscan/data/rules/multilang.yaml` covering the highest-signal patterns for each language. Rules should be tagged with a `language` field so the scanner can filter by detected ecosystem (already implemented in `ecosystems.py`).
+
+**Acceptance criteria:** `multilang.yaml` covers JS/TS, Ruby, Go, and Rust with at least 3 rules per language. Rules are tagged with `language`. The scanner filters rules by detected ecosystem when `--ecosystem` is specified. At least one adversarial fixture per language is added. False-positive rate on benign multi-language corpus is ≤5%.
+
+---
+
+## Milestone 13 — Docs & Metadata Consolidation (1 week)
+
+Audit conducted 2026-03-18. The repository has accumulated documentation debt across three categories: stale/redundant files, metadata spread across multiple YAML rule packs, and success metrics that no longer reflect current state. This milestone captures the cleanup work; no code changes are required.
+
+### Issue M1 — Stale and redundant docs
+
+The following files are candidates for deletion or consolidation:
+
+- **`docs/RELEASE_VERIFICATION_0.2.3.md`**: a one-off release verification log for v0.2.3 with no ongoing value. Delete after confirming nothing references it.
+- **`docs/RELEASE_ONBOARDING.md`**: one-time setup instructions for Docker Hub and PyPI trusted publishing. These steps are complete. Condense into a paragraph in `docs/RELEASE_CHECKLIST.md` and delete the file.
+- **`PRD.md` (root)**: a 3-line stub pointing to `docs/PRD.md`. Delete the root stub; `docs/PRD.md` is already canonical.
+- **`docs/THREAT_MODEL.md`**: 29 lines, partially stale (still mentions "Optional AI analysis" in security posture notes). Either expand into a real threat model or absorb into `docs/DETECTION_MODEL.md` Layer 0 section.
+- **`docs/PROMPT_INJECTION_CORPUS.md`**: describes a planned corpus ingestion workflow using `lakeraai/pint-benchmark` and `liu00222/Open-Prompt-Injection`. The script (`scripts/build_prompt_injection_benchmark.py`) does not exist yet. Either implement the script or move this content into Milestone 7 and delete the file.
+- **`docs/OPENCLAW_CONTEXT.md`**: 20-line design-input note fully superseded by `docs/DETECTION_MODEL.md` and `PATTERN_UPDATES.md`. Delete.
+- **`docs/AUTOMATION_GUARDRAILS.md`**: operational instructions for the pattern-scout agent. Useful, but belongs closer to the agent workflow rather than the public docs tree. Consider moving to `scripts/` or a `.manus/` directory.
+
+### Issue M2 — Rule metadata spread across three YAML packs
+
+Rule metadata (techniques, tags, lifecycle, quality, references) is only enforced by `test_rule_metadata_guard.py` on `default.yaml`. The two satellite packs are unguarded:
+
+- **`src/skillscan/data/rules/exfil_channels.yaml`**: contains `EXF-002` and `CHN-003` with no metadata blocks. The pack also has its own `version` field and `action_patterns` section, creating a split between the main pack’s `action_patterns` and the exfil-specific ones. Preferred fix: migrate both rules into `default.yaml`, move the `exfil_channel` action pattern into `default.yaml`’s `action_patterns` block, and delete `exfil_channels.yaml`.
+- **`src/skillscan/data/rules/ast_flows.yaml`**: no static or chain rules, so no metadata issue — but the `version` field (`2026.02.09.1`) is stale and not surfaced in `skillscan rule status`.
+- **14 chain rules in `default.yaml`** currently have no metadata blocks (e.g., `CHN-001`, `CHN-002`, `CHN-004`, `CHN-005`, `ABU-002`). The metadata guard only checks `static_rules`. Extend the guard to cover `chain_rules` and backfill metadata for all chain rules.
+
+### Issue M3 — `docs/EXAMPLES.md` duplicates `examples/showcase/INDEX.md`
+
+Both files list all 86 showcase examples with rule IDs. `EXAMPLES.md` is a coverage-map table; `INDEX.md` is a numbered list with run commands. They will drift unless both are updated on every pattern PR. Consider making `EXAMPLES.md` a generated file (a script reads `INDEX.md` + `default.yaml` and writes the table) or collapsing them into one canonical source.
+
+### Issue M4 — `docs/COMMANDS.md` and `docs/SCAN_OVERVIEW.md` overlap
+
+`COMMANDS.md` is a full CLI flag reference. `SCAN_OVERVIEW.md` also documents the scan pipeline and recommended usage. There is meaningful overlap in the “recommended usage” and “flags” sections. Make `SCAN_OVERVIEW.md` the conceptual guide and `COMMANDS.md` the pure flag reference, with clear cross-links between them.
+
+### Issue M5 — Success metrics are stale
+
+The Success Metrics table uses numbers from before v0.3.2. See the updated table at the bottom of this file.
 
 ---
 
@@ -228,13 +305,15 @@ The following items from earlier roadmap drafts are explicitly deprioritized unt
 
 ## Success Metrics
 
-| Metric | Current | Target (v0.4.0) | Target (v1.0) |
+*Updated 2026-03-18 to reflect v0.3.2 actuals.*
+
+| Metric | Current (v0.3.2) | Target (v0.4.0) | Target (v1.0) |
 |---|---|---|---|
-| IOC DB entries | 21 | 200+ | 500+ (automated) |
-| Vuln DB packages | 4 | 20+ | 50+ |
-| ML corpus size | 115 | 300+ | 500+ |
-| ML adapter F1 (held-out) | unknown | ≥0.90 | ≥0.93 |
-| Static + chain rules | 84 | 90+ | 100+ |
-| Adversarial cases | 25 | 35+ | 50+ |
+| IOC DB entries | 2,031 (493 domains, 8 IPs, 1,527 CIDRs, 3 URLs) | 5,000+ (automated) | 20,000+ |
+| Vuln DB packages | 27 (23 Python + 4 npm) | 50+ | 150+ |
+| ML corpus size | 138 (54 benign + 84 injection/SE/graph) | 300+ | 500+ |
+| ML adapter F1 (held-out) | unknown (no held-out set yet) | ≥0.90 | ≥0.93 |
+| Static + chain rules | 85 (70 static + 15 chain) | 95+ | 120+ |
+| Adversarial cases | 25 | 40+ | 60+ |
 | VS Code extension | scaffolded | published | 100+ installs |
-| Time-to-first-scan | &lt;5 min | &lt;3 min | &lt;2 min |
+| Time-to-first-scan | <5 min | <3 min | <2 min |

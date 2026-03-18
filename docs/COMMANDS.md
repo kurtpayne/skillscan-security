@@ -14,14 +14,7 @@ Options:
 - `--intel-max-age-minutes`: staleness threshold before refresh (default 60)
 - `--url-max-links`: max followed links for URL targets (default 25)
 - `--url-same-origin-only/--no-url-same-origin-only`: link-following origin policy (default same-origin only)
-- `--ai-assist/--no-ai-assist`: enable optional AI semantic risk checks (default disabled)
-- `--ai-provider`: `auto|openai|anthropic|gemini|openai_compatible` (default `auto`)
-- `--ai-model`: model id override (provider-specific)
-- `--ai-base-url`: custom provider base URL (self-hosted/proxy)
-- `--ai-timeout-seconds`: AI request timeout (default 20)
-- `--ai-required/--ai-optional`: fail scan if AI assist fails (default optional)
-- `--ai-report-out`: write raw AI JSON output to file
-- `--ml-detect/--no-ml-detect`: enable ML-based prompt injection detection using the local ONNX model (default disabled; requires `skillscan model sync` first)
+- `--ml-detect/--no-ml-detect`: enable offline ML-based prompt injection detection (default disabled; requires `skillscan model sync` first; no API key or network call needed)
 - `--graph/--no-graph`: enable skill graph analysis — detects remote instruction loads, unsafe tool grants, and memory poisoning chains across all SKILL.md files in the scan root (default disabled)
 
 Examples:
@@ -31,7 +24,7 @@ skillscan scan ./examples/suspicious_skill
 skillscan scan ./artifact.zip --format json --out report.json
 skillscan scan ./artifact --profile balanced --fail-on never
 skillscan scan "https://github.com/blader/humanizer/blob/main/SKILL.md?plain=1"
-skillscan scan ./examples/showcase/20_ai_semantic_risk --ai-assist --ai-provider openai --fail-on never
+skillscan scan ./examples/showcase/20_social_engineering_credential_harvest --fail-on never
 skillscan scan ./skills/ --ml-detect --graph --format json --out report.json
 ```
 

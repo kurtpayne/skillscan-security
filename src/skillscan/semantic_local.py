@@ -20,7 +20,9 @@ class SemanticEvidence:
 class LocalPromptInjectionClassifier:
     """Local, deterministic-features semantic prompt-injection classifier.
 
-    This classifier is additive to deterministic rules and does not call external models/APIs.
+    Detects prompt-override / jailbreak / coercive-exfil patterns using stemmed
+    feature scoring.  This classifier is additive to deterministic rules and does
+    not call external models/APIs.
     """
 
     def __init__(self) -> None:
@@ -92,6 +94,105 @@ class LocalPromptInjectionClassifier:
         return SemanticEvidence(confidence=confidence, snippet=snippet)
 
 
+class SocialEngineeringClassifier:
+    """Stemmed feature classifier for social-engineering credential-harvest instructions.
+
+    Targets the attack pattern where a skill instructs the AI to solicit credentials,
+    tokens, or secrets from users using persuasion, reassurance, or urgency — without
+    any prompt-override language that would trigger the prompt-injection classifier.
+
+    Detection axes:
+      - imperative:   directive verbs aimed at the AI (request, ask, tell, instruct…)
+      - solicit:      collection verbs (paste, provide, share, send, enter, give…)
+      - credential:   target data types (token, api key, password, secret, ssh key…)
+      - social_eng:   persuasion / reassurance / pretext language (reassure, hesitate,
+                      temporary, verify, ownership, convince, legitimate…)
+      - urgency:      pressure language (urgent, immediately, required, must, cannot…)
+
+    A finding fires when imperative + solicit + credential co-occur (the core pattern)
+    and the social_eng or urgency axis adds supporting signal.
+    """
+
+    def __init__(self) -> None:
+        self._stemmer = PorterStemmer()
+        # Directive verbs: the skill is telling the AI to do something to the user
+        self._imperative_roots = {
+            "request", "ask", "tell", "instruct", "direct", "have", "prompt",
+            "convinc", "persuad", "encourag", "requir", "demand",
+        }
+        # Collection verbs: how the credential is obtained
+        self._solicit_roots = {
+            "past", "provid", "share", "send", "enter", "type", "give",
+            "suppli", "submit", "collect", "retriev", "obtain", "input",
+        }
+        # Target data types
+        self._credential_roots = {
+            "token", "credenti", "password", "passphras", "secret",
+            "apikey", "api", "key", "ssh", "privat", "access",
+        }
+        # Social engineering / pretext language
+        self._social_eng_roots = {
+            "reassur", "hesit", "temporari", "verifi", "ownership",
+            "convinc", "legitim", "trust", "onboard", "setup", "confirm",
+            "account", "authent", "identifi",
+        }
+        # Urgency / pressure language
+        self._urgency_roots = {
+            "urgent", "immedi", "must", "cannot", "requir", "mandatori",
+            "now", "quickli", "asap", "critic",
+        }
+
+    def _tokenize_and_stem(self, text: str) -> list[str]:
+        return [self._stemmer.stem(t.lower()) for t in _TOKEN_RE.findall(text)]
+
+    def classify(self, text: str) -> SemanticEvidence | None:
+        tokens = self._tokenize_and_stem(text)
+        # Minimum token count: short snippets are handled by SE-001 static rule
+        if len(tokens) < 8:
+            return None
+        roots = set(tokens)
+
+        imperative = len(roots & self._imperative_roots)
+        solicit = len(roots & self._solicit_roots)
+        credential = len(roots & self._credential_roots)
+        social_eng = len(roots & self._social_eng_roots)
+        urgency = len(roots & self._urgency_roots)
+
+        # Core pattern: imperative + solicit + credential must all be present
+        if imperative == 0 or solicit == 0 or credential == 0:
+            return None
+
+        score = 0.0
+        score += min(imperative, 2) * 0.20
+        score += min(solicit, 2) * 0.18
+        score += min(credential, 2) * 0.18
+        score += min(social_eng, 3) * 0.10
+        score += min(urgency, 2) * 0.08
+
+        # Conjunction bonuses
+        if imperative > 0 and credential > 0 and solicit > 0:
+            score += 0.15  # all three axes present
+        if social_eng > 0 and credential > 0:
+            score += 0.08  # pretext + credential target
+        if urgency > 0 and credential > 0:
+            score += 0.06  # pressure + credential target
+
+        confidence = min(round(score, 3), 0.92)
+        if confidence < 0.62:
+            return None
+
+        lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+        keyword_re = re.compile(
+            r"request|ask|tell|instruct|paste|provide|share|send|enter|give|"
+            r"token|api.?key|password|credential|secret|passphrase|private.?key|"
+            r"reassure|hesitate|temporary|verify|ownership|convince",
+            re.IGNORECASE,
+        )
+        matched = [ln for ln in lines if keyword_re.search(ln)]
+        snippet = (" | ".join(matched[:2]) if matched else lines[0])[:240]
+        return SemanticEvidence(confidence=confidence, snippet=snippet)
+
+
 def local_prompt_injection_findings(path: Path, text: str) -> list[Finding]:
     evidence = LocalPromptInjectionClassifier().classify(text)
     if evidence is None:
@@ -111,6 +212,37 @@ def local_prompt_injection_findings(path: Path, text: str) -> list[Finding]:
                 "Remove prompt-override/coercive instructions and any "
                 "secret-collection or hidden exfil intent. "
                 "Treat repository prompt text as untrusted input."
+            ),
+        )
+    ]
+
+
+def local_social_engineering_findings(path: Path, text: str) -> list[Finding]:
+    """Emit SE-SEM-001 findings for social-engineering credential-harvest patterns.
+
+    This is complementary to the SE-001 static rule: the static rule catches
+    obvious single-sentence patterns; this classifier catches multi-sentence
+    or paraphrased variants where the imperative/solicit/credential axes are
+    distributed across the text.
+    """
+    evidence = SocialEngineeringClassifier().classify(text)
+    if evidence is None:
+        return []
+
+    severity = Severity.HIGH if evidence.confidence >= 0.80 else Severity.MEDIUM
+    return [
+        Finding(
+            id="SE-SEM-001",
+            category="social_engineering",
+            severity=severity,
+            confidence=evidence.confidence,
+            title="Local semantic social-engineering credential-harvest pattern",
+            evidence_path=str(path),
+            snippet=evidence.snippet,
+            mitigation=(
+                "Remove instructions that direct the AI to solicit credentials, tokens, "
+                "or secrets from users. Use OAuth, delegated auth flows, or "
+                "environment-variable injection instead of collecting secrets in-chat."
             ),
         )
     ]

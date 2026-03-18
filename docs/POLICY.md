@@ -7,7 +7,6 @@ SkillScan ships with built-in profiles:
 3. `permissive`
 
 Custom policy files can override thresholds, rule weights, and local domain allow/block controls.
-They can also tune AI-assisted blocking behavior.
 
 Minimal custom policy example:
 
@@ -31,8 +30,6 @@ allow_domains:
   - trusted.internal.example
 block_domains:
   - blocked.example
-ai_block_on_critical: true
-ai_block_min_confidence: 0.85
 limits:
   max_files: 4000
   max_depth: 8
@@ -45,8 +42,3 @@ Use a custom policy:
 ```bash
 skillscan scan ./target --policy ./my_policy.yaml
 ```
-
-AI policy knobs:
-
-1. `ai_block_on_critical`: if `true`, high-confidence `critical` AI semantic findings can force `block`.
-2. `ai_block_min_confidence`: confidence floor (0.0-1.0) for the AI critical block path.

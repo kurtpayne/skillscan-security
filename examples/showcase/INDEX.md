@@ -21,7 +21,7 @@ Each folder demonstrates one major detection or behavior.
 17. `17_defanged_ioc`: defanged IOC normalization and extraction
 18. `18_split_base64_chain`: split base64 fragment decoding (`CHN-001`)
 19. `19_alt_download_exec`: alternate download+execute action chain (`CHN-001`)
-20. `20_ai_semantic_risk`: semantic credential-harvest wording (detected via `--ai-assist`)
+20. `20_social_engineering_credential_harvest`: social engineering credential harvest wording (SE-001 + SE-SEM-001)
 21. `21_npm_lifecycle_abuse`: malicious npm lifecycle bootstrap (`SUP-001`)
 22. `22_prompt_injection`: instruction override/jailbreak patterns (`PINJ-001`)
 23. `23_trojan_source_bidi`: bidi Unicode obfuscation markers (`OBF-001`)
@@ -68,7 +68,7 @@ Each folder demonstrates one major detection or behavior.
 skillscan scan examples/showcase/01_download_execute --fail-on never
 skillscan scan examples/showcase/05_ioc_match --fail-on never
 skillscan scan examples/showcase/09_policy_block_domain --policy examples/policies/showcase_block_domain.yaml --fail-on never
-skillscan scan examples/showcase/20_ai_semantic_risk --ai-assist --fail-on never
+skillscan scan examples/showcase/20_social_engineering_credential_harvest --fail-on never
 skillscan scan examples/showcase/21_npm_lifecycle_abuse --fail-on never
 skillscan scan examples/showcase/27_github_actions_secrets_exfil --fail-on never
 skillscan scan examples/showcase/28_npx_registry_fallback --fail-on never

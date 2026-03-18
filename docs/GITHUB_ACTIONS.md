@@ -52,7 +52,7 @@ All inputs are optional except `scan-path`.
 | `rulepack-channel` | string | `stable` | Rulepack channel: `stable`, `preview`, or `labs`. |
 | `upload-sarif` | boolean | `true` | Upload SARIF to the GitHub Security tab. |
 | `sarif-category` | string | `skillscan-security` | Category for SARIF upload (differentiates multiple tools). |
-| `extra-args` | string | `""` | Additional CLI flags (e.g., `--ai-assist --clamav`). |
+| `extra-args` | string | `""` | Additional CLI flags (e.g., `--ml-detect --graph --clamav`). |
 | `skillscan-version` | string | `""` | PyPI version constraint (e.g., `>=0.3.1`). Empty means latest. |
 
 ## Examples

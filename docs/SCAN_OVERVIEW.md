@@ -5,9 +5,9 @@ This guide explains what SkillScan checks, why each check is useful, and how saf
 ## Design principles
 
 1. Untrusted input by default.
-2. Static analysis first.
+2. Static analysis first — no API keys, no network calls, no telemetry.
 3. Deterministic policy verdicting.
-4. Optional AI assistance, never code execution.
+4. Optional offline ML detection for deeper semantic coverage.
 
 ## End-to-end scan stages
 
@@ -31,6 +31,7 @@ This guide explains what SkillScan checks, why each check is useful, and how saf
 - Action extraction and chain detection (download+execute, secret+network, privilege+disable-security).
 - Python AST dataflow checks for secret-to-network and dynamic exec flows.
 - Prompt-injection/jailbreak wording checks.
+- Social engineering credential harvest checks (`SE-001`).
 - Subshell/encoded execution pattern checks.
 - npm lifecycle hook abuse checks.
 - Bidirectional Unicode obfuscation checks (Trojan Source style).
@@ -43,55 +44,47 @@ This guide explains what SkillScan checks, why each check is useful, and how saf
 6. Capability inference:
 - Identifies shell/network/filesystem-write capabilities for analyst context.
 
-7. Optional AI semantic analysis (`--ai-assist`):
-- Looks for semantic/social-engineering risk not easily captured by string patterns.
-- Operates on bounded text snippets and local finding summaries.
-- Adds `AI-SEM-*` findings with evidence and mitigations.
+7. Offline semantic analysis:
+- `LocalPromptInjectionClassifier`: stem-and-score classifier for prompt injection/override language.
+- `SocialEngineeringClassifier`: stem-and-score classifier for credential solicitation patterns.
+- Adds `PINJ-SEM-001` and `SE-SEM-001` findings when scores exceed thresholds.
+- Fully offline — no model download, no API key, no network call.
 
-8. Scoring and verdict:
+8. Optional offline ML detection (`--ml-detect`):
+- Runs `protectai/deberta-v3-base-prompt-injection-v2` via ONNX or torch.
+- Catches nuanced instruction-intent risks not captured by string patterns.
+- Requires `pip install skillscan-security[ml-onnx]` and `skillscan model sync` first.
+- Fully offline once the model is synced — no API key, no network call during scan.
+
+9. Scoring and verdict:
 - Applies policy weights/thresholds.
 - Applies hard-block rules.
-- Applies optional AI critical-block policy controls.
 
-9. Reporting:
+10. Reporting:
 - Pretty terminal output (`scan`, `explain`).
-- JSON report output for CI and automation.
-- Optional raw AI JSON output via `--ai-report-out`.
+- JSON, SARIF, JUnit, and compact output for CI and automation.
 
 ## Why this is valuable
 
 1. Catches obvious malware patterns quickly (`curl|bash`, decode-and-exec).
-2. Catches instruction-layer abuse (coercive setup, security-control bypass).
+2. Catches instruction-layer abuse (coercive setup, security-control bypass, social engineering).
 3. Catches hidden/obfuscated intent through normalization + decode pipeline.
 4. Catches infra risk via IOC and vulnerability correlation.
 5. Produces consistent, explainable outputs suitable for CI gates and IR triage.
+6. Runs entirely offline — no tokens spent, no data leaves the machine.
 
 ## Safety model
 
 1. SkillScan does not execute scanned artifacts.
 2. Archive extraction is hardened against common abuse vectors.
 3. URL fetching uses explicit safety limits and flags unreadable/skipped sources.
-4. AI mode is opt-in, bounded, and prompt-hardened:
-- Snippets are wrapped as untrusted input blocks.
-- Output must be strict JSON schema.
-- AI failures degrade gracefully unless explicitly required.
-
-## What AI mode sends
-
-When enabled, SkillScan sends:
-
-1. Target identifier.
-2. Local finding summary.
-3. Bounded text snippets only (not full archive bytes).
-
-Current limits (code defaults):
-
-1. ~2200 chars per file snippet.
-2. ~24,000 chars total snippet budget.
+4. No data is sent to external services during a scan. The optional `--ml-detect` layer
+   runs inference locally using a downloaded model checkpoint.
 
 ## Recommended usage
 
-1. Default: run strict local scan first.
-2. For deeper semantic review: rerun with `--ai-assist`.
+1. Default: run strict local scan first. This is free, fast, and catches the obvious stuff.
+2. For deeper semantic coverage: add `--ml-detect` (requires one-time model sync).
 3. In CI: use `--fail-on block` and store JSON artifacts.
-4. For investigations: include `--ai-report-out` and keep reports with case notes.
+4. As a pre-filter: run SkillScan before sending skills to online scanners (Invariant,
+   Lakera Guard, etc.) to eliminate easy wins and reduce token spend.

@@ -77,7 +77,7 @@ on:
       extra-args:
         description: >
           Additional CLI arguments passed directly to `skillscan scan`.
-          Example: "--ai-assist --clamav"
+          Example: "--ml-detect --graph --clamav"
         required: false
         type: string
         default: ""

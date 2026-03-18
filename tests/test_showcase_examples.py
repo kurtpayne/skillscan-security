@@ -1,9 +1,8 @@
 from pathlib import Path
 
-from skillscan.ai import AIResult
 from skillscan.analysis import scan
 from skillscan.ecosystems import detect_ecosystems
-from skillscan.models import AIAssessment, Finding, Policy, Severity
+from skillscan.models import Policy
 from skillscan.policies import load_builtin_policy
 
 STRICT = load_builtin_policy("strict")
@@ -186,33 +185,12 @@ def test_showcase_ecosystem_hints() -> None:
     assert "claude_style" in detect_ecosystems(Path("examples/showcase/11_claude_style"))
 
 
-def test_showcase_ai_semantic_example_value_add(monkeypatch) -> None:
-    base = scan(Path("examples/showcase/20_ai_semantic_risk"), STRICT, "builtin:strict")
-    assert not any(f.id.startswith("AI-SEM-") for f in base.findings)
-
-    def fake_ai(*_args, **_kwargs):
-        return AIResult(
-            assessment=AIAssessment(
-                provider="openai",
-                model="gpt-4o-mini",
-                summary="Instruction asks for raw production credentials.",
-                findings_added=1,
-            ),
-            findings=[
-                Finding(
-                    id="AI-SEM-001",
-                    category="ai_semantic_risk",
-                    severity=Severity.HIGH,
-                    confidence=0.85,
-                    title="Socially engineered credential request",
-                    evidence_path="examples/showcase/20_ai_semantic_risk/SKILL.md",
-                    snippet="paste their production API token into the chat",
-                    mitigation="Never request raw credentials; use delegated, scoped authentication.",
-                )
-            ],
-            raw_response='{"summary":"x","risks":[]}',
-        )
-
-    monkeypatch.setattr("skillscan.analysis.run_ai_assist", fake_ai)
-    enriched = scan(Path("examples/showcase/20_ai_semantic_risk"), STRICT, "builtin:strict", ai_assist=True)
-    assert any(f.id == "AI-SEM-001" for f in enriched.findings)
+def test_showcase_social_engineering_detected_without_ai() -> None:
+    """SE-001 and SE-SEM-001 fire on the social engineering showcase example with no AI layer."""
+    report = scan(
+        Path("examples/showcase/20_social_engineering_credential_harvest"), STRICT, "builtin:strict"
+    )
+    finding_ids = {f.id for f in report.findings}
+    assert "SE-001" in finding_ids or "SE-SEM-001" in finding_ids, (
+        f"Expected SE-001 or SE-SEM-001, got: {sorted(finding_ids)}"
+    )

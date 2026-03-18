@@ -74,13 +74,6 @@ class Capability(BaseModel):
     detail: str
 
 
-class AIAssessment(BaseModel):
-    provider: str
-    model: str
-    summary: str
-    findings_added: int
-    prompt_version: str = "v1"
-
 
 class ScanMetadata(BaseModel):
     scanner_version: str
@@ -102,7 +95,6 @@ class ScanReport(BaseModel):
     iocs: list[IOC]
     dependency_findings: list[DependencyFinding]
     capabilities: list[Capability]
-    ai_assessment: AIAssessment | None = None
 
     def to_json(self) -> str:
         return self.model_dump_json(indent=2)
@@ -116,8 +108,6 @@ class Policy(BaseModel):
     hard_block_rules: list[str]
     allow_domains: list[str] = Field(default_factory=list)
     block_domains: list[str] = Field(default_factory=list)
-    ai_block_on_critical: bool = True
-    ai_block_min_confidence: float = Field(default=0.85, ge=0.0, le=1.0)
     block_min_confidence: float = Field(default=0.0, ge=0.0, le=1.0)
     limits: dict[str, int] = Field(
         default_factory=lambda: {

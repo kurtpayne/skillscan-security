@@ -10,7 +10,6 @@ from rich.console import Console
 from rich.panel import Panel
 
 from skillscan import __version__
-from skillscan.ai import load_dotenv
 from skillscan.analysis import ScanError, scan
 from skillscan.compact import report_to_compact_text
 from skillscan.intel import (
@@ -29,6 +28,22 @@ from skillscan.render import render_report
 from skillscan.rules import load_builtin_rulepack
 from skillscan.sarif import report_to_sarif
 from skillscan.suppressions import apply_suppressions
+
+
+# load_dotenv: reads KEY=VALUE pairs from a .env file into os.environ (no-op if absent)
+def _load_dotenv(path: Path = Path(".env")) -> None:
+    import os as _os
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        raw = line.strip()
+        if not raw or raw.startswith("#") or "=" not in raw:
+            continue
+        key, value = raw.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in _os.environ:
+            _os.environ[key] = value
 
 app = typer.Typer(help="SkillScan: standalone AI skill security analyzer")
 policy_app = typer.Typer(help="Policy operations")
@@ -197,44 +212,6 @@ def scan_cmd(
         "--url-same-origin-only/--no-url-same-origin-only",
         help="Only follow links on same origin as root URL target",
     ),
-    ai_assist: bool = typer.Option(
-        False,
-        "--ai-assist/--no-ai-assist",
-        help="Enable optional AI semantic risk analysis (off by default)",
-    ),
-    extended_ai_checks: bool | None = typer.Option(
-        None,
-        "--extended-ai-checks/--no-extended-ai-checks",
-        help="Deprecated alias for --ai-assist",
-        hidden=True,
-    ),
-    ai_provider: str = typer.Option(
-        "auto",
-        "--ai-provider",
-        help="AI provider: auto|openai|anthropic|gemini|openai_compatible",
-    ),
-    ai_model: str | None = typer.Option(None, "--ai-model", help="AI model name"),
-    ai_base_url: str | None = typer.Option(
-        None,
-        "--ai-base-url",
-        help="Optional custom API base URL (for self-hosted or proxy endpoints)",
-    ),
-    ai_timeout_seconds: int = typer.Option(20, "--ai-timeout-seconds", help="AI request timeout in seconds"),
-    ai_required: bool = typer.Option(
-        False,
-        "--ai-required/--ai-optional",
-        help="Fail scan if AI assist is requested but unavailable",
-    ),
-    ai_non_blocking: bool = typer.Option(
-        False,
-        "--ai-non-blocking/--ai-blocking",
-        help="Treat AI semantic findings as advisory only (cannot produce BLOCK verdict)",
-    ),
-    ai_report_out: Path | None = typer.Option(
-        None,
-        "--ai-report-out",
-        help="Write raw AI JSON response to file for review/audit",
-    ),
     rulepack_channel: str = typer.Option(
         "stable",
         "--rulepack-channel",
@@ -295,9 +272,7 @@ def scan_cmd(
         help="Baseline delta output format: text|json",
     ),
 ) -> None:
-    load_dotenv()
-    if extended_ai_checks is not None:
-        ai_assist = extended_ai_checks
+    _load_dotenv()
     if policy_profile not in BUILTIN_PROFILES:
         console.print(
             f"[bold red]Invalid --policy-profile:[/] {policy_profile}. "
@@ -315,9 +290,6 @@ def scan_cmd(
         raise typer.Exit(2)
     if url_max_links < 0:
         console.print("[bold red]Invalid --url-max-links:[/] expected >= 0")
-        raise typer.Exit(2)
-    if ai_timeout_seconds < 1:
-        console.print("[bold red]Invalid --ai-timeout-seconds:[/] expected >= 1")
         raise typer.Exit(2)
     if rulepack_channel not in {"stable", "preview", "labs"}:
         console.print("[bold red]Invalid --rulepack-channel:[/] expected stable, preview, or labs")
@@ -365,14 +337,6 @@ def scan_cmd(
             policy_source,
             url_max_links=url_max_links,
             url_same_origin_only=url_same_origin_only,
-            ai_assist=ai_assist,
-            ai_provider=ai_provider,
-            ai_model=ai_model,
-            ai_base_url=ai_base_url,
-            ai_timeout_seconds=ai_timeout_seconds,
-            ai_required=ai_required,
-            ai_non_blocking=ai_non_blocking,
-            ai_report_out=ai_report_out,
             clamav=clamav,
             clamav_timeout_seconds=clamav_timeout_seconds,
             ml_detect=ml_detect,
@@ -504,11 +468,6 @@ def benchmark_cmd(
     format: str = typer.Option("text", "--format", help="Output format: text|json"),
     min_precision: float = typer.Option(0.0, "--min-precision", help="Fail if precision falls below value"),
     min_recall: float = typer.Option(0.0, "--min-recall", help="Fail if recall falls below value"),
-    ai_assist: bool = typer.Option(
-        False,
-        "--ai-assist/--no-ai-assist",
-        help="Include optional AI semantic pass during benchmark",
-    ),
 ) -> None:
     if policy_profile not in BUILTIN_PROFILES:
         console.print(
@@ -553,7 +512,6 @@ def benchmark_cmd(
                 target,
                 policy,
                 policy_source,
-                ai_assist=ai_assist,
             )
         except (ScanError, ValueError) as exc:
             console.print(f"[bold red]Benchmark scan failed for {target}:[/] {exc}")

@@ -15,7 +15,6 @@ Recommended CI gates:
 3. Minimum coverage threshold for scanner core
 
 The malicious fixtures include OpenClaw-style compromised plugin patterns reproduced in safe test data.
-AI-assist tests mock provider responses and do not require network/API keys.
 
 ## Regression fixtures
 
@@ -23,7 +22,7 @@ AI-assist tests mock provider responses and do not require network/API keys.
 2. `tests/fixtures/malicious/openclaw_compromised_like`: strict profile should block.
 3. `tests/fixtures/dependencies`: vulnerable and unpinned dependency coverage.
 4. `tests/fixtures/policy`: policy domain-block behavior.
-5. `examples/showcase/20_ai_semantic_risk`: semantic risk example used for AI-assist value-add testing.
+5. `examples/showcase/20_social_engineering_credential_harvest`: social engineering credential harvest example (SE-001 + SE-SEM-001).
 
 ## Adversarial regression corpus
 

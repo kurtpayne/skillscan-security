@@ -73,7 +73,8 @@ Teams need a local tool that:
 9. Dependency risk checks (vulnerable versions, unpinned version patterns).
 10. Capability enumeration (shell, network, filesystem write indicators).
 11. Ecosystem hint detection (OpenClaw/ClawHub, Claude-style, OpenAI-style, fallback generic).
-12. Optional AI semantic checks (opt-in) for high-signal instruction intent risks.
+12. Offline semantic classifiers for prompt injection and social engineering patterns.
+13. Optional offline ML detection (`--ml-detect`) for nuanced instruction-intent risks.
 
 ### 7.3 Policy Engine
 
@@ -98,7 +99,7 @@ Teams need a local tool that:
 2. JSON report export for automation.
 3. Explain command to render existing reports.
 4. Exit code gates via `--fail-on warn|block|never`.
-5. Optional AI-assist report export for auditability.
+5. SARIF, JUnit, and compact output formats for CI integration.
 
 ### 7.6 Install and Uninstall
 
@@ -114,7 +115,8 @@ Teams need a local tool that:
 5. `skillscan intel status|list|add|remove|enable|disable|rebuild`
 6. `skillscan uninstall [--keep-data]`
 7. `skillscan version`
-8. AI scan flags on `scan`: `--ai-assist`, `--ai-provider`, `--ai-model`, `--ai-base-url`, `--ai-required`.
+8. ML flags on `scan`: `--ml-detect` (requires `skillscan model sync` first).
+9. `skillscan model sync|status` for managing the local ML model checkpoint.
 
 ## 9. Data Model (Report)
 
@@ -126,7 +128,7 @@ Report includes:
 4. IOC list with list-match status.
 5. Dependency vulnerability entries.
 6. Capability entries.
-7. Optional AI assessment summary (provider/model/findings added).
+7. Semantic classifier scores and optional ML findings.
 
 ## 10. Security Model
 
@@ -170,7 +172,7 @@ Report includes:
 ### v0.3+
 
 1. Optional sandboxed behavior profile.
-2. Expanded AI provider adapters and enterprise policy controls.
+2. Corpus expansion and held-out eval set for detection quality measurement.
 
 ## 14. Success Criteria
 

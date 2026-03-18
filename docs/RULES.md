@@ -37,8 +37,10 @@ Current built-in IDs:
 23. `BIN-002` (medium): compiled library artifact detected in scanned target.
 24. `BIN-003` (medium): binary blob artifact detected in scanned target.
 25. `BIN-004` (low): Python bytecode/cache artifact detected in scanned target.
-26. `AI-SEM-*` (severity from model output): optional AI semantic risk findings (only with `--ai-assist`).
-27. `AI-UNAVAILABLE` (low): optional AI assist failed but scan continued in local-only mode.
+26. `SE-001` (high): social engineering instruction to harvest credentials or tokens from users.
+27. `PINJ-SEM-001` (medium): offline semantic prompt injection score above threshold.
+28. `SE-SEM-001` (medium): offline semantic social engineering score above threshold.
+29. `ML-PINJ-*` (severity from model output): optional offline ML-based prompt injection findings (only with `--ml-detect`).
 
 ## Instruction hardening pipeline
 
@@ -77,8 +79,8 @@ SkillScan now processes instruction text through a deterministic hardening pipel
 23. `BIN-002`: Validate compiled library hashes/signatures against trusted release metadata.
 24. `BIN-003`: Manually inspect binary blobs and replace with transparent source artifacts when possible.
 25. `BIN-004`: Confirm bytecode corresponds to reviewed source and cannot hide unreviewed logic.
-26. `AI-SEM-*`: Validate semantic risk evidence and apply mitigation steps before trusting the artifact.
-27. `AI-UNAVAILABLE`: Configure AI provider credentials or continue with deterministic local-only coverage.
+26. `SE-001`: Remove credential-solicitation instructions; never ask users to provide tokens, passwords, or session cookies in skill instructions.
+27. `PINJ-SEM-001` / `SE-SEM-001`: Review instruction text for covert credential-harvest or override language; remove or rewrite the flagged section.
 
 ## Capability inference rules
 
@@ -122,10 +124,9 @@ Final score is the sum of `severity_score * policy_category_weight`.
 ## Verdict order
 
 1. If any hard-block rule is present => `block`
-2. Else if `ai_block_on_critical` is enabled and a `critical` AI semantic finding meets confidence threshold => `block`
-3. Else if score >= block threshold => `block`
-4. Else if score >= warn threshold => `warn`
-5. Else => `allow`
+2. Else if score >= block threshold => `block`
+3. Else if score >= warn threshold => `warn`
+4. Else => `allow`
 
 ## Rule metadata and query
 

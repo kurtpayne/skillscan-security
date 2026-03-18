@@ -172,17 +172,31 @@ The skill graph layer detects cross-skill and agent-level abuse patterns that si
 
 ---
 
-## Layer 8 — AI Semantic Assist
+## Layer 8 — Scoring and Risk Bands
 
-**Module:** `skillscan.ai`
-**Rule IDs:** `AI-*` (provider-assigned), `AI-UNAVAILABLE`
-**Enabled by:** `--ai` flag
+**Module:** `skillscan.analysis` (scoring logic)
+**Rule IDs:** N/A (produces verdict, not findings)
 
-The AI assist layer sends the skill bundle content and all deterministic findings to a configured LLM (OpenAI, Anthropic, or any OpenAI-compatible endpoint) and asks it to identify additional high-signal security risks that the deterministic layers may have missed. The LLM is instructed to focus on semantic intent in natural-language instructions and multi-step abuse narratives.
+The scoring layer aggregates all findings from layers 1–7 and produces a final risk score and verdict band. Findings are weighted by severity and source layer. Hard-block rules (`block` verdict) override the numeric score and immediately produce a `block` verdict regardless of total score.
 
-The AI layer is explicitly sandboxed: the system prompt instructs the model to treat all scanned content as untrusted data and to never execute code, follow links, or act on embedded directives. The model is asked to output strictly valid JSON conforming to the `AIAssessment` schema.
+| Band | Score Range | Verdict |
+|------|-------------|--------|
+| Clean | 0 | `pass` |
+| Low | 1–29 | `pass` |
+| Medium | 30–59 | `warn` |
+| High | 60–89 | `warn` |
+| Critical | 90+ | `block` |
 
-AI findings are appended to the deterministic findings and included in the final report. They are clearly tagged with their source (`ai_assist: true`) so consumers can filter them separately.
+Any finding with `block: true` in its rule definition produces an immediate `block` verdict. The numeric score is still computed and reported for analyst context.
+
+### Optional Offline ML Detection
+
+**Module:** `skillscan.detectors.ml`
+**Rule IDs:** `ML-PINJ-*`
+**Enabled by:** `--ml-detect` flag
+**Requires:** `pip install skillscan-security[ml-onnx]` and `skillscan model sync`
+
+The optional ML layer runs `protectai/deberta-v3-base-prompt-injection-v2` locally via ONNX Runtime (CPU) or torch (GPU). It scores each instruction block for prompt injection intent and emits `ML-PINJ-*` findings above threshold. The model runs entirely offline once synced — no API key, no network call during scan.
 
 ---
 

@@ -16,7 +16,6 @@ from pathlib import Path
 from typing import cast
 
 from skillscan import __version__
-from skillscan.ai import AIAssistError, AIConfig, run_ai_assist
 from skillscan.clamav import scan_paths as clamav_scan_paths
 from skillscan.detectors.ast_flows import detect_python_ast_flows
 from skillscan.ecosystems import detect_ecosystems
@@ -24,7 +23,6 @@ from skillscan.intel import load_store
 from skillscan.ml_detector import ml_prompt_injection_findings
 from skillscan.models import (
     IOC,
-    AIAssessment,
     Capability,
     DependencyFinding,
     Finding,
@@ -37,7 +35,7 @@ from skillscan.models import (
 )
 from skillscan.remote import RemoteFetchError, fetch_remote_target, is_url_target
 from skillscan.rules import CompiledRulePack, load_compiled_builtin_rulepack
-from skillscan.semantic_local import local_prompt_injection_findings
+from skillscan.semantic_local import local_prompt_injection_findings, local_social_engineering_findings
 
 URL_RE = re.compile(r"https?://[^\s\"'<>]+", re.IGNORECASE)
 IP_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
@@ -604,14 +602,6 @@ def scan(
     url_max_links: int = 25,
     url_timeout_seconds: int = 12,
     url_same_origin_only: bool = True,
-    ai_assist: bool = False,
-    ai_provider: str = "auto",
-    ai_model: str | None = None,
-    ai_base_url: str | None = None,
-    ai_timeout_seconds: int = 20,
-    ai_required: bool = False,
-    ai_non_blocking: bool = False,
-    ai_report_out: Path | None = None,
     clamav: bool = False,
     clamav_timeout_seconds: int = 30,
     ml_detect: bool = False,
@@ -639,8 +629,6 @@ def scan(
         iocs: list[IOC] = []
         capabilities: list[Capability] = []
         dependency_findings: list[DependencyFinding] = []
-        ai_assessment: AIAssessment | None = None
-
         vuln_db = _load_builtin_vuln_db()
         ioc_db = _load_builtin_ioc_db()
         ioc_db, vuln_db, intel_sources = _merge_user_intel(ioc_db, vuln_db)
@@ -704,6 +692,7 @@ def scan(
                         break
 
             findings.extend(local_prompt_injection_findings(path, analysis_text))
+            findings.extend(local_social_engineering_findings(path, analysis_text))
             if ml_detect:
                 findings.extend(ml_prompt_injection_findings(path, analysis_text))
 
@@ -941,45 +930,6 @@ def scan(
             from skillscan.detectors.skill_graph import skill_graph_findings
             findings.extend(skill_graph_findings(prepared.root))
 
-        if ai_assist:
-            try:
-                ai_result = run_ai_assist(
-                    AIConfig(
-                        provider=ai_provider,
-                        model=ai_model,
-                        base_url=ai_base_url,
-                        timeout_seconds=ai_timeout_seconds,
-                        required=ai_required,
-                    ),
-                    target=str(target),
-                    root=prepared.root,
-                    files=files,
-                    findings=findings,
-                )
-                findings.extend(ai_result.findings)
-                ai_assessment = ai_result.assessment
-                if ai_report_out is not None:
-                    ai_report_out.parent.mkdir(parents=True, exist_ok=True)
-                    ai_report_out.write_text(ai_result.raw_response, encoding="utf-8")
-            except AIAssistError as exc:
-                if ai_required:
-                    raise ScanError(f"AI assist failed: {exc}") from exc
-                findings.append(
-                    Finding(
-                        id="AI-UNAVAILABLE",
-                        category="source_access",
-                        severity=Severity.LOW,
-                        confidence=1.0,
-                        title="AI assist unavailable",
-                        evidence_path=str(target),
-                        snippet=str(exc)[:220],
-                        mitigation=(
-                            "Configure AI provider settings/API key to enable semantic checks, "
-                            "or use local-only scanning."
-                        ),
-                    )
-                )
-
         score = 0
         block_score = 0
         for finding in findings:
@@ -987,22 +937,11 @@ def scan(
             contribution = SEVERITY_SCORE[finding.severity] * weight
             score += contribution
             if finding.confidence >= policy.block_min_confidence:
-                if ai_non_blocking and finding.category == "ai_semantic_risk":
-                    continue
                 block_score += contribution
-
-        ai_critical_block = (not ai_non_blocking) and any(
-            f.category == "ai_semantic_risk"
-            and f.severity == Severity.CRITICAL
-            and f.confidence >= policy.ai_block_min_confidence
-            for f in findings
-        )
 
         if any(
             f.id in policy.hard_block_rules and f.confidence >= policy.block_min_confidence for f in findings
         ):
-            verdict = Verdict.BLOCK
-        elif policy.ai_block_on_critical and ai_critical_block:
             verdict = Verdict.BLOCK
         elif block_score >= policy.thresholds["block"]:
             verdict = Verdict.BLOCK
@@ -1030,7 +969,6 @@ def scan(
             iocs=iocs,
             dependency_findings=dependency_findings,
             capabilities=capabilities,
-            ai_assessment=ai_assessment,
         )
     finally:
         if prepared.cleanup_dir is not None:

@@ -9,9 +9,10 @@
 5. IOC extraction and local intel correlation.
 6. Dependency vulnerability and unpinned version checks.
 7. Capability inference.
-8. Optional AI semantic analysis (`--ai-assist`) for instruction-intent risks.
-9. Policy scoring and verdicting.
-10. Report generation and output rendering.
+8. Semantic local analysis (social engineering, prompt injection scoring).
+9. Optional offline ML analysis (`--ml-detect`) for nuanced instruction-intent risks.
+10. Policy scoring and verdicting.
+11. Report generation and output rendering.
 
 ## Core modules
 
@@ -20,7 +21,8 @@
 - `src/skillscan/policies.py`: built-in/custom policy loading
 - `src/skillscan/rules.py`: YAML rulepack loading, validation, and regex compilation
 - `src/skillscan/intel.py`: local intel source management
-- `src/skillscan/ai.py`: optional provider-backed AI semantic checks + hardened prompt
+- `src/skillscan/semantic_local.py`: offline semantic classifiers (prompt injection, social engineering)
+- `src/skillscan/ml_detector.py`: optional offline ML inference via ONNX/torch (`--ml-detect`)
 - `src/skillscan/ecosystems.py`: ecosystem hint detection
 - `src/skillscan/models.py`: report/policy data models
 - `src/skillscan/render.py`: formatted terminal rendering
@@ -36,4 +38,4 @@
 
 ## Determinism notes
 
-Given identical input, policy, and intel source set, scan outputs are deterministic.
+Given identical input, policy, and intel source set, scan outputs are deterministic. The optional `--ml-detect` layer is also deterministic for a given model checkpoint, but results may differ across model versions.
