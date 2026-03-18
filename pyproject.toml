@@ -5,10 +5,30 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "skillscan-security"
 version = "0.3.1"
-description = "Standalone AI skill security scanner"
+description = "Standalone AI skill security scanner — detects prompt injection, tool poisoning, and supply-chain attacks in MCP skills"
 readme = "README.md"
-authors = [{name = "SkillScan"}]
+license = {text = "MIT"}
+authors = [{name = "SkillScan", email = "security@skillscan.sh"}]
 requires-python = ">=3.12"
+keywords = [
+  "security", "mcp", "ai-safety", "prompt-injection", "static-analysis",
+  "linter", "claude", "llm", "skill", "agent"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Testing",
+]
+
 dependencies = [
   "typer>=0.12.3",
   "rich>=13.7.1",
