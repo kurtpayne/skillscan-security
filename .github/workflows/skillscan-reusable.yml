@@ -1,0 +1,162 @@
+name: SkillScan Security Scan (Reusable)
+# Reusable workflow — call from your own repo:
+#
+#   jobs:
+#     security:
+#       uses: kurtpayne/skillscan-security/.github/workflows/skillscan-reusable.yml@main
+#       with:
+#         fail-on: warn
+#         paths: "skills/"
+#         extra-args: "--ml-detect"
+
+on:
+  workflow_call:
+    inputs:
+      fail-on:
+        description: "Minimum severity that fails the check (block|warn|info)"
+        type: string
+        default: "warn"
+        required: false
+      paths:
+        description: "Path(s) to scan"
+        type: string
+        default: "."
+        required: false
+      extra-args:
+        description: "Additional arguments to pass to skillscan scan"
+        type: string
+        default: ""
+        required: false
+      python-version:
+        description: "Python version to use"
+        type: string
+        default: "3.12"
+        required: false
+      skillscan-version:
+        description: "skillscan-security version to install (default: latest)"
+        type: string
+        default: ""
+        required: false
+    outputs:
+      verdict:
+        description: "Overall scan verdict: allow | warn | block"
+        value: ${{ jobs.scan.outputs.verdict }}
+      finding-count:
+        description: "Total number of findings"
+        value: ${{ jobs.scan.outputs.finding-count }}
+
+jobs:
+  scan:
+    name: SkillScan Security
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    outputs:
+      verdict: ${{ steps.scan.outputs.verdict }}
+      finding-count: ${{ steps.scan.outputs.finding-count }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install skillscan-security
+        run: |
+          if [ -n "${{ inputs.skillscan-version }}" ]; then
+            pip install "skillscan-security==${{ inputs.skillscan-version }}"
+          else
+            pip install skillscan-security
+          fi
+
+      - name: Run scan
+        id: scan
+        run: |
+          set +e
+          skillscan scan ${{ inputs.paths }} \
+            --format json \
+            --output skillscan-report.json \
+            ${{ inputs.extra-args }}
+
+          VERDICT=$(python3 -c "
+          import json
+          try:
+              r = json.load(open('skillscan-report.json'))
+              print(r.get('verdict', 'allow'))
+          except Exception:
+              print('allow')
+          ")
+          FINDINGS=$(python3 -c "
+          import json
+          try:
+              r = json.load(open('skillscan-report.json'))
+              print(len(r.get('findings', [])))
+          except Exception:
+              print(0)
+          ")
+
+          echo "verdict=$VERDICT" >> $GITHUB_OUTPUT
+          echo "finding-count=$FINDINGS" >> $GITHUB_OUTPUT
+
+          echo "### SkillScan Security Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Verdict | \`$VERDICT\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Findings | $FINDINGS |" >> $GITHUB_STEP_SUMMARY
+
+          FAIL_ON="${{ inputs.fail-on }}"
+          SHOULD_FAIL=0
+          if [ "$FAIL_ON" = "info" ] && [ "$VERDICT" != "allow" ]; then
+            SHOULD_FAIL=1
+          elif [ "$FAIL_ON" = "warn" ] && { [ "$VERDICT" = "warn" ] || [ "$VERDICT" = "block" ]; }; then
+            SHOULD_FAIL=1
+          elif [ "$FAIL_ON" = "block" ] && [ "$VERDICT" = "block" ]; then
+            SHOULD_FAIL=1
+          fi
+          exit $SHOULD_FAIL
+
+      - name: Convert to SARIF
+        if: always()
+        run: |
+          python3 - <<'PYEOF'
+          import json
+          try:
+              report = json.load(open('skillscan-report.json'))
+          except Exception:
+              report = {'findings': []}
+          sarif = {
+              '$schema': 'https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json',
+              'version': '2.1.0',
+              'runs': [{
+                  'tool': {'driver': {'name': 'skillscan-security', 'informationUri': 'https://skillscan.sh', 'rules': []}},
+                  'results': [{
+                      'ruleId': f.get('rule_id', 'UNKNOWN'),
+                      'message': {'text': f.get('message', '')},
+                      'level': {'block': 'error', 'warn': 'warning'}.get(f.get('severity', 'info'), 'note'),
+                      'locations': [{'physicalLocation': {'artifactLocation': {'uri': f.get('path', 'unknown')}, 'region': {'startLine': f.get('line', 1)}}}]
+                  } for f in report.get('findings', [])]
+              }]
+          }
+          json.dump(sarif, open('skillscan-results.sarif', 'w'), indent=2)
+          PYEOF
+
+      - name: Upload SARIF to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: skillscan-results.sarif
+          category: skillscan-security
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skillscan-report
+          path: |
+            skillscan-report.json
+            skillscan-results.sarif
+          retention-days: 30
