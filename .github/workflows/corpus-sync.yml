@@ -14,7 +14,7 @@ on:
         description: "Force fine-tune even if below delta threshold"
         required: false
         default: "false"
-        type: boolean
+        type: string
 jobs:
   corpus-sync:
     name: Sync corpus manifest & evaluate delta
@@ -56,12 +56,11 @@ jobs:
           file_pattern: "corpus/manifest.json"
           commit_user_name: "skillscan-bot"
           commit_user_email: "bot@skillscan.sh"
+          push_options: "--force-with-lease"
   fine-tune:
     name: Fine-tune DeBERTa on Modal GPU (conditional)
     needs: corpus-sync
-    if: |
-      needs.corpus-sync.outputs.should_retrain == 'true' ||
-      github.event.inputs.force_retrain == 'true'
+    if: needs.corpus-sync.outputs.should_retrain == 'true' || github.event.inputs.force_retrain == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -107,6 +106,7 @@ jobs:
           file_pattern: "corpus/CORPUS_CARD.md corpus/manifest.json"
           commit_user_name: "skillscan-bot"
           commit_user_email: "bot@skillscan.sh"
+          push_options: "--force-with-lease"
       - name: Post summary
         if: always()
         run: |
