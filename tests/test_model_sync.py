@@ -3,19 +3,16 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
 
 from skillscan.model_sync import (
     STALE_AGE_DAYS,
     WARN_AGE_DAYS,
-    ModelStatus,
     check_model_age_finding,
     get_model_status,
 )
-
-UTC = timezone.utc
 
 # Aliases matching the spec names used in tests
 MODEL_WARN_DAYS = WARN_AGE_DAYS

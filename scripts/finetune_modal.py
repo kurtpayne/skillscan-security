@@ -415,7 +415,7 @@ def _update_corpus_card(
             text=True,
         ).strip()
         commit_url = (
-            f"https://github.com/kurtpayne/skillscan-security/commit/"
+            "https://github.com/kurtpayne/skillscan-security/commit/"
             + subprocess.check_output(
                 ["git", "rev-parse", "HEAD"],
                 cwd=str(corpus_dir.parent),
