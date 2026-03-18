@@ -2,7 +2,15 @@
   "domains": [
     "evil.example",
     "clawdhub1.com",
-    "malicanbur.pro"
+    "malicanbur.pro",
+    "finney.opentensor-metrics.com",
+    "finney.metagraph-stats.com",
+    "finney.subtensor-telemetry.com",
+    "opentensor-cdn.com",
+    "t.opentensor-cdn.com",
+    "serialmenot.com",
+    "crahdhduf.com",
+    "weaplink.com"
   ],
   "ips": [
     "91.92.242.30",
@@ -10,10 +18,13 @@
     "45.32.150.251",
     "45.32.151.157",
     "70.34.242.255",
-    "173.211.46.22"
+    "173.211.46.22",
+    "144.31.224.98"
   ],
   "cidrs": [],
   "urls": [
-    "https://glot.io/snippets/malicious-bootstrap"
+    "https://glot.io/snippets/malicious-bootstrap",
+    "https://fastdlvrss.s3.us-east-1.amazonaws.com",
+    "https://backupdailyawss.s3.us-east-1.amazonaws.com"
   ]
 }
