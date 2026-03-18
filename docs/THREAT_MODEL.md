@@ -25,5 +25,5 @@
 
 1. SkillScan does not execute scanned artifact code in default scan mode.
 2. Scanning verdicts are deterministic and do not require LLMs.
-3. Optional AI analysis is supported, remains non-executing, and is bounded by explicit prompt and snippet limits.
-4. High-confidence critical AI semantic findings can be configured to force block via policy.
+3. Optional ML-based semantic analysis (`--ml-detect`) is supported; it runs locally, is non-executing, and uses a locally-stored LoRA adapter with no external API calls.
+4. High-confidence ML semantic findings (`PINJ-ML-*`) are surfaced as `WARN` by default; policy can escalate them to `BLOCK`.

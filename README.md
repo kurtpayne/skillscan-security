@@ -376,7 +376,7 @@ Starter bundles for OpenClaw/ClawHub, Claude-style skills, and OpenAI Actions ar
 - `integrations/claude/`
 - `integrations/openai/`
 
-See `docs/PLATFORM_SKILLS.md` for setup and rollout guidance.
+See the [Platform Bundles](docs/DISTRIBUTION.md#platform-bundles) section of the Distribution Guide for setup and rollout guidance.
 
 ---
 

@@ -243,13 +243,14 @@ Audit conducted 2026-03-18. The repository has accumulated documentation debt ac
 
 The following files are candidates for deletion or consolidation:
 
-- **`docs/RELEASE_VERIFICATION_0.2.3.md`**: a one-off release verification log for v0.2.3 with no ongoing value. Delete after confirming nothing references it.
+- ~~**`docs/RELEASE_VERIFICATION_0.2.3.md`**~~: deleted 2026-03-18.
 - **`docs/RELEASE_ONBOARDING.md`**: one-time setup instructions for Docker Hub and PyPI trusted publishing. These steps are complete. Condense into a paragraph in `docs/RELEASE_CHECKLIST.md` and delete the file.
-- **`PRD.md` (root)**: a 3-line stub pointing to `docs/PRD.md`. Delete the root stub; `docs/PRD.md` is already canonical.
-- **`docs/THREAT_MODEL.md`**: 29 lines, partially stale (still mentions "Optional AI analysis" in security posture notes). Either expand into a real threat model or absorb into `docs/DETECTION_MODEL.md` Layer 0 section.
+- ~~**`PRD.md` (root)**~~: deleted 2026-03-18; `docs/PRD.md` is canonical.
+- **`docs/THREAT_MODEL.md`**: stale AI analysis notes fixed 2026-03-18. Still a candidate for expansion or absorption into `docs/DETECTION_MODEL.md` Layer 0.
 - **`docs/PROMPT_INJECTION_CORPUS.md`**: describes a planned corpus ingestion workflow using `lakeraai/pint-benchmark` and `liu00222/Open-Prompt-Injection`. The script (`scripts/build_prompt_injection_benchmark.py`) does not exist yet. Either implement the script or move this content into Milestone 7 and delete the file.
-- **`docs/OPENCLAW_CONTEXT.md`**: 20-line design-input note fully superseded by `docs/DETECTION_MODEL.md` and `PATTERN_UPDATES.md`. Delete.
-- **`docs/AUTOMATION_GUARDRAILS.md`**: operational instructions for the pattern-scout agent. Useful, but belongs closer to the agent workflow rather than the public docs tree. Consider moving to `scripts/` or a `.manus/` directory.
+- **`docs/OPENCLAW_CONTEXT.md`**: IOC seed references updated 2026-03-18. Still a candidate for deletion once DETECTION_MODEL covers the same ground.
+- ~~**`docs/AUTOMATION_GUARDRAILS.md`**~~: merged into `docs/RELEASE_CHECKLIST.md` 2026-03-18 under "Automated pattern update workflow".
+- ~~**`docs/PLATFORM_SKILLS.md`**~~: merged into `docs/DISTRIBUTION.md` 2026-03-18 under "Platform Bundles".
 
 ### Issue M2 — Rule metadata spread across three YAML packs
 

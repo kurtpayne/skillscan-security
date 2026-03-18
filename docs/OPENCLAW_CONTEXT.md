@@ -11,10 +11,4 @@ Patterns reflected in fixtures and rules:
 
 SkillScan fixtures intentionally use non-live and sanitized examples where possible to avoid distributing active malware.
 
-Current built-in IOC seeds include public examples discussed in incident reporting:
-
-- `91.92.242.30`
-- `54.91.154.110`
-- `https://glot.io/snippets/malicious-bootstrap`
-
-These seeds are for scanner behavior testing and can be replaced/extended using local intel sources.
+The built-in IOC database (`src/skillscan/data/intel/ioc_db.json`) includes seeds from public incident reporting, including IPs and URLs originally associated with OpenClaw campaigns. These are used for scanner behavior testing and can be extended via local intel sources or the automated intel-update workflow.

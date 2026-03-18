@@ -53,3 +53,42 @@ Use this checklist before creating a `vX.Y.Z` tag.
   - [ ] `cosign verify-blob` (SHA256SUMS)
   - [ ] `cosign verify` (container image)
   - [ ] `cosign verify-attestation --type spdxjson` (container SBOM attestation)
+
+---
+
+## Automated pattern update workflow
+
+The following rules apply to all automated pattern-update runs (see `.github/workflows/intel-update.yml`).
+
+### Goals
+
+- Keep `main` clean at all times.
+- Make updates deterministic, auditable, and reviewable.
+- Prevent partial or dirty updates when a run fails.
+
+### Required workflow
+
+1. **Pre-flight checks** — ensure repo is on `main` and clean; pull latest `origin/main`; if dirty, stash and exit without editing files.
+2. **Isolated branch execution** — create a branch `chore/pattern-update-YYYYMMDD-<rand4hex>`; perform all research, edits, tests, and commits on this branch; never edit files directly on `main`.
+3. **Validation gate** — must pass (repo venv only):
+   - `.venv/bin/ruff check src tests`
+   - `.venv/bin/pytest -q`
+   - Recommended local wrapper: `TIMEOUT_SECONDS=900 ./scripts/run_local_validation.sh`
+   - CI includes the `Pattern Update Guard` workflow with additional policy checks.
+4. **PR-first integration** — push branch and open PR to `main`; merge only after CI passes and review is complete.
+5. **Failure handling** — if no update is warranted, delete the temporary branch and return to `main`; if validation fails, return to `main` and keep failure output in the summary; if PR creation fails, keep the branch for manual recovery but return to `main`.
+
+### CI policy checks (triggered when `default.yaml` changes)
+
+- Version bump present in `default.yaml`
+- At least one new rule ID in the diff
+- Tests updated (`tests/test_rules.py`, `tests/test_showcase_examples.py`)
+- Showcase fixture updated under `examples/showcase/*`
+- Docs index updated (`docs/EXAMPLES.md`, `examples/showcase/INDEX.md`)
+- Rationale entry added (`docs/RULE_UPDATES.md` or `PATTERN_UPDATES.md`)
+
+### Operational notes
+
+- Keep updates small — prefer one coherent pattern set per PR.
+- Include source links in PR description and changelog entries.
+- Prefer no-change exits over speculative or low-confidence rules.

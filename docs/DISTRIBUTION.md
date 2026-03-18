@@ -123,6 +123,20 @@ docker pull <image>:<previous-tag>
 
 ---
 
+## Platform Bundles
+
+SkillScan ships starter integration bundles for exposing it as a reusable skill or tool across multiple agent ecosystems. These are templates — you still need to host the SkillScan binary or Python environment where the platform can execute commands.
+
+| Bundle | Location | Notes |
+|---|---|---|
+| OpenClaw / ClawHub | `integrations/openclaw/SKILL.md` | OpenClaw-style skill wrapper |
+| Claude | `integrations/claude/CLAUDE.md` + `integrations/claude/claude_skill.yaml` | Claude skill definition and instructions |
+| OpenAI Actions | `integrations/openai/openapi.json` + `integrations/openai/gpt_actions.json` | Requires an HTTP wrapper service with a real server URL |
+
+Suggested rollout: start with read-only scan flows (`--fail-on never`, JSON output), add policy gating after validating false-positive rates, and keep rules updated via regular PRs to `src/skillscan/data/rules/default.yaml`.
+
+---
+
 See also: `docs/RELEASE_ONBOARDING.md` for first-time account and publisher setup.
 
 ## Release Automation Notes
