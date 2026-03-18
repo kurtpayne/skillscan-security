@@ -139,6 +139,14 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "CHN-014" for f in findings_81)
     findings_82 = _scan("examples/showcase/82_solana_rpc_c2_resolution").findings
     assert any(f.id == "MAL-029" for f in findings_82)
+    findings_83 = _scan("examples/showcase/83_cursorjack_mcp_deeplink").findings
+    assert any(f.id == "MAL-030" for f in findings_83)
+    findings_84 = _scan("examples/showcase/84_deno_byor_execution").findings
+    assert any(f.id == "MAL-031" for f in findings_84)
+    findings_85 = _scan("examples/showcase/85_glassworm_persistence_marker").findings
+    assert any(f.id == "MAL-032" for f in findings_85)
+    findings_86 = _scan("examples/showcase/86_media_directive_injection").findings
+    assert any(f.id == "PINJ-002" for f in findings_86)
 
 
 def test_showcase_policy_block_domain() -> None:
