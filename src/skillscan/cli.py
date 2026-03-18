@@ -138,6 +138,43 @@ def rule_list(
         console.print(f"  category={row['category']} techniques={t} tags={g}")
 
 
+@rule_app.command("sync")
+def rule_sync(
+    force: bool = typer.Option(False, "--force", help="Force download even if rules are fresh"),
+    ttl: int = typer.Option(3600, "--ttl", help="Cache TTL in seconds"),
+) -> None:
+    """Pull the latest rule signatures from GitHub without reinstalling the package."""
+    from skillscan.rules_sync import sync_rules
+
+    result = sync_rules(force=force, ttl=ttl)
+    if result.updated:
+        console.print(f"[green]Updated:[/] {', '.join(result.updated)}")
+    if result.skipped:
+        console.print(f"[dim]Skipped (fresh):[/] {', '.join(result.skipped)}")
+    if result.errors:
+        console.print(f"[red]Errors:[/] {', '.join(result.errors)}")
+        raise typer.Exit(1)
+    if not result.updated and not result.errors:
+        console.print("[dim]Rules are up to date.[/]")
+
+
+@rule_app.command("status")
+def rule_status() -> None:
+    """Show the current rule signature versions (bundled vs. user-local)."""
+    from skillscan.rules_sync import USER_RULES_DIR, user_rules_version
+
+    rp = load_builtin_rulepack(channel="stable")
+    bundled_version = rp.version.split("+")[0]
+    user_version = user_rules_version()
+    console.print(f"Bundled rules version : {bundled_version}")
+    if user_version:
+        console.print(f"User-local version    : {user_version} ({USER_RULES_DIR})")
+    else:
+        console.print("User-local rules      : not synced (run 'skillscan rule sync')")
+    total = len(rp.static_rules)
+    console.print(f"Total static rules    : {total}")
+
+
 @app.command("scan")
 def scan_cmd(
     target: str = typer.Argument(..., help="Local path or URL to scan"),
@@ -302,7 +339,12 @@ def scan_cmd(
                 f"[dim]intel refresh updated={stats['updated']} "
                 f"skipped={stats['skipped']} errors={stats['errors']}[/dim]"
             )
+    # Auto-sync rule signatures (signature-as-data layer, same TTL as intel)
+    from skillscan.rules_sync import maybe_sync_rules
 
+    rules_result = maybe_sync_rules(max_age_seconds=intel_max_age_minutes * 60)
+    if rules_result.updated:
+        console.print(f"[dim]rules refresh updated={len(rules_result.updated)}[/dim]")
     try:
         report = scan(
             target,

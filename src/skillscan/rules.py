@@ -144,6 +144,25 @@ def load_builtin_rulepack(channel: str = "stable") -> RulePack:
     files = sorted([p for p in rules_dir.iterdir() if p.name.endswith(".yaml")], key=lambda p: p.name)
     files = _filter_rule_files_for_channel(files, channel)
     rulepacks = [_load_yaml_rule_file(p.read_text(encoding="utf-8")) for p in files]
+
+    # Merge user-local rules on top of bundled rules (signature-as-data layer).
+    # User-local rules are downloaded by `skillscan rules sync` and live in
+    # ~/.skillscan/rules/. They extend the bundled set; rule IDs in both use
+    # the user-local (newer) version because _merge_rulepacks appends them last
+    # and analysis picks the last match for duplicate IDs.
+    try:
+        from skillscan.rules_sync import get_user_rules_dir  # avoid circular at module level
+
+        user_dir = get_user_rules_dir()
+        if user_dir is not None:
+            user_files = sorted(user_dir.glob("*.yaml"), key=lambda p: p.name)
+            user_files = _filter_rule_files_for_channel(list(user_files), channel)
+            if user_files:
+                user_rulepacks = [_load_yaml_rule_file(p.read_text(encoding="utf-8")) for p in user_files]
+                rulepacks = rulepacks + user_rulepacks
+    except Exception:  # pragma: no cover — network/fs errors must never block scan
+        pass
+
     return _merge_rulepacks(rulepacks)
 
 
