@@ -278,20 +278,13 @@ The Success Metrics table uses numbers from before v0.3.2. See the updated table
 
 A live feed of scan results for popular public skills, surfaced on the website. The goal is to make SkillScan's detection coverage tangible to visitors — showing real findings on real skills is more persuasive than any benchmark table.
 
-### Execution model options
+### Execution model
 
-The feed is fundamentally a batch job that (1) discovers popular skills from public registries, (2) scans each one with SkillScan, (3) stores the results as a static JSON file, and (4) serves that file to the website. The website is currently a static frontend with no backend, so the execution model must be chosen carefully.
+The feed is a batch job that (1) discovers popular skills from public registries, (2) scans each one with SkillScan, (3) commits the results as `data/scan_feed.json` directly to the `skillscan-security` repo, and (4) the website fetches that file from the raw GitHub CDN URL on page load.
 
-| Option | How it works | Pros | Cons |
-|---|---|---|---|
-| **GitHub Actions cron + static JSON** | A scheduled workflow runs `skillscan scan` on a curated list of skills, writes `feed.json` to the `gh-pages` or `main` branch, website fetches it as a CDN asset | Zero infra, no cost, fits current static architecture | Cron runs are visible in the public repo; JSON file grows over time |
-| **Modal batch job** | Reuse the existing Modal fine-tune infrastructure; a daily Modal function scrapes registries, scans, and writes `feed.json` to S3 or a public Gist | Isolated execution, no repo noise, can handle larger skill sets | Requires Modal account and S3/Gist write credentials |
-| **Website backend upgrade** | Upgrade the website to `web-db-user`, add a server route that proxies scan requests and stores results in the DB; a cron job on the server runs the feed refresh | Full control, can add filtering/search/pagination | Requires backend upgrade, ongoing hosting cost, more complexity |
-| **Manus scheduled task** | A Manus agent runs on a daily schedule, scans a curated list, commits `feed.json` to the repo | Reuses existing Manus workflow, no new infra | Dependent on Manus availability; not self-contained |
+**Chosen approach: GitHub Actions cron + repo-committed JSON.** A scheduled workflow runs daily, scans a curated list of ~50 popular skills, and commits `data/scan_feed.json` back to `main`. The website fetches it from `https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/data/scan_feed.json`. This requires zero additional infrastructure, keeps the feed history auditable in git, and fits the existing static frontend architecture.
 
-**Recommended approach (Phase 1):** GitHub Actions cron + static JSON. A workflow in the `skillscan-security` repo runs daily, scans a curated list of ~50 popular skills from ClawHub and skills.sh, and writes `public/feed.json` to the website repo (or a CDN-hosted Gist). The website fetches this file on page load and renders the feed. This requires no backend and no new infrastructure.
-
-**Phase 2 (if feed grows beyond ~200 skills):** Move to Modal batch job writing to S3, with the website fetching from the CDN URL. The website upgrade to `web-db-user` is only warranted if the feed needs server-side filtering, user-submitted scan requests, or per-skill history.
+If the feed grows beyond ~200 skills, the workflow can be moved to a Modal batch job writing to S3, with the website URL updated to the CDN endpoint. The website upgrade to `web-db-user` is only warranted if the feed needs server-side filtering, user-submitted scan requests, or per-skill history.
 
 ### Issue F1 — Curated skill list and registry scraper
 
@@ -303,7 +296,7 @@ Build a script (`scripts/scrape_registries.py`) that fetches the top-N skills fr
 
 A GitHub Actions workflow (`.github/workflows/scan-feed.yml`) runs daily, iterates over `data/popular_skills.json`, runs `skillscan scan <raw_url> --format json --fail-on never` for each skill, and writes the aggregated results to `data/scan_feed.json`. The feed JSON schema should include: skill name, registry, raw URL, scan timestamp, verdict, top findings (rule ID + severity + message), and score.
 
-The feed file is committed back to the repo (or uploaded to a CDN). The website fetches it from a fixed URL.
+The feed file is committed back to `main` as `data/scan_feed.json`. The website fetches it from the raw GitHub CDN URL (`https://raw.githubusercontent.com/kurtpayne/skillscan-security/main/data/scan_feed.json`).
 
 **Acceptance criteria:** Workflow runs on schedule and on manual trigger. Feed JSON is valid and parseable. Stale entries (skills removed from registry) are pruned after 7 days. The workflow does not fail the entire run if a single skill scan errors.
 
