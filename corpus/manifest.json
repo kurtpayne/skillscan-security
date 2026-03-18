@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-18T05:36:44+00:00",
-  "total_examples": 115,
+  "last_updated": "2026-03-18T15:36:00+00:00",
+  "total_examples": 117,
   "label_counts": {
     "benign": 54,
-    "injection": 61
+    "injection": 63
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -78,6 +78,8 @@
     "malicious/a26_cursorjack_deeplink.md": "ee0008dc0ef7f851db72a63317bbe3b5c6a9718b6b427ad08ecba7bd25c6c4dc",
     "malicious/a27_deno_byor.md": "e1040d78c27a9a75e3008fe83c02f505233f91ca2d21e93af43f8a14153c414a",
     "malicious/a28_glassworm_persistence.md": "1da6de1216e076e96a2c703bd2d7b3384982e9f83e588892f8747d05a6dcd578",
+    "malicious/a29_bloktrooper_vsx.md": "1023fc85c42603ed21b005ca689d38246197f32a358d903ae6ec323e3d91297e",
+    "malicious/a30_clawhavoc_memory.md": "1b83dd18b0371abb8bae1b8679c23b9efc03bfc093ae3667bd8250d3900ddeda",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",
@@ -123,7 +125,9 @@
     "prompt_injection/pi42_eval_math_helper.md": "2da09f65ce34fa8ed4e05650d74b7d832ee6fdb014bc4d0129c3eb5b68f575a3",
     "prompt_injection/pi43_media_directive_injection.md": "07c30722b516770a16707e84ceca4bfa0d5c75d3da860965c94e1db923ec44d8"
   },
-  "last_finetune": "2026-03-18T03:16:18.032306+00:00",
-  "last_finetune_corpus_size": 119,
-  "adapter_repo": "kurtpayne/skillscan-deberta-adapter"
+  "last_finetune": {
+    "timestamp": "",
+    "corpus_size_at_finetune": 0,
+    "model_checkpoint": ""
+  }
 }

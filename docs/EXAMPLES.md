@@ -91,6 +91,8 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `84_deno_byor_execution` | Deno bring-your-own-runtime loader that decodes and executes a base64 JavaScript payload from a `data:` URL (LeakNet ransomware) | `MAL-031` |
 | `85_glassworm_persistence_marker` | GlassWorm Wave 6 persistence indicators: `lzcdrtfxyqiplpd` marker variable, `~/init.json` config, bundled `~/node-v22` runtime | `MAL-032` |
 | `86_media_directive_injection` | MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline (OpenClaw vuln GHSA-jjgj-cpp9-cvpv) | `PINJ-002` |
+| `87_bloktrooper_vsx_downloader` | Compromised Open VSX extension (`fast-draft`) that fetches a GitHub-hosted payload from `BlokTrooper/extension` and pipes it into a shell, deploying a Socket.IO RAT and infostealer | `MAL-033` |
+| `88_clawhavoc_memory_harvest` | ClawHavoc campaign harvesting OpenClaw agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement | `EXF-017` |
 ## Commands
 
 ```bash

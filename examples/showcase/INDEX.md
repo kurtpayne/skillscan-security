@@ -103,3 +103,5 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 84. `84_deno_byor_execution`: Deno bring-your-own-runtime loader that decodes and executes a base64 JavaScript payload from a `data:` URL, as seen in the LeakNet ransomware campaign (`MAL-031`)
 85. `85_glassworm_persistence_marker`: GlassWorm Wave 6 persistence indicators including the `lzcdrtfxyqiplpd` marker variable, `~/init.json` config, and bundled `~/node-v22` runtime (`MAL-032`)
 86. `86_media_directive_injection`: MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline to external messaging channels (`PINJ-002`)
+87. `87_bloktrooper_vsx_downloader`: Compromised Open VSX extension (`fast-draft`) that fetches a GitHub-hosted payload from `BlokTrooper/extension` and pipes it into a shell, deploying a Socket.IO RAT and infostealer (`MAL-033`)
+88. `88_clawhavoc_memory_harvest`: ClawHavoc campaign harvesting OpenClaw agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement (`EXF-017`)

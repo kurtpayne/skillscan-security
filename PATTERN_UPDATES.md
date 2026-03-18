@@ -1,3 +1,40 @@
+## 2026-03-18 — BlokTrooper VSX Extension Compromise, ClawHavoc Agent Memory Harvesting
+**Sources:**
+- [Aikido Security — fast-draft Open VSX Extension Compromised by BlokTrooper (RAT & Infostealer)](https://www.aikido.dev/blog/fast-draft-open-vsx-bloktrooper)
+- [ClawSecure — ClawHavoc Malware Found in 539 OpenClaw Skills](https://www.clawsecure.ai/blog/clawhavoc-explained)
+- [Towards AI — NVIDIA NemoClaw Explained: How It Secures OpenClaw AI Agents](https://pub.towardsai.net/nvidia-nemoclaw-explained-how-it-secures-openclaw-ai-agents-for-enterprise-deployment-6a606c2ddc33)
+
+**Event Summary:** Two new threat categories were identified. Aikido Security disclosed the BlokTrooper compromise of the `fast-draft` Open VSX extension (26,000+ downloads), where malicious versions (0.10.89, 0.10.105, 0.10.106, 0.10.112) fetch a GitHub-hosted payload from `BlokTrooper/extension` and pipe it into a shell, deploying a four-module attack framework: a Socket.IO RAT with full desktop control, a browser and crypto wallet stealer targeting 25+ wallet extensions, a recursive file exfiltration module, and a clipboard surveillance module. The C2 infrastructure operates at 195.201.104.53 on ports 6931, 6936, and 6939. Separately, ClawSecure reported the ClawHavoc campaign affecting 539 OpenClaw skills (18.7% of the most popular), which harvests agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement, with C2 callbacks to 91.92.242.30 and exfiltration via glot.io/api/ and webhook.site. CVE-2026-25253 was assigned for the related OpenClaw RCE vulnerability.
+
+**New Patterns Added:**
+
+### MAL-033: BlokTrooper VSX extension GitHub-hosted downloader pattern
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.91
+- **Pattern:** Detects `raw.githubusercontent.com/BlokTrooper` payload host, `fd.onlyOncePlease` one-time guard variable, `/cldbs` + `/upload` exfiltration routes, and `/api/service/makelog` clipboard logging endpoint.
+- **Justification:** Direct detection of the BlokTrooper attack chain documented by Aikido Security. The compromised `fast-draft` extension alternates between clean and malicious versions, indicating a stolen publisher token. The four-module payload (RAT, stealer, file exfil, clipboard monitor) represents a full compromise toolkit.
+
+### EXF-017: OpenClaw agent memory and identity file harvesting
+- **Category:** exfiltration
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects access to `MEMORY.md`, `SOUL.md`, `.openclaw/memory`, `.openclaw/soul`, `.openclaw/identity`, and `agent-identity` or `agent-memory` files.
+- **Justification:** Direct detection of the ClawHavoc campaign's agent file harvesting technique. Agent memory and identity files contain sensitive context, personality data, and conversation history that can be weaponized for impersonation, social engineering, or lateral movement across agent networks.
+
+**IOC Updates:**
+- Added IP: `195.201.104.53` (BlokTrooper C2)
+- Added domain: `pastefy.app` (DRILLAPP C2 staging)
+
+**Vulnerability Updates:**
+- Added CVE-2026-25253 for `openclaw` npm package (RCE via malicious webpage, CVSS 8.8)
+
+**Corpus Updates:**
+- Added `corpus/malicious/a29_bloktrooper_vsx.md`
+- Added `corpus/malicious/a30_clawhavoc_memory.md`
+
+---
+
 ## 2026-03-18 — CursorJack Deeplinks, LeakNet Deno BYOR, GlassWorm Wave 6, MEDIA Directive Injection
 
 **Sources:**

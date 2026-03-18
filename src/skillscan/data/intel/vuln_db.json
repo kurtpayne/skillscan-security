@@ -662,6 +662,13 @@
         "severity": "medium",
         "fixed": "7.5.2"
       }
+    },
+    "openclaw": {
+      "2026.3.12": {
+        "id": "CVE-2026-25253",
+        "severity": "high",
+        "fixed": "2026.3.13"
+      }
     }
   }
 }

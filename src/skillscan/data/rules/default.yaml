@@ -1,4 +1,4 @@
-version: "2026.03.18.1"
+version: "2026.03.18.2"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -1983,6 +1983,66 @@ static_rules:
       benchmark_set: core-static-v1
     references:
     - https://synscan.net/vuln/openclaw-vulnerable-to-local-file-exfiltration-via-mcp-tool-result-media-directive-injection
+- id: MAL-033
+  category: malware_pattern
+  severity: critical
+  confidence: 0.91
+  title: BlokTrooper VSX extension GitHub-hosted downloader pattern
+  pattern: (?i)(?:raw\.githubusercontent\.com/BlokTrooper|\bfd\.onlyOncePlease\b|\bcldbs\b[^\n]{0,120}/upload|/api/service/makelog)
+  mitigation: Remove GitHub-hosted shell downloaders from editor extensions. Never pipe
+    raw.githubusercontent.com content into a shell. Revoke compromised publisher tokens
+    and audit all extension versions.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-033
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.91
+      benchmark_set: core-static-v1
+    references:
+    - https://www.aikido.dev/blog/fast-draft-open-vsx-bloktrooper
+- id: EXF-017
+  category: exfiltration
+  severity: high
+  confidence: 0.88
+  title: OpenClaw agent memory and identity file harvesting
+  pattern: (?i)(?:MEMORY\.md|SOUL\.md|\.openclaw/(?:memory|soul|identity)|agent[_-]?(?:memory|identity)\.(?:json|md|yaml))
+  mitigation: Do not access, copy, or transmit OpenClaw agent memory or identity files
+    (MEMORY.md, SOUL.md). These contain sensitive agent context and personality data
+    that can be weaponized for impersonation or lateral movement.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXFIL-017
+      name: Exfiltration behavior
+    tags:
+    - exfiltration
+    - exf
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-18'
+      last_modified: '2026-03-18'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://www.clawsecure.ai/blog/clawhavoc-explained
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
   execute: \b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b
