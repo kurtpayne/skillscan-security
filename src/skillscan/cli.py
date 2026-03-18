@@ -426,33 +426,33 @@ def scan_cmd(
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
         else:
-            console.print(payload)
+            typer.echo(payload)
     elif format == "sarif":
         payload = json.dumps(report_to_sarif(report), indent=2)
         if out:
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
         else:
-            console.print(payload)
+            typer.echo(payload)
     elif format == "junit":
         payload = report_to_junit_xml(report)
         if out:
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
         else:
-            console.print(payload)
+            typer.echo(payload)
     elif format == "compact":
         payload = report_to_compact_text(report)
         if out:
             out.write_text(payload, encoding="utf-8")
             console.print(f"Wrote report to {out}")
         else:
-            console.print(payload)
+            typer.echo(payload)
     else:
         render_report(report, console=console)
         if delta_payload is not None:
             if delta_format == "json":
-                console.print(json.dumps(delta_payload, indent=2))
+                typer.echo(json.dumps(delta_payload, indent=2))
             else:
                 console.print(
                     Panel(
@@ -590,7 +590,7 @@ def benchmark_cmd(
     }
 
     if format == "json":
-        console.print(json.dumps(payload, indent=2))
+        typer.echo(json.dumps(payload, indent=2))
     else:
         console.print(
             f"benchmark cases={payload['cases']} precision={payload['precision']:.4f} "
@@ -635,9 +635,8 @@ def diff_cmd(
     }
 
     if format == "json":
-        console.print(json.dumps(payload, indent=2))
+        typer.echo(json.dumps(payload, indent=2))
         return
-
     console.print(
         Panel(
             (
