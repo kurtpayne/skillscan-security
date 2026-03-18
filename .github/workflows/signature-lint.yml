@@ -1,0 +1,72 @@
+name: Signature Lint
+
+on:
+  push:
+    paths:
+      - "src/skillscan/data/rules/*.yaml"
+      - "src/skillscan/data/intel/*.json"
+      - "corpus/**/*.md"
+  pull_request:
+    paths:
+      - "src/skillscan/data/rules/*.yaml"
+      - "src/skillscan/data/intel/*.json"
+      - "corpus/**/*.md"
+
+jobs:
+  signature-lint:
+    name: Validate signature files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      - name: Validate rule YAML files
+        run: |
+          python -c "
+          import sys, yaml
+          from pathlib import Path
+          errors = []
+          for f in sorted(Path('src/skillscan/data/rules').glob('*.yaml')):
+              try:
+                  p = yaml.safe_load(f.read_text())
+                  if not isinstance(p, dict) or 'version' not in p:
+                      errors.append(str(f))
+              except Exception as e:
+                  errors.append(str(f) + ': ' + str(e))
+          if errors:
+              print('ERRORS: ' + str(errors)); sys.exit(1)
+          print('OK: rule files validated')
+          "
+      - name: Validate intel JSON files
+        run: |
+          python -c "
+          import sys, json
+          from pathlib import Path
+          errors = []
+          for f in sorted(Path('src/skillscan/data/intel').glob('*.json')):
+              try:
+                  json.loads(f.read_text())
+              except Exception as e:
+                  errors.append(str(f) + ': ' + str(e))
+          if errors:
+              print('ERRORS: ' + str(errors)); sys.exit(1)
+          print('OK: intel files validated')
+          "
+      - name: Report corpus balance
+        run: |
+          python -c "
+          import json
+          from pathlib import Path
+          m = Path('corpus/manifest.json')
+          if m.exists():
+              d = json.loads(m.read_text())
+              print('Corpus: ' + str(d.get('total_examples', 0)) + ' examples')
+              for k, v in sorted(d.get('label_counts', {}).items()):
+                  print('  ' + k + ': ' + str(v))
+          "
