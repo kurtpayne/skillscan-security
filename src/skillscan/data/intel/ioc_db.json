@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-03-18",
+    "generated": "2026-03-19",
     "bundled_sources": [
       "feodotracker_ips",
       "spamhaus_drop",
@@ -294,6 +294,7 @@
     "pablo.yzz.me",
     "palharesinformatica.com.br",
     "pamellioty.com",
+    "pastefy.app",
     "pay.aqiu6.com",
     "payables-notification.com",
     "pcupd.com",
@@ -420,6 +421,7 @@
     "wcdr.cyrb.live",
     "weaplink.com",
     "webcstore.pw",
+    "webhook.site",
     "weblive.tv",
     "website.mypetapp.co.za",
     "whrc.ru",
@@ -501,19 +503,23 @@
     "ziaintegracion.com",
     "zontiz.com",
     "zycdjz.com",
-    "zynova.yzz.me",
-    "pastefy.app"
+    "zynova.yzz.me"
   ],
   "ips": [
     "144.31.224.98",
+    "151.242.122.227",
     "173.211.46.22",
+    "179.43.167.210",
+    "195.201.104.53",
+    "217.69.0.159",
+    "217.69.3.152",
+    "45.150.34.158",
     "45.32.150.251",
     "45.32.151.157",
     "50.16.16.211",
     "54.91.154.110",
     "70.34.242.255",
-    "91.92.242.30",
-    "195.201.104.53"
+    "91.92.242.30"
   ],
   "cidrs": [
     "1.10.16.0/20",

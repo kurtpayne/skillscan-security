@@ -1117,3 +1117,96 @@ def test_new_patterns_2026_03_18_patch2() -> None:
         exf017.pattern.search("agent-identity.json") is not None
     )
     assert exf017.pattern.search("memory usage: 512MB") is None
+
+
+def test_new_patterns_2026_03_19() -> None:
+    """Test rules added 2026-03-19: GlassWorm Chrome extension RAT, OpenClaw gatewayUrl injection."""
+    compiled = load_compiled_builtin_rulepack()
+    # MAL-034: GlassWorm Chrome extension force-install RAT
+    mal034 = next((r for r in compiled.static_rules if r.id == "MAL-034"), None)
+    assert mal034 is not None
+    assert (
+        mal034.pattern.search(
+            "code --install-extension --force malicious.vsix"
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            'case "startkeylogger":'
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            'case "domsnapshot":'
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            '/api/commands?agent_id=abc123'
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            '/api/exfil'
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            'localstoragedump'
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            'capture_clipboard'
+        )
+        is not None
+    )
+    # Negative: normal extension install without --force
+    assert mal034.pattern.search("code --install-extension myext") is None
+    # MAL-035: OpenClaw gatewayUrl parameter injection and approval bypass
+    mal035 = next((r for r in compiled.static_rules if r.id == "MAL-035"), None)
+    assert mal035 is not None
+    assert (
+        mal035.pattern.search(
+            "gatewayUrl=https://attacker.com"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "gatewayUrl: https://evil.com"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "exec.approvals.set: off"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "exec.approval.set = disable"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "approvals.disable()"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "confirmation_prompts: off"
+        )
+        is not None
+    )
+    # Negative: normal gateway URL reference
+    assert mal035.pattern.search("the gateway is running on port 8080") is None

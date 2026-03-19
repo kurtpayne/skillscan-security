@@ -1,4 +1,4 @@
-version: "2026.03.18.2"
+version: "2026.03.19.1"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -2043,6 +2043,69 @@ static_rules:
       benchmark_set: core-static-v1
     references:
     - https://www.clawsecure.ai/blog/clawhavoc-explained
+- id: MAL-034
+  category: malware_pattern
+  severity: critical
+  confidence: 0.90
+  title: GlassWorm Chrome extension force-install RAT
+  pattern: (?i)(?:--install-extension\s+--force|Google\s+Docs\s+Offline.*1\.95|jucku[/\\]manifest\.json|chrome\.storage\.local\.(?:get|set).*agent_id|/api/(?:register|commands\?agent_id|exfil|webhook/auth-detected)|startkeylogger|getkeyloggerdata|domsnapshot|localstoragedump|capture_clipboard)
+  mitigation: Remove any skill that force-installs browser extensions or references
+    Chrome extension RAT commands (startkeylogger, domsnapshot, localstoragedump).
+    The GlassWorm campaign deploys a RAT disguised as Google Docs Offline that
+    logs keystrokes, steals cookies, and exfiltrates data via Solana-based C2.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-034
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-19'
+      last_modified: '2026-03-19'
+    quality:
+      precision_estimate: 0.90
+      benchmark_set: core-static-v1
+    references:
+    - https://www.aikido.dev/blog/glassworm-chrome-extension-rat
+    - https://socket.dev/blog/glassworm-sleeper-extensions-activated-on-open-vsx
+- id: MAL-035
+  category: malware_pattern
+  severity: high
+  confidence: 0.87
+  title: OpenClaw gatewayUrl parameter injection and approval bypass
+  pattern: (?i)(?:gatewayUrl\s*[=:]|exec\.approvals?\.set\s*[:=]?\s*(?:off|false|0|disable)|approvals?\.(?:disable|bypass|override)|confirmation_prompts?\s*[:=]\s*(?:off|false|0|disable))
+  mitigation: Do not accept gatewayUrl parameters from untrusted sources or disable
+    execution approval prompts. The CVE-2026-25253 attack chain exploits gatewayUrl
+    injection to steal auth tokens and bypass approval safeguards for full RCE.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-035
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-19'
+      last_modified: '2026-03-19'
+    quality:
+      precision_estimate: 0.87
+      benchmark_set: core-static-v1
+    references:
+    - https://www.proarch.com/blog/threats-vulnerabilities/openclaw-rce-vulnerability-cve-2026-25253
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-25253
 - id: SE-001
   category: social_engineering
   severity: high

@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-18T15:36:00+00:00",
-  "total_examples": 117,
+  "last_updated": "2026-03-19T03:18:36+00:00",
+  "total_examples": 119,
   "label_counts": {
     "benign": 54,
-    "injection": 63
+    "injection": 65
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -80,6 +80,8 @@
     "malicious/a28_glassworm_persistence.md": "1da6de1216e076e96a2c703bd2d7b3384982e9f83e588892f8747d05a6dcd578",
     "malicious/a29_bloktrooper_vsx.md": "1023fc85c42603ed21b005ca689d38246197f32a358d903ae6ec323e3d91297e",
     "malicious/a30_clawhavoc_memory.md": "1b83dd18b0371abb8bae1b8679c23b9efc03bfc093ae3667bd8250d3900ddeda",
+    "malicious/a31_glassworm_chrome_rat.md": "d3ced4d4b7cc514aa14f65ab6d493ac9456979a872dc3fb24ce1c1a3af8b5b08",
+    "malicious/a32_openclaw_gatewayurl.md": "97fbb4c3feba1c77fa0eaecf16155fdf5aadfdf99c85e9c024bf6dff133e9637",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",

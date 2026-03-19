@@ -1,3 +1,51 @@
+## 2026-03-19 — GlassWorm Chrome Extension RAT, OpenClaw gatewayUrl RCE, SnappyClient C2, AI Platform CVEs
+
+**Sources:**
+- [Aikido Security — GlassWorm Hides a RAT Inside a Malicious Chrome Extension](https://www.aikido.dev/blog/glassworm-chrome-extension-rat)
+- [Socket.dev — GlassWorm Sleeper Extensions Activate on Open VSX, Shift to GitHub-Hosted VSIX Malware](https://socket.dev/blog/glassworm-sleeper-extensions-activated-on-open-vsx)
+- [ProArch — OpenClaw One-Click RCE Vulnerability (CVE-2026-25253)](https://www.proarch.com/blog/threats-vulnerabilities/openclaw-rce-vulnerability-cve-2026-25253)
+- [Zscaler ThreatLabz — Technical Analysis of SnappyClient](https://www.zscaler.com/blogs/security-research/technical-analysis-snappyclient)
+- [SC Media — Significant Security Flaws Flagged in LangSmith, SGLang](https://www.scworld.com/brief/significant-security-flaws-flagged-in-langsmith-sglang)
+- [VPNCentral — ForceMemo Attacks GitHub Accounts and Quietly Backdoors Python Repositories](https://vpncentral.com/forcememo-attacks-github-accounts-and-quietly-backdoors-python-repositories-with-force-pushed-malware/)
+
+**Event Summary:** Two new detection rules and significant IOC/vulnerability enrichment were added. Aikido Security published a full analysis of the GlassWorm Chrome extension RAT, revealing a multi-stage attack that force-installs a malicious Chrome extension masquerading as Google Docs Offline (version 1.95.1). The extension functions as a full RAT with commands including `startkeylogger`, `domsnapshot`, `localstoragedump`, and `capture_clipboard`, using Solana blockchain memos as a C2 dead-drop channel. C2 infrastructure operates at 45.32.150.251, 217.69.3.152, 217.69.0.159, and 45.150.34.158. Socket.dev reported that GlassWorm sleeper extensions on Open VSX have shifted to delivering payloads from GitHub-hosted VSIX files, moving outside the Eclipse Foundation's takedown reach. ProArch detailed the CVE-2026-25253 OpenClaw one-click RCE attack chain, where a malicious `gatewayUrl` parameter steals auth tokens via WebSocket and then disables execution approval prompts (`exec.approvals.set: off`) for full remote code execution. Zscaler ThreatLabz disclosed SnappyClient, a new C2 framework implant delivered via HijackLoader targeting cryptocurrency wallets, with C2 at 151.242.122.227 and 179.43.167.210. SC Media reported critical vulnerabilities in LangSmith (CVE-2026-25750, account takeover) and SGLang (CVE-2026-3060, CVE-2026-3059, CVE-2026-3989, unpatched RCE). VPNCentral covered the ForceMemo campaign linking GlassWorm credential theft to force-pushed Python repository backdoors using Solana blockchain memos for C2.
+
+**New Patterns Added:**
+
+### MAL-034: GlassWorm Chrome extension force-install RAT
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.90
+- **Pattern:** Detects `--install-extension --force` extension sideloading, Google Docs Offline 1.95 masquerade, `jucku/manifest.json` extension directory, `chrome.storage.local` agent_id persistence, `/api/register`, `/api/commands?agent_id`, `/api/exfil`, `/api/webhook/auth-detected` C2 endpoints, and RAT commands (`startkeylogger`, `getkeyloggerdata`, `domsnapshot`, `localstoragedump`, `capture_clipboard`).
+- **Justification:** Direct detection of the GlassWorm Chrome extension RAT documented by Aikido Security. The malware deploys a persistent browser-based RAT with keylogging, cookie theft, session surveillance (targeting Bybit), and screenshot capabilities, using Solana wallet memos as a C2 dead-drop.
+
+### MAL-035: OpenClaw gatewayUrl parameter injection and approval bypass
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects `gatewayUrl` parameter injection, `exec.approvals.set` / `exec.approval.set` disabling patterns, `approvals.disable` / `approvals.bypass` / `approvals.override` calls, and `confirmation_prompts` disabling.
+- **Justification:** Direct detection of the CVE-2026-25253 attack chain. The OpenClaw Control UI blindly trusts the `gatewayUrl` URL parameter, leaking auth tokens to attacker-controlled servers. Combined with approval bypass, this enables full one-click RCE on 40,000+ exposed instances.
+
+**IOC Updates:**
+- Added IP: `151.242.122.227` (SnappyClient C2 control session)
+- Added IP: `179.43.167.210` (SnappyClient C2 control session)
+- Added IP: `217.69.3.152` (GlassWorm Stage 2/3 exfiltration server)
+- Added IP: `217.69.0.159` (GlassWorm DHT bootstrap node)
+- Added IP: `45.150.34.158` (GlassWorm Ledger/Trezor seed phrase exfiltration)
+- Added domain: `webhook.site` (ClawHavoc data exfiltration endpoint)
+
+**Vulnerability Updates:**
+- Added CVE-2026-25750 for `langsmith` Python package (account takeover, fixed in 0.12.71)
+- Added CVE-2026-3060 for `sglang` Python package (unauthenticated RCE, unpatched)
+- Added CVE-2026-3059 for `sglang` Python package (unauthenticated RCE, unpatched)
+- Added CVE-2026-3989 for `sglang` Python package (insecure deserialization, unpatched)
+
+**Corpus Updates:**
+- Added `corpus/malicious/a31_glassworm_chrome_rat.md`
+- Added `corpus/malicious/a32_openclaw_gatewayurl.md`
+
+---
+
 ## 2026-03-18 — BlokTrooper VSX Extension Compromise, ClawHavoc Agent Memory Harvesting
 **Sources:**
 - [Aikido Security — fast-draft Open VSX Extension Compromised by BlokTrooper (RAT & Infostealer)](https://www.aikido.dev/blog/fast-draft-open-vsx-bloktrooper)

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-03-18",
+    "generated": "2026-03-19",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
@@ -631,6 +631,30 @@
         "id": "GHSA-3749-ghw9-m3mg",
         "severity": "low",
         "fixed": "2.7.1-rc1"
+      }
+    },
+    "langsmith": {
+      "0.12.70": {
+        "id": "CVE-2026-25750",
+        "severity": "high",
+        "fixed": "0.12.71"
+      }
+    },
+    "sglang": {
+      "0.4.5": {
+        "id": "CVE-2026-3060",
+        "severity": "critical",
+        "fixed": null
+      },
+      "0.4.5.1": {
+        "id": "CVE-2026-3059",
+        "severity": "critical",
+        "fixed": null
+      },
+      "0.4.5.2": {
+        "id": "CVE-2026-3989",
+        "severity": "high",
+        "fixed": null
       }
     }
   },

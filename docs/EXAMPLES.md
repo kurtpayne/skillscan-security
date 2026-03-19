@@ -93,6 +93,8 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `86_media_directive_injection` | MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline (OpenClaw vuln GHSA-jjgj-cpp9-cvpv) | `PINJ-002` |
 | `87_bloktrooper_vsx_downloader` | Compromised Open VSX extension (`fast-draft`) that fetches a GitHub-hosted payload from `BlokTrooper/extension` and pipes it into a shell, deploying a Socket.IO RAT and infostealer | `MAL-033` |
 | `88_clawhavoc_memory_harvest` | ClawHavoc campaign harvesting OpenClaw agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement | `EXF-017` |
+| `89_glassworm_chrome_extension_rat` | GlassWorm Chrome extension RAT that force-installs a malicious extension masquerading as Google Docs Offline with keylogging, cookie theft, and Solana-based C2 | `MAL-034` |
+| `90_openclaw_gatewayurl_injection` | OpenClaw CVE-2026-25253 one-click RCE via gatewayUrl parameter injection and execution approval bypass | `MAL-035` |
 ## Commands
 
 ```bash
