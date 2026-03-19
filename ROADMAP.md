@@ -372,12 +372,12 @@ Preferred approach: a standalone `skillscan-report` wrapper script (not a new su
 
 ---
 
-## Milestone 9 — VS Code Extension Publish (1 week)
-The extension scaffold in `editors/vscode/` is complete: TypeScript source, SARIF parsing, inline diagnostics, status bar, and a marketplace publish workflow. After Milestone 8.5, the extension will surface both security findings (`skillscan scan`) and quality findings (`skillscan-lint`) in a single install. The only remaining blockers are a registered publisher ID and a `VSCE_PAT` secret.
+## Milestone 9 — Editor Extension Publish (1 week)
+The extension scaffold in `editors/vscode/` is complete: TypeScript source, SARIF parsing, inline diagnostics, status bar, and a publish workflow. After Milestone 8.5, the extension will surface both security findings (`skillscan scan`) and quality findings (`skillscan-lint`) in a single install. The primary targets are Zed and JetBrains; the VS Code Marketplace is deprioritized due to a broken publisher registration process.
 
 ### Issue K0 — Org migration to skillscan-dev
 
-Before publishing to the VS Code Marketplace, migrate all projects to the `skillscan-dev` GitHub org so the publisher ID, PyPI package names, and Docker Hub namespace are consistent from day one. A publisher ID baked into a VS Code extension is permanent once installs accumulate.
+Migrate all projects to the `skillscan-dev` GitHub org so the PyPI package names, Docker Hub namespace, and editor extension publisher IDs are consistent from day one.
 
 **Migration order:**
 1. Transfer GitHub repos (`skillscan-security`, `skillscan-lint`, `skillscan-website`) to `skillscan-dev` org. Update branch protection rules and secrets in the new org.
@@ -388,19 +388,17 @@ Before publishing to the VS Code Marketplace, migrate all projects to the `skill
 6. Add `CODEOWNERS` file pointing to `dev@skillscan.sh`.
 7. Update `data/scan_feed.json` raw CDN URL in the website and Issue F2 to reference the new org.
 
-**Acceptance criteria:** All repos live under `skillscan-dev` org. PyPI packages installable as `pip install skillscan-security` (same name, new publisher). Docker images pullable from `skillscandev/skillscan-security`. VS Code publisher registered as `skillscan-dev`. All CI workflows green after migration.
+**Acceptance criteria:** All repos live under `skillscan-dev` org. PyPI packages installable as `pip install skillscan-security` (same name, new publisher). Docker images pullable from `skillscandev/skillscan-security`. All CI workflows green after migration.
 
-### Issue K1 — Publish to VS Code Marketplace
-
-Register the `skillscan` publisher on the VS Code Marketplace. Add `VSCE_PAT` to repo secrets. Trigger the publish workflow. The extension should install cleanly and show inline diagnostics on SKILL.md files.
-
-**Acceptance criteria:** Extension is live on the VS Code Marketplace. Install count is tracked. The `editors/vscode/README.md` is updated with install instructions.
-
-### Issue K2 — Extension auto-update on rule sync
-
-When the user runs `skillscan rule sync`, the extension should detect the updated rules and re-run diagnostics on open files without requiring a VS Code restart.
-
-**Acceptance criteria:** Diagnostics refresh automatically after `skillscan rule sync` completes. No VS Code restart required.
+### Issue K1 — Port extension to Zed
+Zed's extension API uses WebAssembly and Rust, but the diagnostic surface (LSP-style findings) maps cleanly to the existing SARIF output. Implement a Zed extension that runs `skillscan scan --format sarif` on save and surfaces findings as inline diagnostics. Zed is the primary target: faster signup, better developer audience alignment, and no hostile publisher registration process.
+**Acceptance criteria:** Extension installable from Zed's extension registry. Inline diagnostics appear on `SKILL.md` files. Both `skillscan-security` and `skillscan-lint` findings are surfaced with source labels.
+### Issue K2 — Port extension to JetBrains Marketplace
+JetBrains IDEs (IntelliJ, PyCharm, GoLand) have a straightforward plugin registration process. Implement a JetBrains plugin that wraps the same `skillscan scan --format sarif` invocation and maps findings to the IDE's inspection framework.
+**Acceptance criteria:** Plugin installable from JetBrains Marketplace. Findings appear as inspections in the IDE. Both security and lint findings are surfaced.
+### Issue K3 — Keep VS Code extension code but do not publish
+The existing `editors/vscode/` extension code is functional and should be kept in the repo for contributors who want to install it locally via `vsce package`. The VS Code Marketplace publisher registration is blocked by Microsoft's broken captcha/account recovery flow; do not invest further in unblocking it until the process is fixed upstream.
+**Acceptance criteria:** `editors/vscode/README.md` updated with local install instructions (`vsce package && code --install-extension skillscan-*.vsix`). No active effort to unblock Marketplace registration.
 
 ---
 
@@ -687,6 +685,8 @@ The container accepts `--skills` (one or more paths), `--prompt` (the input to s
 
 ## Deprioritized / Deferred
 The following items from earlier roadmap drafts are explicitly deprioritized until the above milestones are complete.
+
+**VS Code Marketplace publish.** The publisher registration process at marketplace.visualstudio.com requires a Microsoft account with working captcha/account recovery, which has been broken for an extended period with no resolution from Microsoft. The extension code is maintained in `editors/vscode/` and can be installed locally. Revisit if Microsoft fixes the registration flow. Zed and JetBrains are the active targets instead.
 
 **SaaS control plane / multi-tenant API.** Out of scope per PRD. Revisit post-v1.0 if adoption warrants it.
 
