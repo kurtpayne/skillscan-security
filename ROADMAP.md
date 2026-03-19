@@ -2,6 +2,8 @@
 
 *Last updated: March 2026. Reflects a full codebase audit conducted at v0.3.1; updated through v0.3.2.*
 
+> SkillScan was designed and directed by Kurt Payne and built with [Manus](https://manus.im) — an AI agent that handled implementation, research, and iteration at speed.
+
 ---
 
 ## Current State (v0.3.1)
