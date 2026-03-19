@@ -473,3 +473,286 @@ class TestSkillGraphIntegration:
         findings = skill_graph_findings(fixture)
         ids = [f.id for f in findings]
         assert "PINJ-GRAPH-003" in ids
+
+
+# ---------------------------------------------------------------------------
+# PINJ-GRAPH-004: cross-skill tool escalation
+# ---------------------------------------------------------------------------
+
+
+class TestToolEscalation:
+    def _write_multi_skill(
+        self,
+        tmp_path: Path,
+        parent_name: str,
+        parent_tools: list[str],
+        child_name: str,
+        child_tools: list[str],
+    ) -> Path:
+        """Write a two-skill bundle where parent declares child via front-matter."""
+        child_dir = tmp_path / "skills" / child_name
+        child_dir.mkdir(parents=True, exist_ok=True)
+        child_skill = child_dir / "SKILL.md"
+        # Build YAML directly to avoid textwrap.dedent misalignment with interpolated lines
+        child_tools_yaml = "\n".join(f"  - {t}" for t in child_tools)
+        child_content = (
+            f"---\n"
+            f"name: {child_name}\n"
+            f"description: Child skill.\n"
+            f"allowed-tools:\n"
+            f"{child_tools_yaml}\n"
+            f"---\n"
+            f"## Usage\n"
+            f"Does things with {', '.join(child_tools)}.\n"
+        )
+        child_skill.write_text(child_content, encoding="utf-8")
+
+        parent_dir = tmp_path
+        parent_skill = parent_dir / "SKILL.md"
+        parent_tools_yaml = "\n".join(f"  - {t}" for t in parent_tools)
+        parent_content = (
+            f"---\n"
+            f"name: {parent_name}\n"
+            f"description: Parent skill.\n"
+            f"allowed-tools:\n"
+            f"{parent_tools_yaml}\n"
+            f"skills:\n"
+            f"  - name: {child_name}\n"
+            f"    path: ./skills/{child_name}/SKILL.md\n"
+            f"---\n"
+            f"## Overview\n"
+            f"Delegates to {child_name}.\n"
+        )
+        parent_skill.write_text(parent_content, encoding="utf-8")
+        return parent_dir
+
+    def test_escalation_read_to_bash_flagged(self, tmp_path: Path) -> None:
+        """Parent declares Read only; child grants Bash → PINJ-GRAPH-004 should fire."""
+        root = self._write_multi_skill(
+            tmp_path,
+            parent_name="orchestrator",
+            parent_tools=["Read"],
+            child_name="executor",
+            child_tools=["Bash", "Read"],
+        )
+        findings = skill_graph_findings(root)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" in ids, f"Expected PINJ-GRAPH-004, got {ids}"
+        finding = next(f for f in findings if f.id == "PINJ-GRAPH-004")
+        assert finding.severity.value == "critical"
+        assert "orchestrator" in finding.title
+        assert "executor" in finding.title
+
+    def test_escalation_read_to_webfetch_flagged(self, tmp_path: Path) -> None:
+        """Parent declares Read only; child grants WebFetch → PINJ-GRAPH-004 should fire."""
+        root = self._write_multi_skill(
+            tmp_path,
+            parent_name="coordinator",
+            parent_tools=["Read"],
+            child_name="fetcher",
+            child_tools=["WebFetch", "Read"],
+        )
+        findings = skill_graph_findings(root)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" in ids, f"Expected PINJ-GRAPH-004, got {ids}"
+        finding = next(f for f in findings if f.id == "PINJ-GRAPH-004")
+        assert finding.severity.value == "high"  # medium-risk escalation
+
+    def test_no_escalation_same_tools(self, tmp_path: Path) -> None:
+        """Parent and child both declare Bash → no escalation, no finding."""
+        root = self._write_multi_skill(
+            tmp_path,
+            parent_name="coordinator",
+            parent_tools=["Read", "Bash"],
+            child_name="runner",
+            child_tools=["Bash", "Read"],
+        )
+        findings = skill_graph_findings(root)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" not in ids, f"Unexpected PINJ-GRAPH-004 in {ids}"
+
+    def test_no_escalation_parent_higher(self, tmp_path: Path) -> None:
+        """Parent grants Bash; child grants only Read → no escalation."""
+        root = self._write_multi_skill(
+            tmp_path,
+            parent_name="orchestrator",
+            parent_tools=["Bash", "Read"],
+            child_name="reader",
+            child_tools=["Read"],
+        )
+        findings = skill_graph_findings(root)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" not in ids, f"Unexpected PINJ-GRAPH-004 in {ids}"
+
+    def test_adversarial_fixture_a26(self) -> None:
+        """Adversarial fixture a26_graph_escalation must trigger PINJ-GRAPH-004."""
+        fixture = (
+            Path(__file__).parent / "adversarial" / "cases" / "a26_graph_escalation"
+        )
+        if not fixture.exists():
+            pytest.skip("Adversarial fixture not found")
+        findings = skill_graph_findings(fixture)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" in ids, f"Expected PINJ-GRAPH-004, got {ids}"
+
+    def test_benign_fixture_a27(self) -> None:
+        """Adversarial fixture a27_graph_benign must NOT trigger PINJ-GRAPH-004."""
+        fixture = (
+            Path(__file__).parent / "adversarial" / "cases" / "a27_graph_benign"
+        )
+        if not fixture.exists():
+            pytest.skip("Adversarial fixture not found")
+        findings = skill_graph_findings(fixture)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" not in ids, f"Unexpected PINJ-GRAPH-004 in {ids}"
+
+    def test_corpus_fixture_malicious_004(self) -> None:
+        """PINJ-GRAPH-004 malicious corpus fixture should trigger the rule."""
+        fixture = (
+            Path(__file__).parent.parent
+            / "corpus"
+            / "graph_injection"
+            / "PINJ-GRAPH-004"
+            / "malicious"
+        )
+        if not fixture.exists():
+            pytest.skip("Corpus fixture not found")
+        findings = skill_graph_findings(fixture)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" in ids, f"Expected PINJ-GRAPH-004, got {ids}"
+
+    def test_corpus_fixture_benign_004(self) -> None:
+        """PINJ-GRAPH-004 benign corpus fixture must NOT trigger the rule."""
+        fixture = (
+            Path(__file__).parent.parent
+            / "corpus"
+            / "graph_injection"
+            / "PINJ-GRAPH-004"
+            / "benign"
+        )
+        if not fixture.exists():
+            pytest.skip("Corpus fixture not found")
+        findings = skill_graph_findings(fixture)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" not in ids, f"Unexpected PINJ-GRAPH-004 in {ids}"
+
+
+# ---------------------------------------------------------------------------
+# Multi-format discovery: CLAUDE.md and gpt_actions.json
+# ---------------------------------------------------------------------------
+
+
+class TestMultiFormatDiscovery:
+    def test_claude_md_discovered(self, tmp_path: Path) -> None:
+        """build_skill_graph should discover CLAUDE.md files."""
+        claude_dir = tmp_path / "claude-skill"
+        claude_dir.mkdir()
+        (claude_dir / "CLAUDE.md").write_text(
+            textwrap.dedent("""\
+            ---
+            name: claude-skill
+            description: A Claude Projects skill.
+            allowed-tools:
+              - Read
+            ---
+            ## Overview
+            A legitimate Claude Projects skill.
+            """),
+            encoding="utf-8",
+        )
+        from skillscan.detectors.skill_graph import build_skill_graph
+
+        graph = build_skill_graph(tmp_path)
+        names = [n.name for n in graph.nodes.values()]
+        assert "claude-skill" in names
+        node = next(n for n in graph.nodes.values() if n.name == "claude-skill")
+        assert node.format == "claude_md"
+
+    def test_gpt_actions_json_discovered(self, tmp_path: Path) -> None:
+        """build_skill_graph should discover gpt_actions.json files."""
+        import json
+
+        actions_dir = tmp_path / "openai-action"
+        actions_dir.mkdir()
+        (actions_dir / "gpt_actions.json").write_text(
+            json.dumps(
+                {
+                    "name": "openai-action",
+                    "description": "An OpenAI Actions skill.",
+                    "functions": [
+                        {"name": "search_web", "description": "Search the web"},
+                        {"name": "bash", "description": "Run shell commands"},
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        from skillscan.detectors.skill_graph import build_skill_graph
+
+        graph = build_skill_graph(tmp_path)
+        names = [n.name for n in graph.nodes.values()]
+        assert "openai-action" in names
+        node = next(n for n in graph.nodes.values() if n.name == "openai-action")
+        assert node.format == "gpt_actions"
+        assert "bash" in [t.lower() for t in node.allowed_tools]
+
+    def test_gpt_actions_high_risk_tool_flagged(self, tmp_path: Path) -> None:
+        """gpt_actions.json with bash function should trigger PINJ-GRAPH-002 if no purpose."""
+        import json
+
+        actions_dir = tmp_path / "risky-action"
+        actions_dir.mkdir()
+        (actions_dir / "gpt_actions.json").write_text(
+            json.dumps(
+                {
+                    "name": "risky-action",
+                    "description": "",
+                    "functions": [
+                        {"name": "bash"},
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        findings = skill_graph_findings(tmp_path)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-002" in ids, f"Expected PINJ-GRAPH-002, got {ids}"
+
+    def test_mixed_format_escalation(self, tmp_path: Path) -> None:
+        """SKILL.md (Read only) invoking CLAUDE.md (Bash) should trigger PINJ-GRAPH-004."""
+        # CLAUDE.md sub-skill with Bash
+        claude_dir = tmp_path / "skills" / "bash-helper"
+        claude_dir.mkdir(parents=True)
+        (claude_dir / "CLAUDE.md").write_text(
+            textwrap.dedent("""\
+            ---
+            name: bash-helper
+            description: Runs bash commands.
+            allowed-tools:
+              - Bash
+            ---
+            ## Usage
+            Runs arbitrary shell commands.
+            """),
+            encoding="utf-8",
+        )
+        # SKILL.md parent with only Read
+        (tmp_path / "SKILL.md").write_text(
+            textwrap.dedent("""\
+            ---
+            name: orchestrator
+            description: Orchestrates tasks.
+            allowed-tools:
+              - Read
+            skills:
+              - name: bash-helper
+                path: ./skills/bash-helper/CLAUDE.md
+            ---
+            ## Overview
+            Delegates to bash-helper.
+            """),
+            encoding="utf-8",
+        )
+        findings = skill_graph_findings(tmp_path)
+        ids = [f.id for f in findings]
+        assert "PINJ-GRAPH-004" in ids, f"Expected PINJ-GRAPH-004 in mixed-format escalation, got {ids}"

@@ -16,14 +16,46 @@ Responsibilities
    retraining cheap for small corpora (absolute threshold dominates early on) and
    proportional for large ones (relative threshold dominates later).
 
-3. **CLI integration**: ``skillscan corpus sync`` and ``skillscan corpus status``
+3. **Dual-manifest support**: When private corpus fixtures are merged in CI via the
+   corpus-sync deploy key workflow, the manager operates in two modes:
+
+   - **Public manifest** (``manifest.json``): reflects only the public corpus
+     subdirectories.  This is the file committed back to the public repo.  It
+     never contains SHA-256 hashes or counts for private fixtures.
+
+   - **Combined manifest** (``manifest_combined.json``): reflects the full merged
+     corpus including private fixtures.  This file is written in CI only and is
+     never committed.  The retrain decision is made from the combined manifest.
+
+   The ``sync()`` method always writes the public manifest.  Pass
+   ``combined_manifest_path`` to also write the combined manifest and base the
+   retrain decision on the full corpus.
+
+4. **CLI integration**: ``skillscan corpus sync`` and ``skillscan corpus status``
    subcommands are wired in via ``cli.py``.
+
+Corpus directory layout
+-----------------------
+Public subdirectories (committed to public repo, included in public manifest):
+  benign/               Benign skill examples — label: benign
+  malicious/            Known malicious patterns — label: injection
+  prompt_injection/     Prompt injection variants — label: injection
+  social_engineering/   SE credential-harvest patterns — label: injection
+  graph_injection/      Skill-graph injection patterns — label: injection
+                        (nested structure: RULE-ID/malicious/ and RULE-ID/benign/)
+
+Private subdirectories (merged in CI from skillscan-corpus, NOT in public manifest):
+  adversarial/          Evasion-crafted adversarial variants — label: injection
+  jailbreak_distillations/  Jailbreak patterns in skill contexts — label: injection
+
+Eval-only subdirectories (never used for training):
+  held_out_eval/        Reserved 20% held-out evaluation set — excluded from training
 
 Environment variables
 ---------------------
-``SKILLSCAN_CORPUS_DIR``      — override the default ``corpus/`` path.
+``SKILLSCAN_CORPUS_DIR``       — override the default ``corpus/`` path.
 ``SKILLSCAN_MIN_NEW_EXAMPLES`` — override the absolute delta threshold.
-``SKILLSCAN_MIN_DELTA_PCT``   — override the relative delta threshold (0–1 float).
+``SKILLSCAN_MIN_DELTA_PCT``    — override the relative delta threshold (0–1 float).
 """
 
 from __future__ import annotations
@@ -44,14 +76,31 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 MANIFEST_FILENAME = "manifest.json"
+MANIFEST_COMBINED_FILENAME = "manifest_combined.json"
 MANIFEST_VERSION = 1
 
-# Subdirectory → label mapping
-LABEL_MAP: dict[str, str] = {
+# Public subdirectory → label mapping.
+# These directories are committed to the public repo and included in the
+# public manifest.  The updater agent adds to malicious/ and prompt_injection/.
+PUBLIC_LABEL_MAP: dict[str, str] = {
     "benign": "benign",
     "malicious": "injection",
     "prompt_injection": "injection",
+    "social_engineering": "injection",
+    # graph_injection/ uses a nested structure (RULE-ID/{malicious,benign}/)
+    # handled separately in iter_examples().
 }
+
+# Private subdirectory → label mapping.
+# These directories are merged from skillscan-corpus in CI via deploy key.
+# They are included in training but NOT in the committed public manifest.
+PRIVATE_LABEL_MAP: dict[str, str] = {
+    "adversarial": "injection",
+    "jailbreak_distillations": "injection",
+}
+
+# Subdirectories that are never used for training (eval only).
+EVAL_ONLY_DIRS: frozenset[str] = frozenset({"held_out_eval"})
 
 SUPPORTED_EXTENSIONS = {".md", ".txt", ".yaml", ".yml"}
 
@@ -144,13 +193,31 @@ class UpdateDecision:
 
 
 class CorpusManager:
-    """Manages the training corpus and decides when to trigger fine-tuning."""
+    """Manages the training corpus and decides when to trigger fine-tuning.
+
+    Parameters
+    ----------
+    corpus_dir:
+        Root of the corpus directory.  Defaults to ``corpus/`` relative to the
+        repo root (detected from this file's location).
+    min_new_examples:
+        Absolute count of new/changed examples that triggers a retrain.
+    min_delta_pct:
+        Relative corpus growth fraction (0–1) that triggers a retrain.
+    include_private:
+        If True, include private subdirectories (adversarial/,
+        jailbreak_distillations/) in the training index.  The public manifest
+        is still written without these entries; the combined manifest is written
+        to ``manifest_combined.json`` alongside the public manifest.
+        Default: auto-detected from whether the private directories exist.
+    """
 
     def __init__(
         self,
         corpus_dir: Path | None = None,
         min_new_examples: int = DEFAULT_MIN_NEW_EXAMPLES,
         min_delta_pct: float = DEFAULT_MIN_DELTA_PCT,
+        include_private: bool | None = None,
     ) -> None:
         env_dir = os.getenv("SKILLSCAN_CORPUS_DIR")
         if corpus_dir is None and env_dir:
@@ -160,85 +227,220 @@ class CorpusManager:
             corpus_dir = Path(__file__).parent.parent.parent / "corpus"
         self.corpus_dir = corpus_dir.resolve()
         self.manifest_path = self.corpus_dir / MANIFEST_FILENAME
+        self.combined_manifest_path = self.corpus_dir / MANIFEST_COMBINED_FILENAME
         self.min_new_examples = min_new_examples
         self.min_delta_pct = min_delta_pct
+
+        # Auto-detect whether private directories are present
+        if include_private is None:
+            include_private = any(
+                (self.corpus_dir / d).is_dir() for d in PRIVATE_LABEL_MAP
+            )
+        self.include_private = include_private
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
 
     def sync(self) -> UpdateDecision:
-        """Scan corpus, update manifest, and return an UpdateDecision."""
-        old_manifest = self._load_manifest()
-        new_index = self._build_index()
-        new_manifest = self._build_manifest(new_index, old_manifest)
-        decision = self._evaluate(old_manifest, new_manifest)
-        self._save_manifest(new_manifest)
+        """Scan corpus, update manifest(s), and return an UpdateDecision.
+
+        Always writes the public manifest (manifest.json) which covers only
+        public subdirectories.  If private directories are present, also writes
+        manifest_combined.json and bases the retrain decision on the combined
+        corpus size.
+        """
+        old_public_manifest = self._load_manifest(self.manifest_path)
+
+        # Build public index (for the committed manifest)
+        public_index = self._build_index(include_private=False)
+        new_public_manifest = self._build_manifest(public_index, old_public_manifest)
+        self._save_manifest(new_public_manifest, self.manifest_path)
+
+        if self.include_private:
+            # Build combined index (for the retrain decision)
+            combined_index = self._build_index(include_private=True)
+            old_combined = self._load_manifest(self.combined_manifest_path)
+            new_combined_manifest = self._build_manifest(combined_index, old_combined)
+            # Carry last_finetune from the public manifest into the combined one
+            new_combined_manifest.last_finetune = new_public_manifest.last_finetune
+            self._save_manifest(new_combined_manifest, self.combined_manifest_path)
+            decision = self._evaluate(old_combined, new_combined_manifest)
+            logger.info(
+                "Combined corpus: %d public + %d private = %d total",
+                len(public_index),
+                len(combined_index) - len(public_index),
+                len(combined_index),
+            )
+        else:
+            decision = self._evaluate(old_public_manifest, new_public_manifest)
+
         logger.info(decision.summary())
         return decision
 
     def status(self) -> dict[str, Any]:
         """Return a human-readable status dict without modifying the manifest."""
-        manifest = self._load_manifest()
-        current_index = self._build_index()
-        current_size = len(current_index)
-        return {
+        public_manifest = self._load_manifest(self.manifest_path)
+        public_index = self._build_index(include_private=False)
+        combined_index = self._build_index(include_private=True)
+
+        result: dict[str, Any] = {
             "corpus_dir": str(self.corpus_dir),
             "manifest_exists": self.manifest_path.exists(),
-            "current_examples": current_size,
-            "manifest_examples": manifest.total_examples,
-            "label_counts": manifest.label_counts,
-            "last_updated": manifest.last_updated,
-            "last_finetune": asdict(manifest.last_finetune),
+            "public_examples": len(public_index),
+            "private_examples": len(combined_index) - len(public_index),
+            "combined_examples": len(combined_index),
+            # Backward-compatible alias: current_examples == combined_examples
+            "current_examples": len(combined_index),
+            "manifest_examples": public_manifest.total_examples,
+            "label_counts": public_manifest.label_counts,
+            "last_updated": public_manifest.last_updated,
+            "last_finetune": asdict(public_manifest.last_finetune),
             "thresholds": {
                 "min_new_examples": self.min_new_examples,
                 "min_delta_pct": self.min_delta_pct,
             },
         }
 
+        # Per-directory breakdown
+        breakdown: dict[str, int] = {}
+        for d in sorted(self.corpus_dir.iterdir()):
+            if not d.is_dir():
+                continue
+            name = d.name
+            if name in EVAL_ONLY_DIRS:
+                count = sum(
+                    1 for p in d.rglob("*")
+                    if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS
+                )
+                breakdown[f"{name} (eval-only)"] = count
+            elif name in PUBLIC_LABEL_MAP or name == "graph_injection":
+                count = sum(
+                    1 for p in d.rglob("*")
+                    if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS
+                )
+                breakdown[f"{name} (public)"] = count
+            elif name in PRIVATE_LABEL_MAP:
+                count = sum(
+                    1 for p in d.rglob("*")
+                    if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS
+                )
+                breakdown[f"{name} (private)"] = count
+        result["directory_breakdown"] = breakdown
+
+        return result
+
     def record_finetune(self, checkpoint: str) -> None:
         """Update the manifest to record a completed fine-tune run."""
-        manifest = self._load_manifest()
-        manifest.last_finetune = FineTuneRecord(
+        manifest = self._load_manifest(self.manifest_path)
+        # Use combined size if available, else public size
+        combined_manifest = self._load_manifest(self.combined_manifest_path)
+        size = combined_manifest.total_examples or manifest.total_examples
+        record = FineTuneRecord(
             timestamp=_now_iso(),
-            corpus_size_at_finetune=manifest.total_examples,
+            corpus_size_at_finetune=size,
             model_checkpoint=checkpoint,
         )
-        self._save_manifest(manifest)
-        logger.info("Recorded fine-tune: checkpoint=%s size=%d", checkpoint, manifest.total_examples)
+        manifest.last_finetune = record
+        self._save_manifest(manifest, self.manifest_path)
+        if self.combined_manifest_path.exists():
+            combined_manifest.last_finetune = record
+            self._save_manifest(combined_manifest, self.combined_manifest_path)
+        logger.info(
+            "Recorded fine-tune: checkpoint=%s size=%d", checkpoint, size
+        )
 
-    def iter_examples(self) -> list[tuple[Path, str]]:
-        """Yield (path, label) tuples for all corpus examples."""
+    def iter_examples(self, include_private: bool | None = None) -> list[tuple[Path, str]]:
+        """Return (path, label) tuples for all training corpus examples.
+
+        Parameters
+        ----------
+        include_private:
+            If None, uses ``self.include_private``.  Pass True/False to override.
+        """
+        if include_private is None:
+            include_private = self.include_private
         examples = []
-        for subdir, label in LABEL_MAP.items():
+
+        # Public flat subdirectories
+        for subdir, label in PUBLIC_LABEL_MAP.items():
             d = self.corpus_dir / subdir
             if not d.is_dir():
                 continue
             for p in sorted(d.rglob("*")):
                 if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS:
                     examples.append((p, label))
+
+        # graph_injection/ — nested structure: RULE-ID/{malicious,benign}/
+        graph_dir = self.corpus_dir / "graph_injection"
+        if graph_dir.is_dir():
+            for rule_dir in sorted(graph_dir.iterdir()):
+                if not rule_dir.is_dir():
+                    continue
+                for polarity in ("malicious", "benign"):
+                    sub = rule_dir / polarity
+                    if not sub.is_dir():
+                        continue
+                    label = "injection" if polarity == "malicious" else "benign"
+                    for p in sorted(sub.rglob("*")):
+                        if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS:
+                            examples.append((p, label))
+
+        # Private subdirectories (only when include_private is True)
+        if include_private:
+            for subdir, label in PRIVATE_LABEL_MAP.items():
+                d = self.corpus_dir / subdir
+                if not d.is_dir():
+                    continue
+                for p in sorted(d.rglob("*")):
+                    if p.is_file() and p.suffix in SUPPORTED_EXTENSIONS:
+                        # Skip manifest files that were rsync'd in
+                        if p.name in ("MANIFEST.json", "manifest.json"):
+                            continue
+                        examples.append((p, label))
+
+        # held_out_eval/ is intentionally excluded from iter_examples()
+        # It is only used by the evaluation step in finetune_modal.py
+
+        return examples
+
+    def iter_eval_examples(self) -> list[tuple[Path, str]]:
+        """Return (path, label) tuples for the held-out evaluation set only.
+
+        The label is inferred from the filename prefix: files starting with
+        'benign' are labeled 'benign'; all others are labeled 'injection'.
+        """
+        eval_dir = self.corpus_dir / "held_out_eval"
+        if not eval_dir.is_dir():
+            return []
+        examples = []
+        for p in sorted(eval_dir.rglob("*")):
+            if not p.is_file() or p.suffix not in SUPPORTED_EXTENSIONS:
+                continue
+            label = "benign" if p.name.startswith("benign") else "injection"
+            examples.append((p, label))
         return examples
 
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _build_index(self) -> dict[str, str]:
-        """Return {relative_path: sha256} for every corpus file."""
+    def _build_index(self, include_private: bool = False) -> dict[str, str]:
+        """Return {relative_path: sha256} for every training corpus file."""
         index: dict[str, str] = {}
-        for path, _label in self.iter_examples():
+        for path, _label in self.iter_examples(include_private=include_private):
             rel = str(path.relative_to(self.corpus_dir))
             index[rel] = _sha256(path)
         return index
 
-    def _load_manifest(self) -> CorpusManifest:
-        if not self.manifest_path.exists():
+    def _load_manifest(self, path: Path) -> CorpusManifest:
+        if not path.exists():
             return CorpusManifest()
         try:
-            raw = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+            raw = json.loads(path.read_text(encoding="utf-8"))
             return CorpusManifest.from_dict(raw)
         except Exception as exc:
-            logger.warning("Failed to load manifest: %s — starting fresh", exc)
+            logger.warning("Failed to load manifest %s: %s — starting fresh", path, exc)
             return CorpusManifest()
 
     def _build_manifest(
@@ -246,8 +448,14 @@ class CorpusManager:
     ) -> CorpusManifest:
         label_counts: dict[str, int] = {}
         for rel_path in new_index:
-            subdir = rel_path.split("/")[0]
-            label = LABEL_MAP.get(subdir, "unknown")
+            top = rel_path.split("/")[0]
+            # graph_injection nested: rel_path is graph_injection/RULE/polarity/file
+            if top == "graph_injection":
+                parts = rel_path.split("/")
+                polarity = parts[2] if len(parts) >= 3 else "malicious"
+                label = "injection" if polarity == "malicious" else "benign"
+            else:
+                label = PUBLIC_LABEL_MAP.get(top) or PRIVATE_LABEL_MAP.get(top, "unknown")
             label_counts[label] = label_counts.get(label, 0) + 1
 
         return CorpusManifest(
@@ -318,8 +526,8 @@ class CorpusManager:
             reason=reason,
         )
 
-    def _save_manifest(self, manifest: CorpusManifest) -> None:
-        self.manifest_path.write_text(
+    def _save_manifest(self, manifest: CorpusManifest, path: Path) -> None:
+        path.write_text(
             json.dumps(manifest.to_dict(), indent=2, ensure_ascii=False),
             encoding="utf-8",
         )

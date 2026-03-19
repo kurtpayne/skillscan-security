@@ -127,10 +127,14 @@ def run_finetune(
             "last_finetune": last_finetune,
         }
 
-    # Build labelled dataset from corpus structure
-    # corpus/benign/*.md → label 0
-    # corpus/prompt_injection/*.md + corpus/malicious/*.md → label 1
+    # Build labelled dataset from corpus structure.
+    # Covers all training subdirectories (public + private merged in CI).
+    # held_out_eval/ is excluded — it is used only for post-train evaluation.
     label2id = {"benign": 0, "injection": 1}
+    INJECTION_DIRS = frozenset({
+        "prompt_injection", "malicious", "social_engineering",
+        "adversarial", "jailbreak_distillations",
+    })
     examples: list[tuple[str, int]] = []
 
     for rel_path, content in corpus_data.items():
@@ -138,12 +142,22 @@ def run_finetune(
         if not parts:
             continue
         category = parts[0]
+        if category == "held_out_eval":
+            continue  # reserved for eval
         if category == "benign":
             label = 0
-        elif category in ("prompt_injection", "malicious"):
+        elif category in INJECTION_DIRS:
             label = 1
+        elif category == "social_engineering":
+            # benign counterparts are prefixed with 'benign_'
+            fname = parts[-1] if len(parts) > 1 else ""
+            label = 0 if fname.startswith("benign") else 1
+        elif category == "graph_injection":
+            # graph_injection/RULE-ID/{malicious,benign}/file.md
+            polarity = parts[2] if len(parts) >= 3 else "malicious"
+            label = 1 if polarity.startswith("malicious") else 0
         else:
-            continue  # skip manifest.json and README
+            continue  # skip manifest.json, README, etc.
         examples.append((content, label))
 
     if not examples:
@@ -227,6 +241,80 @@ def run_finetune(
     print(f"Adapter saved to {output_dir}")
 
     # -----------------------------------------------------------------------
+    # Evaluation on held-out set (Issue I2)
+    # Files in corpus/held_out_eval/ are named benign_*.md or injection_*.md.
+    # Macro F1 must reach F1_GATE=0.90 to proceed with Hub push.
+    # Results are written to corpus/EVAL_RESULTS.md (generated in local
+    # entrypoint after the remote function returns).
+    # -----------------------------------------------------------------------
+    F1_GATE = 0.90
+    eval_result: dict = {"evaluated": False, "f1_gate_passed": True}
+    eval_examples: list[tuple[str, int]] = [
+        (content, 0 if Path(rel).name.startswith("benign") else 1)
+        for rel, content in corpus_data.items()
+        if Path(rel).parts[0] == "held_out_eval"
+    ]
+    if eval_examples:
+        print(f"Evaluating on {len(eval_examples)} held-out examples...")
+        eval_texts = [t for t, _ in eval_examples]
+        eval_labels_list = [lbl for _, lbl in eval_examples]
+        eval_encodings = tokenizer(
+            eval_texts,
+            truncation=True,
+            padding=True,
+            max_length=MAX_LENGTH,
+            return_tensors="pt",
+        )
+        model.eval()
+        with torch.no_grad():
+            outputs = model(**{k: v for k, v in eval_encodings.items()})
+        preds = outputs.logits.argmax(dim=-1).cpu().tolist()
+        # Per-class precision / recall / F1
+        tp: dict[int, int] = {0: 0, 1: 0}
+        fp: dict[int, int] = {0: 0, 1: 0}
+        fn: dict[int, int] = {0: 0, 1: 0}
+        for pred, true in zip(preds, eval_labels_list):
+            if pred == true:
+                tp[pred] += 1
+            else:
+                fp[pred] += 1
+                fn[true] += 1
+        def _prf(lbl: int) -> tuple[float, float, float]:
+            p = tp[lbl] / (tp[lbl] + fp[lbl]) if (tp[lbl] + fp[lbl]) > 0 else 0.0
+            r = tp[lbl] / (tp[lbl] + fn[lbl]) if (tp[lbl] + fn[lbl]) > 0 else 0.0
+            f = 2 * p * r / (p + r) if (p + r) > 0 else 0.0
+            return round(p, 4), round(r, 4), round(f, 4)
+        p0, r0, f0 = _prf(0)
+        p1, r1, f1_inj = _prf(1)
+        macro_f1 = round((f0 + f1_inj) / 2, 4)
+        accuracy = round(
+            sum(1 for p, t in zip(preds, eval_labels_list) if p == t) / len(eval_labels_list), 4
+        )
+        fp_rate = round(fp[0] / (fp[0] + tp[0]) if (fp[0] + tp[0]) > 0 else 0.0, 4)
+        gate_passed = macro_f1 >= F1_GATE
+        eval_result = {
+            "evaluated": True,
+            "eval_size": len(eval_examples),
+            "accuracy": accuracy,
+            "macro_f1": macro_f1,
+            "false_positive_rate": fp_rate,
+            "benign": {"precision": p0, "recall": r0, "f1": f0},
+            "injection": {"precision": p1, "recall": r1, "f1": f1_inj},
+            "f1_gate": F1_GATE,
+            "f1_gate_passed": gate_passed,
+        }
+        print(f"Eval: accuracy={accuracy} macro_f1={macro_f1} fp_rate={fp_rate}")
+        print(f"  benign:    P={p0} R={r0} F1={f0}")
+        print(f"  injection: P={p1} R={r1} F1={f1_inj}")
+        if not gate_passed:
+            print(f"F1 gate FAILED: {macro_f1} < {F1_GATE} — skipping Hub push")
+        else:
+            print(f"F1 gate PASSED: {macro_f1} >= {F1_GATE}")
+    else:
+        print("No held_out_eval examples in corpus_data — skipping evaluation")
+        print("Run scripts/reserve_eval_set.py and include held_out_eval/ in corpus upload")
+
+    # -----------------------------------------------------------------------
     # ONNX export: merge LoRA → base, export to ONNX, INT8 quantize
     # This produces a ~70MB quantized model for fast CPU inference.
     # Users download this via `skillscan model sync` — no PyTorch needed.
@@ -283,9 +371,21 @@ def run_finetune(
     # -----------------------------------------------------------------------
     # Push to HuggingFace Hub
     # Prefer the ONNX model if export succeeded; fall back to raw LoRA adapter.
+    # Gate: skip push if F1 gate failed.
     # -----------------------------------------------------------------------
     hf_token = os.environ.get("HF_TOKEN")
     push_result = {"pushed": False, "repo_id": hf_repo_id}
+    if eval_result.get("evaluated") and not eval_result.get("f1_gate_passed", True):
+        push_result["skipped"] = f"F1 gate failed: macro_f1={eval_result.get('macro_f1')} < {F1_GATE}"
+        return {
+            "status": "f1_gate_failed",
+            "corpus_size": corpus_size,
+            "label_counts": label_counts,
+            "epochs": EPOCHS,
+            "lora_r": LORA_R,
+            "eval": eval_result,
+            "hf_push": push_result,
+        }
     if hf_token:
         from huggingface_hub import HfApi
         api = HfApi(token=hf_token)
@@ -317,6 +417,7 @@ def run_finetune(
         "label_counts": label_counts,
         "epochs": EPOCHS,
         "lora_r": LORA_R,
+        "eval": eval_result,
         "hf_push": push_result,
     }
 
@@ -340,7 +441,8 @@ def main(
         print("ERROR: corpus/ directory not found. Run: skillscan corpus sync")
         sys.exit(1)
 
-    # Load corpus files into memory for upload
+    # Load corpus files into memory for upload.
+    # Includes held_out_eval/ so the remote function can evaluate post-train.
     corpus_data: dict[str, str] = {}
     for md_file in corpus_dir.rglob("*.md"):
         rel = str(md_file.relative_to(corpus_dir))
@@ -348,6 +450,8 @@ def main(
             corpus_data[rel] = md_file.read_text(encoding="utf-8", errors="replace")
         except Exception:
             pass
+    held_out_count = sum(1 for r in corpus_data if r.startswith("held_out_eval"))
+    print(f"Corpus files: {len(corpus_data)} ({held_out_count} held-out eval)")
 
     manifest_json = manifest_path.read_text() if manifest_path.exists() else "{}"
 
@@ -363,14 +467,26 @@ def main(
 
     print(json.dumps(result, indent=2))
 
+    from datetime import datetime
+    now_iso = datetime.now(UTC).isoformat()
+
+    # Write EVAL_RESULTS.md regardless of push outcome
+    eval_data = result.get("eval", {})
+    if eval_data.get("evaluated"):
+        _write_eval_results(corpus_dir=corpus_dir, eval_data=eval_data, now_iso=now_iso)
+
+    if result.get("status") in ("success", "f1_gate_failed"):
+        if result["status"] == "f1_gate_failed":
+            print(f"Fine-tune completed but F1 gate failed — model NOT pushed to Hub.")
+            print(f"  macro_f1={eval_data.get('macro_f1')} (gate={eval_data.get('f1_gate', 0.90)})")
+            print("  Review EVAL_RESULTS.md and address false positives/negatives before retrying.")
+
     if result.get("status") == "success" and result.get("hf_push", {}).get("pushed"):
         # Update local manifest with finetune record
         if manifest_path.exists():
             manifest = json.loads(manifest_path.read_text())
         else:
             manifest = {}
-        from datetime import datetime
-        now_iso = datetime.now(UTC).isoformat()
         manifest["last_finetune"] = now_iso
         manifest["last_finetune_corpus_size"] = result["corpus_size"]
         manifest["adapter_repo"] = hf_repo_id
@@ -384,6 +500,106 @@ def main(
             hf_repo_id=hf_repo_id,
             now_iso=now_iso,
         )
+
+
+def _write_eval_results(corpus_dir: Path, eval_data: dict, now_iso: str) -> None:
+    """Write corpus/EVAL_RESULTS.md with the latest evaluation metrics."""
+    import subprocess
+
+    results_path = corpus_dir / "EVAL_RESULTS.md"
+
+    try:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=str(corpus_dir.parent),
+            text=True,
+        ).strip()
+        commit_url = (
+            "https://github.com/kurtpayne/skillscan-security/commit/"
+            + subprocess.check_output(
+                ["git", "rev-parse", "HEAD"],
+                cwd=str(corpus_dir.parent),
+                text=True,
+            ).strip()
+        )
+        commit_link = f"[`{commit}`]({commit_url})"
+    except Exception:
+        commit_link = "unknown"
+
+    benign = eval_data.get("benign", {})
+    injection = eval_data.get("injection", {})
+    gate = eval_data.get("f1_gate", 0.90)
+    macro_f1 = eval_data.get("macro_f1", "?")
+    gate_status = "PASSED" if eval_data.get("f1_gate_passed") else "FAILED"
+
+    content = f"""# SkillScan Evaluation Results
+
+> Auto-generated by `scripts/finetune_modal.py` — do not edit manually.
+
+## Latest Run
+
+| Field | Value |
+|---|---|
+| Date | {now_iso[:10]} |
+| Commit | {commit_link} |
+| Eval set size | {eval_data.get('eval_size', '?')} |
+| Accuracy | {eval_data.get('accuracy', '?')} |
+| Macro F1 | **{macro_f1}** |
+| False Positive Rate | {eval_data.get('false_positive_rate', '?')} |
+| F1 Gate ({gate}) | **{gate_status}** |
+
+## Per-Class Metrics
+
+| Class | Precision | Recall | F1 |
+|---|---|---|---|
+| benign | {benign.get('precision', '?')} | {benign.get('recall', '?')} | {benign.get('f1', '?')} |
+| injection | {injection.get('precision', '?')} | {injection.get('recall', '?')} | {injection.get('f1', '?')} |
+
+## History
+
+| Date | Eval Size | Accuracy | Macro F1 | FP Rate | Gate |
+|---|---|---|---|---|---|
+| {now_iso[:10]} | {eval_data.get('eval_size', '?')} | {eval_data.get('accuracy', '?')} | {macro_f1} | {eval_data.get('false_positive_rate', '?')} | {gate_status} |
+"""
+
+    # If the file already exists, append to the History table instead of overwriting
+    if results_path.exists():
+        existing = results_path.read_text()
+        # Update the "Latest Run" section and append to History
+        history_row = (
+            f"| {now_iso[:10]} | {eval_data.get('eval_size', '?')} "
+            f"| {eval_data.get('accuracy', '?')} | {macro_f1} "
+            f"| {eval_data.get('false_positive_rate', '?')} | {gate_status} |"
+        )
+        # Find the history table and append
+        lines = existing.splitlines()
+        history_header = "| Date | Eval Size | Accuracy | Macro F1 | FP Rate | Gate |"
+        insert_idx = None
+        for i, line in enumerate(lines):
+            if line.startswith(history_header):
+                j = i + 2
+                while j < len(lines) and lines[j].startswith("|"):
+                    j += 1
+                insert_idx = j
+                break
+        if insert_idx is not None:
+            lines.insert(insert_idx, history_row)
+            # Also update the Latest Run table
+            new_lines = []
+            in_latest = False
+            for line in lines:
+                if line == "## Latest Run":
+                    in_latest = True
+                elif line.startswith("## ") and in_latest:
+                    in_latest = False
+                new_lines.append(line)
+            results_path.write_text("\n".join(lines) + "\n")
+        else:
+            results_path.write_text(content)
+    else:
+        results_path.write_text(content)
+
+    print(f"EVAL_RESULTS.md written: {results_path}")
 
 
 def _update_corpus_card(

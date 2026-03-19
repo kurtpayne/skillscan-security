@@ -16,11 +16,16 @@ def test_adversarial_regression_suite() -> None:
         case_name = case["case"]
         expected_verdict = case["verdict"]
         must_find = case["must_find"]
+        # Optional per-case flags (e.g. graph cases need graph_scan=True)
+        graph_scan: bool = case.get("graph_scan", False)
 
         target = Path("tests/adversarial/cases") / case_name
-        report = scan(target, policy, "builtin:strict")
+        report = scan(target, policy, "builtin:strict", graph_scan=graph_scan)
         assert report.verdict.value == expected_verdict, (
             f"{case_name}: {report.verdict.value} != {expected_verdict}"
         )
         if must_find:
-            assert any(f.id == must_find for f in report.findings), f"{case_name}: missing {must_find}"
+            assert any(f.id == must_find for f in report.findings), (
+                f"{case_name}: missing {must_find} in "
+                f"{[f.id for f in report.findings]}"
+            )

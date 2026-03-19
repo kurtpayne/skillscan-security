@@ -32,6 +32,32 @@ jobs:
           cache: pip
       - name: Install package (no ML extras needed for sync)
         run: pip install -e ".[dev]" --quiet
+      - name: Fetch private corpus fixtures
+        run: |
+          if [ -z "$CORPUS_DEPLOY_KEY" ]; then
+            echo "CORPUS_DEPLOY_KEY not set — skipping private corpus fetch"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$CORPUS_DEPLOY_KEY" > ~/.ssh/corpus_deploy_key
+          chmod 600 ~/.ssh/corpus_deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/corpus_deploy_key -o StrictHostKeyChecking=yes' \
+            git clone --depth 1 git@github.com:kurtpayne/skillscan-corpus.git /tmp/skillscan-corpus
+          for dir in adversarial jailbreak_distillations social_engineering; do
+            if [ -d "/tmp/skillscan-corpus/$dir" ]; then
+              mkdir -p "corpus/$dir"
+              rsync -a --ignore-existing "/tmp/skillscan-corpus/$dir/" "corpus/$dir/"
+            fi
+          done
+          if [ -d "/tmp/skillscan-corpus/held_out_eval" ]; then
+            mkdir -p corpus/held_out_eval
+            rsync -a --ignore-existing /tmp/skillscan-corpus/held_out_eval/ corpus/held_out_eval/
+          fi
+          rm -rf /tmp/skillscan-corpus ~/.ssh/corpus_deploy_key
+          echo "Private corpus fixtures merged"
+        env:
+          CORPUS_DEPLOY_KEY: ${{ secrets.CORPUS_DEPLOY_KEY }}
       - name: Run corpus sync
         id: sync
         run: |

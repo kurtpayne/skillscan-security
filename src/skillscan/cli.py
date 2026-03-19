@@ -250,14 +250,15 @@ def scan_cmd(
             "Also configurable via SKILLSCAN_ML_DETECT env var."
         ),
     ),
-    graph_scan: bool = typer.Option(
-        False,
+    graph_scan: bool | None = typer.Option(
+        None,
         "--graph/--no-graph",
         envvar="SKILLSCAN_GRAPH",
         help=(
-            "Enable skill graph analysis: detects cross-skill invocation abuse, "
-            "remote Markdown loading (PINJ-GRAPH-001), undocumented high-risk tool grants "
-            "(PINJ-GRAPH-002), and memory/config file poisoning (PINJ-GRAPH-003). "
+            "Enable skill graph analysis (default: on for directory targets, off for single files). "
+            "Detects remote Markdown loading (PINJ-GRAPH-001), undocumented high-risk tool grants "
+            "(PINJ-GRAPH-002), memory/config file poisoning (PINJ-GRAPH-003), and cross-skill "
+            "tool escalation (PINJ-GRAPH-004). Use --no-graph to disable explicitly. "
             "Also configurable via SKILLSCAN_GRAPH env var."
         ),
     ),
@@ -330,6 +331,15 @@ def scan_cmd(
     rules_result = maybe_sync_rules(max_age_seconds=intel_max_age_minutes * 60)
     if rules_result.updated:
         console.print(f"[dim]rules refresh updated={len(rules_result.updated)}[/dim]")
+    # Issue J4: auto-enable graph scan for directory targets unless explicitly overridden.
+    # graph_scan is None when the user has not passed --graph or --no-graph.
+    _resolved_target = Path(target) if not target.startswith(("http://", "https://")) else None
+    effective_graph_scan: bool
+    if graph_scan is None:
+        effective_graph_scan = bool(_resolved_target and _resolved_target.is_dir())
+    else:
+        effective_graph_scan = graph_scan
+
     try:
         report = scan(
             target,
@@ -341,7 +351,7 @@ def scan_cmd(
             clamav_timeout_seconds=clamav_timeout_seconds,
             ml_detect=ml_detect,
             rulepack_channel=rulepack_channel,
-            graph_scan=graph_scan,
+            graph_scan=effective_graph_scan,
         )
     except (ScanError, ValueError) as exc:
         console.print(f"[bold red]Scan failed:[/] {exc}")

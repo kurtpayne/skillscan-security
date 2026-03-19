@@ -15,7 +15,7 @@ Options:
 - `--url-max-links`: max followed links for URL targets (default 25)
 - `--url-same-origin-only/--no-url-same-origin-only`: link-following origin policy (default same-origin only)
 - `--ml-detect/--no-ml-detect`: enable offline ML-based prompt injection detection (default disabled; requires `skillscan model sync` first; no API key or network call needed)
-- `--graph/--no-graph`: enable skill graph analysis — detects remote instruction loads, unsafe tool grants, and memory poisoning chains across all SKILL.md files in the scan root (default disabled)
+- `--graph/--no-graph`: enable skill graph analysis — detects remote instruction loads (PINJ-GRAPH-001), unsafe tool grants (PINJ-GRAPH-002), memory poisoning chains (PINJ-GRAPH-003), and cross-skill tool escalation (PINJ-GRAPH-004) across all SKILL.md, CLAUDE.md, and gpt_actions.json files in the scan root. **Auto-enabled for directory targets; disabled for single files.** Use `--no-graph` to disable explicitly. Override with `SKILLSCAN_GRAPH=1` env var.
 
 Examples:
 

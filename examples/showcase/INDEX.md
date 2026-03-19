@@ -107,3 +107,5 @@ skillscan scan examples/showcase/29_claude_sed_path_bypass --fail-on never
 88. `88_clawhavoc_memory_harvest`: ClawHavoc campaign harvesting OpenClaw agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement (`EXF-017`)
 89. `89_glassworm_chrome_extension_rat`: GlassWorm Chrome extension RAT that force-installs a malicious extension masquerading as Google Docs Offline with keylogging, cookie theft, and Solana-based C2 (`MAL-034`)
 90. `90_openclaw_gatewayurl_injection`: OpenClaw CVE-2026-25253 one-click RCE via gatewayUrl parameter injection and execution approval bypass (`MAL-035`)
+89. `89_clickfix_webdav_share_exec`: Click-Fix WebDAV variant that maps an attacker-controlled WebDAV share via `net use` and executes a malicious batch script, bypassing browser download protections (`MAL-034`)
+90. `90_electron_asar_c2_injection`: Trojanized Electron application where the `app.asar` archive is modified to include a C2 beacon, as seen in the SnappyClient campaign targeting crypto wallets (`MAL-035`)
