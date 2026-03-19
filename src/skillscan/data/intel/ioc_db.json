@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-03-18",
+    "generated": "2026-03-19",
     "bundled_sources": [
       "feodotracker_ips",
       "spamhaus_drop",
@@ -502,7 +502,8 @@
     "zontiz.com",
     "zycdjz.com",
     "zynova.yzz.me",
-    "pastefy.app"
+    "pastefy.app",
+    "cloudflare.report"
   ],
   "ips": [
     "144.31.224.98",
@@ -513,7 +514,9 @@
     "54.91.154.110",
     "70.34.242.255",
     "91.92.242.30",
-    "195.201.104.53"
+    "195.201.104.53",
+    "94.156.170.255",
+    "144.31.165.173"
   ],
   "cidrs": [
     "1.10.16.0/20",
@@ -2047,6 +2050,7 @@
   "urls": [
     "https://backupdailyawss.s3.us-east-1.amazonaws.com",
     "https://fastdlvrss.s3.us-east-1.amazonaws.com",
-    "https://glot.io/snippets/malicious-bootstrap"
+    "https://glot.io/snippets/malicious-bootstrap",
+    "https://cloudflare.report/forever/e/"
   ]
 }

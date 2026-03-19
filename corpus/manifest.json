@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-19T16:08:24+00:00",
-  "total_examples": 277,
+  "last_updated": "2026-03-19T20:13:04+00:00",
+  "total_examples": 280,
   "label_counts": {
     "benign": 158,
-    "injection": 119
+    "injection": 122
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -180,6 +180,8 @@
     "malicious/a28_glassworm_persistence.md": "1da6de1216e076e96a2c703bd2d7b3384982e9f83e588892f8747d05a6dcd578",
     "malicious/a29_bloktrooper_vsx.md": "1023fc85c42603ed21b005ca689d38246197f32a358d903ae6ec323e3d91297e",
     "malicious/a30_clawhavoc_memory.md": "1b83dd18b0371abb8bae1b8679c23b9efc03bfc093ae3667bd8250d3900ddeda",
+    "malicious/a31_clickfix_webdav.md": "aebf36b4eacf20936dab54aeef2739e35e58c6816e52f309e5a71e697248ee51",
+    "malicious/a32_electron_asar_c2.md": "7da855f108d92c3a73a97e7590f719bc9dc50ad4d9f735d868c5260a2022e0d5",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",
@@ -283,6 +285,7 @@
     "graph_injection/PINJ-GRAPH-003/malicious/SKILL.md": "3dae9750e884a3fc784822cc75f5d9efb494efbf597deda78920aa79f3b51dee",
     "graph_injection/PINJ-GRAPH-003/benign/SKILL.md": "a051c90b606b13645184dcfd00a4ad36255eb20cb67bfdc075967a6f4fe45c21",
     "graph_injection/PINJ-GRAPH-004/malicious/SKILL.md": "f989dd8ac735e0157854affe582f631245387668a882cd72734c47110439b35d",
+    "graph_injection/PINJ-GRAPH-004/malicious/skills/code-executor/SKILL.md": "da9f9a1a18849fa399e8b9da9b06b6f906d01c24e26970b3d517ba0dc927422c",
     "graph_injection/PINJ-GRAPH-004/benign/SKILL.md": "819516ba4e0ba522e82374b61f31b3ec29a3b0c9ffc1cbd3d384dade795e1e32"
   },
   "last_finetune": {

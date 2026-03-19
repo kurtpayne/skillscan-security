@@ -1,3 +1,38 @@
+## 2026-03-19 — SnappyClient C2 Implant, Click-Fix WebDAV Variant
+
+**Sources:**
+- [The Hacker News — Investigating New Click-Fix Variant with WebDAV](https://thehackernews.com/2026/03/investigating-new-click-fix-variant.html)
+- [Dark Reading — New C2 Implant SnappyClient Targets Crypto Wallets](https://www.darkreading.com/cyberattacks-data-breaches/new-c2-implant-snappyclient-targets-crypto-wallets)
+
+**Event Summary:** Two related malware campaigns were identified. A new Click-Fix variant uses `net use` to map attacker-controlled WebDAV shares and execute malicious batch scripts, bypassing browser download protections and SmartScreen checks. The trojanized WorkFlowy desktop application (Electron-based) hides a C2 beacon inside the `app.asar` archive. Separately, the SnappyClient C2 implant (C++ based, delivered via HijackLoader) targets cryptocurrency wallets using ChaCha20-Poly1305 encrypted communications. Both campaigns share infrastructure at `cloudflare.report` and `happyglamper.ro`.
+
+**New Patterns Added:**
+
+### MAL-034: Click-Fix WebDAV share mount and execute pattern
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `net use` commands mapping WebDAV shares (`DavWWWRoot`, `\webdav`) followed by execution of batch/command/executable files.
+- **Justification:** Captures a new Click-Fix delivery variant that stages payloads on attacker-controlled WebDAV servers. Unlike browser-based downloads, WebDAV-mounted files bypass SmartScreen and download protection checks, making this a high-signal evasion technique.
+- **Mitigation:** Do not map WebDAV shares via `net use` and execute remote scripts. Block WebDAV mount commands in skill files and treat any `net use` + execute chain as suspicious.
+
+### MAL-035: Trojanized Electron app.asar C2 payload injection
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.86
+- **Pattern:** Detects `app.asar` references combined with execution primitives (`exec`, `spawn`, `fetch`, `request`, `net.request`) indicating a trojanized Electron application with injected C2 functionality.
+- **Justification:** Captures the SnappyClient/Click-Fix campaign technique of hiding C2 beacons inside Electron `app.asar` archives. Legitimate Electron apps do not typically combine asar manipulation with direct execution or network calls in the same context.
+- **Mitigation:** Verify the integrity of Electron application packages and reject modified asar files that contain unexpected network or execution calls.
+
+**IOC Updates:**
+- Added domain: `cloudflare.report` (SnappyClient/Click-Fix C2)
+- Added IP: `94.156.170.255` (SnappyClient C2)
+- Added IP: `144.31.165.173` (Click-Fix WebDAV staging)
+- Added URL: `https://cloudflare.report/forever/e/` (SnappyClient payload endpoint)
+
+**Version:** Rules updated from 2026.03.18.2 to 2026.03.19.1
+**Testing:** Added coverage in `tests/test_rules.py::test_new_patterns_2026_03_19` and `tests/test_showcase_examples.py` with showcase fixtures `examples/showcase/89_clickfix_webdav_share_exec` and `examples/showcase/90_electron_asar_c2_injection`.
+---
 ## 2026-03-18 — BlokTrooper VSX Extension Compromise, ClawHavoc Agent Memory Harvesting
 **Sources:**
 - [Aikido Security — fast-draft Open VSX Extension Compromised by BlokTrooper (RAT & Infostealer)](https://www.aikido.dev/blog/fast-draft-open-vsx-bloktrooper)

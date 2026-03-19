@@ -150,6 +150,10 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-033" for f in findings_87)
     findings_88 = _scan("examples/showcase/88_clawhavoc_memory_harvest").findings
     assert any(f.id == "EXF-017" for f in findings_88)
+    findings_89 = _scan("examples/showcase/89_clickfix_webdav_share_exec").findings
+    assert any(f.id == "MAL-034" for f in findings_89)
+    findings_90 = _scan("examples/showcase/90_electron_asar_c2_injection").findings
+    assert any(f.id == "MAL-035" for f in findings_90)
 
 
 def test_showcase_policy_block_domain() -> None:

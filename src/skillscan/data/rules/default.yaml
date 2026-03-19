@@ -1,4 +1,4 @@
-version: "2026.03.18.2"
+version: "2026.03.19.1"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -2043,6 +2043,67 @@ static_rules:
       benchmark_set: core-static-v1
     references:
     - https://www.clawsecure.ai/blog/clawhavoc-explained
+- id: MAL-034
+  category: malware_pattern
+  severity: high
+  confidence: 0.88
+  title: Click-Fix WebDAV share mount and execute pattern
+  pattern: (?i)\bnet\s+use\b[^\n]{0,200}(?:\\\\[^\s\\]+\\DavWWWRoot|@[^\s]+@\d+\\DavWWWRoot|\\\\[^\s]+\\webdav)[^\n]{0,200}(?:\.bat|\.cmd|\.exe|\.ps1|\bstart\b|\bcmd\b)
+  mitigation: Do not map WebDAV shares via net use and execute remote scripts. This is a
+    Click-Fix variant that stages payloads on attacker-controlled WebDAV servers to bypass
+    download protections and execute malicious batch scripts or trojanized applications.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-034
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-19'
+      last_modified: '2026-03-19'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/03/investigating-new-click-fix-variant.html
+- id: MAL-035
+  category: malware_pattern
+  severity: high
+  confidence: 0.86
+  title: Trojanized Electron app.asar C2 payload injection
+  pattern: (?i)(?:app\.asar[^\n]{0,120}(?:exec|spawn|fetch|request|net\.request)|(?:exec|spawn|fetch|request|net\.request)[^\n]{0,120}app\.asar|\brequire\([^)]*asar[^)]*\)[^\n]{0,80}(?:exec|spawn|eval))
+  mitigation: Do not inject C2 beacons or downloaders into Electron app.asar archives.
+    Verify the integrity of Electron application packages and reject modified asar files
+    that contain unexpected network or execution calls.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-035
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-19'
+      last_modified: '2026-03-19'
+    quality:
+      precision_estimate: 0.86
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/03/investigating-new-click-fix-variant.html
+    - https://www.darkreading.com/cyberattacks-data-breaches/new-c2-implant-snappyclient-targets-crypto-wallets
 - id: SE-001
   category: social_engineering
   severity: high

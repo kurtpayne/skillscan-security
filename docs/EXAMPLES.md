@@ -93,6 +93,8 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `86_media_directive_injection` | MCP tool result `MEDIA:` directive injection used to exfiltrate local files through the media processing pipeline (OpenClaw vuln GHSA-jjgj-cpp9-cvpv) | `PINJ-002` |
 | `87_bloktrooper_vsx_downloader` | Compromised Open VSX extension (`fast-draft`) that fetches a GitHub-hosted payload from `BlokTrooper/extension` and pipes it into a shell, deploying a Socket.IO RAT and infostealer | `MAL-033` |
 | `88_clawhavoc_memory_harvest` | ClawHavoc campaign harvesting OpenClaw agent memory and identity files (`MEMORY.md`, `SOUL.md`) for impersonation and lateral movement | `EXF-017` |
+| `89_clickfix_webdav_share_exec` | Click-Fix WebDAV variant that maps an attacker-controlled WebDAV share via `net use` and executes a malicious batch script, bypassing browser download protections | `MAL-034` |
+| `90_electron_asar_c2_injection` | Trojanized Electron application where the `app.asar` archive is modified to include a C2 beacon, as seen in the SnappyClient campaign targeting crypto wallets | `MAL-035` |
 ## Commands
 
 ```bash
