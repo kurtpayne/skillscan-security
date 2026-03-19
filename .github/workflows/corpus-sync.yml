@@ -20,8 +20,8 @@ jobs:
     name: Sync corpus manifest & evaluate delta
     runs-on: ubuntu-latest
     outputs:
-      should_retrain: ${{ steps.sync.outputs.should_retrain }}
-      summary: ${{ steps.sync.outputs.summary }}
+      should_retrain: <LaTex>${{ steps.sync.outputs.should_retrain }}
+      summary: $</LaTex>{{ steps.sync.outputs.summary }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,6 +32,29 @@ jobs:
           cache: pip
       - name: Install package (no ML extras needed for sync)
         run: pip install -e ".[dev]" --quiet
+      - name: Fetch private corpus fixtures
+        if: <LaTex>${{ secrets.CORPUS_DEPLOY_KEY != '' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$</LaTex>CORPUS_DEPLOY_KEY" > ~/.ssh/corpus_deploy_key
+          chmod 600 ~/.ssh/corpus_deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/corpus_deploy_key -o StrictHostKeyChecking=yes' \
+            git clone --depth 1 git@github.com:kurtpayne/skillscan-corpus.git /tmp/skillscan-corpus
+          for dir in adversarial jailbreak_distillations social_engineering; do
+            if [ -d "/tmp/skillscan-corpus/<LaTex>$dir" ]; then
+              mkdir -p "corpus/$</LaTex>dir"
+              rsync -a --ignore-existing "/tmp/skillscan-corpus/<LaTex>$dir/" "corpus/$</LaTex>dir/"
+            fi
+          done
+          if [ -d "/tmp/skillscan-corpus/held_out_eval" ]; then
+            mkdir -p corpus/held_out_eval
+            rsync -a --ignore-existing /tmp/skillscan-corpus/held_out_eval/ corpus/held_out_eval/
+          fi
+          rm -rf /tmp/skillscan-corpus ~/.ssh/corpus_deploy_key
+          echo "Private corpus fixtures merged"
+        env:
+          CORPUS_DEPLOY_KEY: ${{ secrets.CORPUS_DEPLOY_KEY }}
       - name: Run corpus sync
         id: sync
         run: |
@@ -86,19 +109,19 @@ jobs:
           EOF
         env:
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
-          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          MODAL_TOKEN_SECRET: <LaTex>${{ secrets.MODAL_TOKEN_SECRET }}
       - name: Dispatch fine-tune to Modal GPU
         id: finetune
         run: |
           FORCE_FLAG=""
-          if [ "${{ github.event.inputs.force_retrain }}" = "true" ]; then
+          if [ "$</LaTex>{{ github.event.inputs.force_retrain }}" = "true" ]; then
             FORCE_FLAG="--force"
           fi
-          modal run scripts/finetune_modal.py $FORCE_FLAG
+          modal run scripts/finetune_modal.py <LaTex>$FORCE_FLAG
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
-          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          HF_TOKEN: $</LaTex>{{ secrets.HF_TOKEN }}
+          MODAL_TOKEN_ID: <LaTex>${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: $</LaTex>{{ secrets.MODAL_TOKEN_SECRET }}
       - name: Commit updated CORPUS_CARD.md and manifest
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -110,6 +133,6 @@ jobs:
       - name: Post summary
         if: always()
         run: |
-          echo "### Fine-tune Result" >> $GITHUB_STEP_SUMMARY
-          echo "Corpus delta: ${{ needs.corpus-sync.outputs.summary }}" >> $GITHUB_STEP_SUMMARY
-          echo "Model pushed to: https://huggingface.co/kurtpayne/skillscan-deberta-adapter" >> $GITHUB_STEP_SUMMARY
+          echo "### Fine-tune Result" >> <LaTex>$GITHUB_STEP_SUMMARY
+          echo "Corpus delta: $</LaTex>{{ needs.corpus-sync.outputs.summary }}" >> <LaTex>$GITHUB_STEP_SUMMARY
+          echo "Model pushed to: https://huggingface.co/kurtpayne/skillscan-deberta-adapter" >> $</LaTex>GITHUB_STEP_SUMMARY
