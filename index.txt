@@ -209,6 +209,8 @@ corpus/malicious/a27_deno_byor.md
 corpus/malicious/a28_glassworm_persistence.md
 corpus/malicious/a29_bloktrooper_vsx.md
 corpus/malicious/a30_clawhavoc_memory.md
+corpus/malicious/a31_clickfix_webdav.md
+corpus/malicious/a32_electron_asar_c2.md
 corpus/manifest.json
 corpus/prompt_injection/a23_prompt_injection.md
 corpus/prompt_injection/pi01_role_override_description.md
@@ -442,6 +444,8 @@ examples/showcase/85_glassworm_persistence_marker/SKILL.md
 examples/showcase/86_media_directive_injection/SKILL.md
 examples/showcase/87_bloktrooper_vsx_downloader/SKILL.md
 examples/showcase/88_clawhavoc_memory_harvest/SKILL.md
+examples/showcase/89_clickfix_webdav_share_exec/SKILL.md
+examples/showcase/90_electron_asar_c2_injection/SKILL.md
 examples/showcase/INDEX.md
 examples/suspicious_skill/SKILL.md
 examples/suspicious_skill/setup.sh
