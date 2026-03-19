@@ -80,7 +80,27 @@ Audit all 19 `action_patterns` entries and classify each as `static_backed` or `
 
 **Acceptance criteria:** Every `action_patterns` entry is classified. `docs/DETECTION_MODEL.md` exists and covers the detection model. No new entries are added without classification.
 
-### Issue G3 — Proximity constraint (window_lines) for chain rules
+### Issue G3 — Score normalization by file count
+
+*Sourced from external review, March 2026.*
+
+The scoring engine accumulates raw `SEVERITY_SCORE` weights across all findings without normalizing by the number of files scanned. A 50-file skill bundle with mostly benign content will produce a higher raw score than a 1-file malicious skill with the same findings. `docs/DETECTION_MODEL.md` currently claims normalization is applied — this is incorrect and the doc should be corrected alongside the fix.
+
+Fix: divide the final score by `max(len(files), 1)` before comparing against policy thresholds, or normalize to an explicit 0–100 scale. Validate the change against the benchmark corpus to ensure existing test expectations still hold.
+
+**Acceptance criteria:** Score is normalized by file count. `docs/DETECTION_MODEL.md` accurately describes the scoring formula. Existing adversarial test expectations are updated if thresholds shift. A regression test covers a multi-file benign bundle that previously scored above the warn threshold.
+
+### Issue G4 — Static rules fire once per file per rule (first match only)
+
+*Sourced from external review, March 2026.*
+
+The inner static rule loop `break`s after the first match per file per rule. A file with `curl | bash` on line 3 and another on line 47 produces one finding, and the evidence path only captures the first line. This is acceptable for verdict purposes but frustrates triage on long files where the analyst needs to see all match locations.
+
+Consider capturing all match locations (up to a configurable cap, e.g., `max_matches_per_rule: 5`) or at minimum recording the match count in the finding's `properties`. This is a triage quality improvement, not a correctness fix.
+
+**Acceptance criteria:** Finding includes a `match_count` field when a rule fires more than once in a file. A `--max-matches` CLI option (default: 1, for backward compat) controls how many locations are captured. Existing tests are unaffected.
+
+### Issue G5 — Proximity constraint (window_lines) for chain rules
 
 The engine fires chain rules when constituent patterns appear anywhere in the full file text, regardless of distance. CHN-001 fires if `curl` appears on line 3 and `bash` appears on line 200, even if unrelated. This is a documented false-positive source for long skills.
 
@@ -88,7 +108,7 @@ Add an optional `window_lines: int` field to `ChainRule` (YAML schema + Pydantic
 
 **Acceptance criteria:** `window_lines` is parsed and respected by the engine. Existing rules without the field are unaffected. CHN-001 and CHN-002 have validated `window_lines` values. False-positive rate on the benign corpus does not increase.
 
-### Issue G4 — Paste-service-as-exfil-channel detection
+### Issue G6 — Paste-service-as-exfil-channel detection
 
 *Sourced from pattern-update agent feedback, March 2026 (ClawHub Havoc campaign).*
 
@@ -160,6 +180,26 @@ The detection logic requires comparing tool grants across a multi-skill scan con
 
 Add adversarial fixtures for PINJ-GRAPH-004 to `tests/adversarial/cases/` and `corpus/graph_injection/`. Update `tests/adversarial/expectations.json`.
 
+### Issue J3 — Extend graph parser to CLAUDE.md and gpt_actions.json formats
+
+*Sourced from external review, March 2026.*
+
+`build_skill_graph` in `skill_graph.py` uses `root.rglob("SKILL.md")` to discover skills. Skills in Claude format (`CLAUDE.md`) and OpenAI format (`gpt_actions.json`) are not included in graph analysis. Cross-skill escalation between mixed-format skill bundles is invisible to the graph layer.
+
+Extend the discovery pass to also match `CLAUDE.md` (same Markdown schema as `SKILL.md`) and `gpt_actions.json` (OpenAI Actions manifest). The parser for `gpt_actions.json` should extract tool names and declared permissions from the `functions` array.
+
+**Acceptance criteria:** `build_skill_graph` discovers `CLAUDE.md` and `gpt_actions.json` files alongside `SKILL.md`. Mixed-format bundles are correctly represented in the graph. At least one adversarial fixture covers a cross-format escalation scenario.
+
+### Issue J4 — Default graph scan on for directory targets
+
+*Sourced from external review, March 2026.*
+
+`graph_scan` defaults to `False` in the CLI. For multi-skill directory scans this means `PINJ-GRAPH-001/002/003` are silently absent unless `--graph` is explicitly passed. Operators scanning a skill bundle directory have no reason to opt out of graph analysis — the cost is low and the signal is high.
+
+Flip the default: `graph_scan=True` when the scan target is a directory, `graph_scan=False` when the target is a single file. Add a `--no-graph` flag to allow explicit opt-out. Update the CLI help text and `docs/COMMANDS.md`.
+
+**Acceptance criteria:** Graph analysis runs by default on directory targets. `--no-graph` disables it. Single-file scans are unaffected. Existing tests that scan directories are updated to reflect the new default.
+
 ---
 
 ## Milestone 9 — VS Code Extension Publish (1 week)
@@ -207,6 +247,16 @@ These items do not have a fixed milestone but should be addressed before a v1.0 
 **Release smoke test.** The release checklist references smoke tests but there is no automated post-release verification. Add a workflow that triggers on published releases, installs from PyPI and Docker Hub, and runs `skillscan scan tests/fixtures/malicious/openclaw_compromised_like` with an expected `block` verdict.
 
 **`docs/DETECTION_MODEL.md` referenced but missing.** Covered in Milestone 10.
+
+**SARIF empty region for file-level findings.** When `finding.line` is `None`, the `region` dict in `sarif.py` is `{}`. The SARIF spec requires at minimum `{"startLine": 1}` for valid region objects; some consumers reject empty regions. Fix: fall back to `{"startLine": 1}` when no line number is available.
+
+**SARIF `relatedLocations` for chain findings.** Chain findings (`CHN-*`) have two match locations by definition but `sarif.py` only emits a single `physicalLocation`. Without `relatedLocations` pointing to both indicators, the GitHub Security tab shows a single location with no context on why the chain fired. Fix: populate `relatedLocations` from `finding.related_path` / `finding.related_line` when present.
+
+**Expand `hard_block_rules` in strict policy.** `strict.yaml` currently hard-blocks only `MAL-001` and `IOC-001`. `DEF-001` (Defender exclusion manipulation), `MAL-025` (MCP tool poisoning via hidden instruction block), `MAL-029` (Solana RPC C2), `CHN-011` (MCP tool poisoning + credential exfil chain), and `CHN-013` (container escape + host path mount chain) are all `critical` severity but not in `hard_block_rules`. A skill with Defender disabling but a low overall score could slip through to `warn` instead of `block` in strict mode.
+
+**Set `block_min_confidence` in policy files.** The `block_min_confidence` field defaults to `0.0` in both `strict.yaml` and `balanced.yaml`, meaning every finding regardless of confidence contributes to the block score. A `0.60`-confidence MEDIUM finding from the social engineering classifier counts equally toward block threshold as a `0.95`-confidence CRITICAL malware pattern. Suggested values: `0.75` for strict, `0.65` for balanced.
+
+**AST taint propagation known limitation.** The AST detector (`ast_flows.py`) only propagates taint through direct assignments (`visit_Assign`). Augmented assignment (`+=`), tuple unpacking, and function return values do not propagate taint. A pattern like `result = get_secret(); send(process(result))` will not be caught because taint does not flow through `process()`. This is inherent to the lightweight AST approach and should be documented as a known limitation in `docs/DETECTION_MODEL.md` rather than silently accepted.
 
 ---
 
