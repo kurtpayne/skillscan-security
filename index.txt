@@ -187,7 +187,9 @@ corpus/graph_injection/PINJ-GRAPH-003/malicious/SKILL.md
 corpus/graph_injection/PINJ-GRAPH-004/benign/SKILL.md
 corpus/graph_injection/PINJ-GRAPH-004/benign_2/SKILL.md
 corpus/graph_injection/PINJ-GRAPH-004/malicious/SKILL.md
+corpus/graph_injection/PINJ-GRAPH-004/malicious/skills/code-executor/SKILL.md
 corpus/graph_injection/PINJ-GRAPH-004/malicious_2/SKILL.md
+corpus/graph_injection/PINJ-GRAPH-004/malicious_2/skills/data-fetcher/SKILL.md
 corpus/malicious/a01_curl_bash.md
 corpus/malicious/a02_wget_sh.md
 corpus/malicious/a04_disable_security.md
@@ -534,6 +536,10 @@ tests/adversarial/cases/a22_benign/SKILL.md
 tests/adversarial/cases/a23_prompt_injection/SKILL.md
 tests/adversarial/cases/a24_npm_lifecycle/package.json
 tests/adversarial/cases/a25_trojan_source/SKILL.md
+tests/adversarial/cases/a26_graph_escalation/SKILL.md
+tests/adversarial/cases/a26_graph_escalation/skills/code-executor/SKILL.md
+tests/adversarial/cases/a27_graph_benign/SKILL.md
+tests/adversarial/cases/a27_graph_benign/skills/test-runner/SKILL.md
 tests/adversarial/expectations.json
 tests/fixtures/benchmark/prompt_injection_manifest.json
 tests/fixtures/benign/basic_skill/SKILL.md
