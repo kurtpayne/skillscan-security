@@ -224,6 +224,75 @@ The extension should degrade gracefully if `skillscan-lint` is not installed: sh
 
 **Acceptance criteria:** Both tools run on file save. Findings from each tool are labeled with their source. Extension works correctly when only one tool is installed. `editors/vscode/README.md` documents both tool dependencies.
 
+### Issue KP3 — Reconcile README rule table with code
+
+*Sourced from external review, March 2026.*
+
+The `skillscan-lint` README rule table is out of sync with the implementation in `quality.py`: QL-001 is listed as "Passive voice" in the README but that is QL-003 in code; QL-021 is listed as "Sentence too long" in the README but that is QL-022 in code; the README lists 24 rules (QL-001 through QL-024) but the code implements 25 (QL-001 through QL-025). Enterprise teams relying on the documentation for CI configuration will suppress the wrong rule IDs.
+
+**Acceptance criteria:** README rule table matches the code exactly. Rule IDs, names, severity, and descriptions are in sync. A CI test or script validates the sync so it cannot drift again.
+
+### Issue KP4 — Tighten QL-003 (passive voice) and QL-005 (hedge words) to reduce false positives
+
+*Sourced from external review, March 2026.*
+
+**QL-003:** The pattern `\b(am|is|are|was|were|be|been|being)\s+([\w]+ed|[\w]+en)\b` is too broad. "The skill is designed to…", "Files are validated before…", and "This feature was added…" all fire it despite being normal technical documentation constructions. Fix: add a minimum sentence length threshold and a suppression list of common false-positive anchors (`is designed`, `are validated`, `was added`, `is used`, `are supported`).
+
+**QL-005:** Hedge words (`could`, `would`, `should`, `might`) fire on conditional instructions — "if the file exists, it should return an error" — which are legitimate and expected in `## Steps` and `## Examples` sections. Fix: scope the rule to the description field only, or add section-awareness so it does not fire inside `## Steps`, `## Examples`, or `## Usage` headings.
+
+**Acceptance criteria:** QL-003 false positive rate on a sample of 20 real-world SKILL.md files is below 10%. QL-005 does not fire on conditional instructions in `## Steps` or `## Examples` sections.
+
+### Issue KP5 — Downgrade QL-020 (vague quantifiers) to INFO severity
+
+*Sourced from external review, March 2026.*
+
+`multiple`, `most`, and `various` are extremely common in legitimate skill descriptions ("supports multiple file formats", "handles most common errors"). The false positive rate at WARNING severity will be very high on real-world skills. Downgrade to INFO, or scope the rule to the description field only where vague quantifiers are more likely to indicate a genuine quality issue.
+
+**Acceptance criteria:** QL-020 severity is `info`. Existing tests are updated to reflect the new severity.
+
+### Issue KP6 — Add --fix mode for mechanical lint rules
+
+*Sourced from external review, March 2026.*
+
+Rules QL-006 (filler phrases), QL-017 (nominalisations), and QL-018 (redundant phrases) have completely mechanical fixes — replace X with Y. A `--fix` flag that applies these substitutions in-place would make the linter dramatically more useful in a CI workflow where authors want to auto-correct before commit. This is a standard capability in linters (eslint `--fix`, ruff `--fix`) and its absence is a notable gap.
+
+Phase 1: implement `--fix` for QL-006, QL-017, QL-018 only. Phase 2: extend to other rules where a safe mechanical fix exists.
+
+**Acceptance criteria:** `skillscan-lint --fix <path>` applies mechanical fixes for QL-006, QL-017, QL-018 in-place. A `--fix-dry-run` flag shows the diff without writing. Original file is backed up or the fix is idempotent. Tests cover fix application and dry-run mode.
+
+### Issue KP7 — Fix QL-023 (missing examples) to detect examples semantically
+
+*Sourced from external review, March 2026.*
+
+QL-023 checks for a `## Examples` heading. A skill with `## Usage` containing concrete invocation examples fires the rule despite having examples. The check should look for example content semantically: presence of code blocks, concrete invocation patterns, or any of `## Examples`, `## Usage`, `## Example`, `## Sample` headings.
+
+**Acceptance criteria:** QL-023 does not fire on skills that have `## Usage` with code blocks. The heading check is case-insensitive and matches common variants.
+
+### Issue KP8 — Shared skill graph model between skillscan-security and skillscan-lint
+
+*Sourced from external review, March 2026.*
+
+`skillscan-security/src/skillscan/skill_graph.py` and `skillscan-lint/src/skillscan_lint/detectors/graph.py` are separate implementations that both walk SKILL.md files, parse front-matter, and build a dependency graph. Changes to how skills declare dependencies (e.g., adding a new front-matter key) must be made in two places and can drift silently.
+
+Options in order of preference:
+1. Extract a `skillscan-core` PyPI package containing the shared graph model, front-matter parser, and SKILL.md schema. Both tools depend on it.
+2. Make `skillscan-lint`'s graph the canonical implementation and have `skillscan-security` import it as an optional dependency.
+3. Document the two implementations as intentionally separate with a note that they must be kept in sync (least preferred — this is how drift happens).
+
+This is a medium-effort refactor with high long-term value. Defer until after the marketplace publish (Milestone 9) so it does not block the extension.
+
+**Acceptance criteria:** A single graph model is used by both tools. Front-matter parsing changes need to be made in one place. The shared code is tested independently.
+
+### Issue KP9 — Combined report wrapper for CI pipelines
+
+*Sourced from external review, March 2026.*
+
+An enterprise CI pipeline currently has to run `skillscan scan` and `skillscan-lint` separately, parse two different output schemas, and manually correlate results. A thin wrapper script (or a `skillscan report --combined` subcommand) that orchestrates both tools and produces a single SARIF output with both finding namespaces (`skillscan-security` and `skillscan-lint` as separate `tool.driver` entries) would simplify CI integration significantly.
+
+Preferred approach: a standalone `skillscan-report` wrapper script (not a new subcommand in either tool, to preserve the clean separation of concerns) that accepts the same path argument, runs both tools, and merges their SARIF outputs. This is a natural companion to the unified VS Code extension.
+
+**Acceptance criteria:** `skillscan-report <path>` runs both tools and outputs merged SARIF. Each finding is tagged with its source tool. The wrapper exits non-zero if either tool exits non-zero. Documented in both repos' README files.
+
 ---
 
 ## Milestone 9 — VS Code Extension Publish (1 week)
