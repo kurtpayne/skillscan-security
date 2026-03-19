@@ -85,6 +85,7 @@ to the specific git commit used for training.
 | 2026-03-18 | 119 | 54 | 57 | `bac8b25df7d89ac0` | 119-3ep | [`73d5ca4`](https://github.com/kurtpayne/skillscan-security/commit/73d5ca41f1a7ecdf091679cd93fe2c762c78135e) |
 | 2026-03-19 | 287 | 159 | 126 | `c144684052747e52` | 287-3ep | [`847730f`](https://github.com/kurtpayne/skillscan-security/commit/847730f987789abbfe9cb54285f6d2ae9982ce6b) |
 | 2026-03-19 | 587 | 409 | 176 | `44a174ab0594ccc4` | 587-3ep | [`3a4a6d1`](https://github.com/kurtpayne/skillscan-security/commit/3a4a6d1fe1628f19bf2245740440c41bd6ea8718) |
+| 2026-03-19 | 587 | 409 | 176 | `16bc81d7384af953` | 587-3ep | [`966d39e`](https://github.com/kurtpayne/skillscan-security/commit/966d39e24bdfd5a3be19ccb9873c4b19b244c8a7) |
 
 ---
 

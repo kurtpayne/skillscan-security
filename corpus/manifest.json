@@ -590,9 +590,7 @@
     "graph_injection/PINJ-GRAPH-004/malicious/skills/code-executor/SKILL.md": "da9f9a1a18849fa399e8b9da9b06b6f906d01c24e26970b3d517ba0dc927422c",
     "graph_injection/PINJ-GRAPH-004/benign/SKILL.md": "819516ba4e0ba522e82374b61f31b3ec29a3b0c9ffc1cbd3d384dade795e1e32"
   },
-  "last_finetune": {
-    "timestamp": "",
-    "corpus_size_at_finetune": 0,
-    "model_checkpoint": ""
-  }
+  "last_finetune": "2026-03-19T23:18:33.826475+00:00",
+  "last_finetune_corpus_size": 587,
+  "adapter_repo": "kurtpayne/skillscan-deberta-adapter"
 }
