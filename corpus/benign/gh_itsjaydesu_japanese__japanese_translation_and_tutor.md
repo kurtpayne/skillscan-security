@@ -5,7 +5,7 @@ description: "Japanese-English translator and language tutor. Use when: (1) User
 # corpus-source: github-scrape-r3
 # corpus-repo: itsjaydesu/japanese-translation-and-tutor
 # corpus-url: https://github.com/itsjaydesu/japanese-translation-and-tutor/blob/7f890aaaf8d8618b5b847f8c32789f73df8fc388/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Use when working on any project that uses Linear for issue tracking
 # corpus-source: github-scrape-r3
 # corpus-repo: labrinyang/linear-cowork
 # corpus-url: https://github.com/labrinyang/linear-cowork/blob/18284cb781c985d60ac85469261a3ec0720c6699/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

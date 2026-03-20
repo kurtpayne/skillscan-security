@@ -5,7 +5,7 @@ description: Yahoo Finance API integration for OpenClaw. Use when users ask for 
 # corpus-source: github-scrape-r3
 # corpus-repo: leohuang8688/yahooclaw
 # corpus-url: https://github.com/leohuang8688/yahooclaw/blob/4616d49e8e1b655cb3b5aaec40654315b8705137/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

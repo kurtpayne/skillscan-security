@@ -5,7 +5,7 @@ description: Expert guidance on FeathersJS (v6 Six). You MUST use this skill for
 # corpus-source: github-scrape-r3
 # corpus-repo: nazifishrak/feathersjs-expert-skill
 # corpus-url: https://github.com/nazifishrak/feathersjs-expert-skill/blob/10c8fa7069d3bec5b5fc4f9c8b2f0b47144a63cb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

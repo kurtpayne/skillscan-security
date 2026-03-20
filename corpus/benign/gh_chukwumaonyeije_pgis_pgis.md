@@ -5,7 +5,7 @@ description: Performance Glycemic Intelligence System (PGIS) - integrates CGM, H
 # corpus-source: github-scrape-r3
 # corpus-repo: chukwumaonyeije/pgis-manus-skill
 # corpus-url: https://github.com/chukwumaonyeije/pgis-manus-skill/blob/cb8b592d743c7d835c6bd1f0a0744ea524122355/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Wesley1600/ClaudeCodeFrameWork
 # corpus-url: https://github.com/Wesley1600/ClaudeCodeFrameWork/blob/754208cde67adbf8d569572f26758c3d9c96e4d0/FINANCIAL_ANALYSIS_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Financial Analysis Skill

@@ -7,7 +7,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: Richerlv/cyber-horn
 # corpus-url: https://github.com/Richerlv/cyber-horn/blob/4226a7e668035de4f567f148383c2c790642af61/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

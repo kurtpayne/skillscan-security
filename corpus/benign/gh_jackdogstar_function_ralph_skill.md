@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: jackdogstar/functional-probe-ralph-loop
 # corpus-url: https://github.com/jackdogstar/functional-probe-ralph-loop/blob/12bef904e2015d3eb91bfe11c9607a7232eafb9d/ralph-skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Ralph Wiggums Loop — Project Generation Skill

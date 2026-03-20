@@ -5,7 +5,7 @@ description: "Parse a Jira activity RSS/Atom feed and estimate hours spent per J
 # corpus-source: github-scrape-r3
 # corpus-repo: sanderch/jira-tempo-skill
 # corpus-url: https://github.com/sanderch/jira-tempo-skill/blob/4a94b716b585b45ed0c06f244e8a05360a5e28b1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

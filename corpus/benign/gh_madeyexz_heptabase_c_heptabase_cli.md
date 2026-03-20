@@ -6,7 +6,7 @@ argument-hint: "[command] [args]"
 # corpus-source: github-scrape-r3
 # corpus-repo: madeyexz/heptabase-cli
 # corpus-url: https://github.com/madeyexz/heptabase-cli/blob/d132f479d3c490ca01cdb0e861b6adb5c76be77d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

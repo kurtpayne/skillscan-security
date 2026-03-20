@@ -8,7 +8,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: tomtev/loopwind
 # corpus-url: https://github.com/tomtev/loopwind/blob/78b1a7dbc1ce4034f101cdb04e0cbdfeda9d7432/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

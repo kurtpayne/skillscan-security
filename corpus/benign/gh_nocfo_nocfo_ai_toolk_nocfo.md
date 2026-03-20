@@ -5,7 +5,7 @@ description: Use NoCFO CLI for bookkeeping, invoicing, reporting, and schema int
 # corpus-source: github-scrape-r3
 # corpus-repo: nocfo/nocfo-ai-toolkit
 # corpus-url: https://github.com/nocfo/nocfo-ai-toolkit/blob/c7fda0cdea516307938418c0e82ab0425ad882f8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

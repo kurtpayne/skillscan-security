@@ -5,7 +5,7 @@ description: Design and build native-feeling macOS application UIs. Use this ski
 # corpus-source: github-scrape-r3
 # corpus-repo: ceorkm/macos-design-skill
 # corpus-url: https://github.com/ceorkm/macos-design-skill/blob/8f528a2364f996cd42f02a10b1b27198a74ca2a3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

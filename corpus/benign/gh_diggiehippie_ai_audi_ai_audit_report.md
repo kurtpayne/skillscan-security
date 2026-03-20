@@ -14,7 +14,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: diggiehippie/ai-audit-report
 # corpus-url: https://github.com/diggiehippie/ai-audit-report/blob/2b168a50b57e8c102f5f16f69f6181535e9e4ff1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

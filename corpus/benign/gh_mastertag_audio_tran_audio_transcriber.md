@@ -11,7 +11,7 @@ date_updated: "2026-03-12"
 # corpus-source: github-scrape-r3
 # corpus-repo: mastertag/audio-transcriber
 # corpus-url: https://github.com/mastertag/audio-transcriber/blob/3ed24a89d5a2fddcfbbee6eaf87fe4f20ee8fefc/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

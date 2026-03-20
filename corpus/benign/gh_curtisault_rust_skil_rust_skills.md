@@ -17,7 +17,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: curtisault/rust-skills
 # corpus-url: https://github.com/curtisault/rust-skills/blob/a04921b2d85583aea9ec7441a66ab878ca694b9a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

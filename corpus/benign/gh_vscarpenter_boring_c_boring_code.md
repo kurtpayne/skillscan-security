@@ -14,7 +14,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: vscarpenter/boring-code
 # corpus-url: https://github.com/vscarpenter/boring-code/blob/cc44c8870d53420b3c8114b556e861459eb2c717/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

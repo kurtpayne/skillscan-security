@@ -47,8 +47,8 @@ allowed-tools:
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: garrytan/gstack
-# corpus-url: https://github.com/garrytan/gstack/blob/bd834aeadb284a41b3be451d2769fb047b45f7a0/SKILL.md.tmpl
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/garrytan/gstack/blob/6a6b2b076641dfdbec23d1e763ba1d62532ef035/SKILL.md.tmpl
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -6,7 +6,7 @@ metadata: { "openclaw": { "emoji": "✂️", "requires": {} } }
 # corpus-source: github-scrape-r3
 # corpus-repo: greatnorthernfishguy-hub/The-Inference-Difference
 # corpus-url: https://github.com/greatnorthernfishguy-hub/The-Inference-Difference/blob/33adbce6a7910ac7613ea4bf8e3eff9aa5e1997a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

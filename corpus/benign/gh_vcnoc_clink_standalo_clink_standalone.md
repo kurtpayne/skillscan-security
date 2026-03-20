@@ -5,7 +5,7 @@ description: "Standalone CLI bridge - launch external AI CLIs (gemini, codex, cl
 # corpus-source: github-scrape-r3
 # corpus-repo: VCnoC/clink-standalone
 # corpus-url: https://github.com/VCnoC/clink-standalone/blob/74a30d17a4eded882bfcbf20826bad1006b5f96e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

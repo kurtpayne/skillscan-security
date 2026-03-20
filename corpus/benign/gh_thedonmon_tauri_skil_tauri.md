@@ -5,7 +5,7 @@ description: Build and automate Tauri v2 desktop applications. Use when the user
 # corpus-source: github-scrape-r3
 # corpus-repo: thedonmon/tauri-skill
 # corpus-url: https://github.com/thedonmon/tauri-skill/blob/aa52648c1aef9866f67ed114c7973c8fa2c38ebb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

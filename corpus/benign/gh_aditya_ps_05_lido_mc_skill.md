@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Aditya-PS-05/Lido-MCP
 # corpus-url: https://github.com/Aditya-PS-05/Lido-MCP/blob/6280c41aad9cb506aed39653c73b88c380b8cc67/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Lido Protocol — Agent Skill File

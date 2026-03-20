@@ -5,7 +5,7 @@ description: "CVE vulnerability fixing workflow for Debian packages. Searches CV
 # corpus-source: github-scrape-r3
 # corpus-repo: deepin-community/.deepin-cve-fixer
 # corpus-url: https://github.com/deepin-community/.deepin-cve-fixer/blob/e6aaedd2de2bb914aa3523f1762f3d3c758402d4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

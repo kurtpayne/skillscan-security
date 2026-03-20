@@ -5,7 +5,7 @@ description: Read Slack messages, threads, channels, download attachments via Py
 # corpus-source: github-scrape-r3
 # corpus-repo: hienlh/claude-skill-slack-api
 # corpus-url: https://github.com/hienlh/claude-skill-slack-api/blob/18f0e5082294c064b85601c005603ba55fdc5c16/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

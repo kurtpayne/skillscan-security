@@ -4,8 +4,8 @@ description: Research a missing AS entry for overlay.json. Investigates BGP anno
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: ipverse/as-overlay
-# corpus-url: https://github.com/ipverse/as-overlay/blob/760f95ccbe7f3de28ba85f9dbff43e41ca5a9595/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/ipverse/as-overlay/blob/d4ee3827102bb176279a7647787a74857d024135/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

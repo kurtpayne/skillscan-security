@@ -12,7 +12,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: esxr/sdlc-skill
 # corpus-url: https://github.com/esxr/sdlc-skill/blob/ec91c11d8bbfac68987aef5b45af3810c6b27e99/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

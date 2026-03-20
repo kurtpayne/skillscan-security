@@ -139,7 +139,7 @@ intended for security testing only.
 
 ---
 
-### 5. Liu et al. 2026 — Malicious Agent Skills in the Wild (pending import)
+### 5. Liu et al. 2026 — Malicious Agent Skills in the Wild (not pursued)
 
 **Paper:** "Malicious Agent Skills in the Wild: A Large-Scale Security Empirical Study"
 
@@ -147,28 +147,18 @@ intended for security testing only.
 
 **Authors:** Y. Liu et al. (Quantstamp, Fujian Normal University)
 
-**Project site:** https://skillorkill.dev
+**Description:** The paper describes a three-tiered labeled dataset of agent skill
+security covering 98,380 skills, including 157 behaviorally-verified malicious skills
+(Tier 3). The dataset would provide out-of-distribution injection examples relative
+to SkillScan's hand-crafted corpus.
 
-**Description:** The first three-tiered labeled dataset of agent skill security,
-covering 98,380 skills with 157 behaviorally-verified malicious skills and 632
-labeled vulnerabilities across two archetypes (Data Thieves: SC2+E2; Agent
-Hijackers: P1+P4). Dataset includes Tier 1 (static candidates), Tier 2 (dynamic
-candidates), and Tier 3 (confirmed malicious with behavioral verification).
-
-**Status:** Dataset not yet imported. Tier 3 (157 confirmed malicious skills) is
-intended for public release upon paper acceptance (per USENIX Security open science
-policy). Will be imported into `corpus/liu2026_injection/` when available.
-
-**Citation:**
-```bibtex
-@article{liu2026malicious,
-  author  = {Liu, Y. and others},
-  title   = {Malicious Agent Skills in the Wild: A Large-Scale Security Empirical Study},
-  journal = {arXiv preprint arXiv:2602.06547},
-  year    = {2026},
-  url     = {https://arxiv.org/abs/2602.06547}
-}
-```
+**Status:** Not pursued. The dataset requires direct author access and the timeline
+is uncertain. The preferred path for improving injection recall is (a) the behavioral
+sandbox (`skillscan-trace`, Milestone 18) to generate ground-truth labels from
+first-party execution traces, and (b) continued hand-crafting of diverse injection
+examples across underrepresented archetypes (Agent Hijacker P1/P4, graph injection,
+temporal payloads). This keeps the corpus fully under our control and avoids
+dependency on third-party dataset release schedules.
 
 ---
 

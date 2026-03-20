@@ -13,7 +13,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: korentomas/kloydele
 # corpus-url: https://github.com/korentomas/kloydele/blob/d6339f60fd84a1efd2837069b0c3a28a430265c7/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

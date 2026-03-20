@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: dinethdf/study-flow
 # corpus-url: https://github.com/dinethdf/study-flow/blob/b8773aa6ba9f56af7beb294eb729988372373af6/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # SKILL.md — StudyFlow Custom Agent Skills

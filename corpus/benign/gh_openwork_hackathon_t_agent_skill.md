@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: openwork-hackathon/team-sentinel
 # corpus-url: https://github.com/openwork-hackathon/team-sentinel/blob/d28a143392cbdc8976809fa1ede5d88e1bf8d1c1/AGENT-SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Sentinel Dashboard — Agent Integration Guide

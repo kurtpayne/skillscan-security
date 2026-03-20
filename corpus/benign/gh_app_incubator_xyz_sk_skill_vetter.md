@@ -7,7 +7,7 @@ description: "Multi-scanner security gate. TRIGGER when: user mentions installin
 # corpus-source: github-scrape-r3
 # corpus-repo: app-incubator-xyz/skill-vetter
 # corpus-url: https://github.com/app-incubator-xyz/skill-vetter/blob/d1038aeae6f7b0f16b01d20dc9bff38c35a16204/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

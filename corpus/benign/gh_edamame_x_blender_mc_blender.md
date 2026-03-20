@@ -5,7 +5,7 @@ description: Blender MCP scene creation, look-development, animation planning, a
 # corpus-source: github-scrape-r3
 # corpus-repo: EdamAme-x/blender-mcp-skills
 # corpus-url: https://github.com/EdamAme-x/blender-mcp-skills/blob/8530e3ffc79fbad69490e2bee267ead68b9b925a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

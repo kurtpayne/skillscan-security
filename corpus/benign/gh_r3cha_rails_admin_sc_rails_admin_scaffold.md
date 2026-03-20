@@ -6,7 +6,7 @@ disable-model-invocation: true
 # corpus-source: github-scrape-r3
 # corpus-repo: r3cha/rails-admin-scaffold
 # corpus-url: https://github.com/r3cha/rails-admin-scaffold/blob/1454757370e0502e908590378f66cdac68df0238/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: "Build UI features with an image-first workflow: generate a visual 
 # corpus-source: github-scrape-r3
 # corpus-repo: StuartAJ/image-first-frontend-build-skill
 # corpus-url: https://github.com/StuartAJ/image-first-frontend-build-skill/blob/d1252eddfe9530241c750ef554e8ae6629088f62/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

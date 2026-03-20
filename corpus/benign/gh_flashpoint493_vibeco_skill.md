@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: flashpoint493/VibeCollab
 # corpus-url: https://github.com/flashpoint493/VibeCollab/blob/3c5a847a3d4b6792313ba82f3f597caadb4cc44c/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # VibeCollab — Setup Instructions for AI Assistants

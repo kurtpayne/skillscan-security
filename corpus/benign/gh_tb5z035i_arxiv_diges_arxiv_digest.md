@@ -8,7 +8,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: tb5z035i/arxiv-digest
 # corpus-url: https://github.com/tb5z035i/arxiv-digest/blob/768fa2c400c744799153e22ded68dd6958c265eb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

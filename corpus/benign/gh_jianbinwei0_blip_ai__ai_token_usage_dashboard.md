@@ -5,7 +5,7 @@ description: Build, refresh, and customize a local multi-provider AI token usage
 # corpus-source: github-scrape-r3
 # corpus-repo: jianbinwei0-blip/ai-token-usage-dashboard
 # corpus-url: https://github.com/jianbinwei0-blip/ai-token-usage-dashboard/blob/df253189f39a9644f539c25ea88d90396716c45b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

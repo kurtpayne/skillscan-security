@@ -5,7 +5,7 @@ description: Translate SRT subtitle files using LLM APIs with OpenAI-compatible 
 # corpus-source: github-scrape-r3
 # corpus-repo: Thetail001/subtitle_translate_skill
 # corpus-url: https://github.com/Thetail001/subtitle_translate_skill/blob/4a7521a3811b719cb7e6e017881cd3a131efeba3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

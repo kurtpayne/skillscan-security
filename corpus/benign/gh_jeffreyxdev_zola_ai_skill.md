@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Jeffreyxdev/zola-ai
 # corpus-url: https://github.com/Jeffreyxdev/zola-ai/blob/de06c7b74491a9d21a9ae5e0ea278ab007f106f3/SKILL.MD
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Zola AI — Technical Skills & Architecture

@@ -8,7 +8,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: chiroro-jr/pencil-design-skill
 # corpus-url: https://github.com/chiroro-jr/pencil-design-skill/blob/784d2c157e1cd2e802178b61004920371722b569/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

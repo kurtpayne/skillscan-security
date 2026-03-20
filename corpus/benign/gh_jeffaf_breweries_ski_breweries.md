@@ -13,7 +13,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: jeffaf/breweries-skill
 # corpus-url: https://github.com/jeffaf/breweries-skill/blob/c13d5edc9c37419d393a27327f7a323e8a0255dc/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

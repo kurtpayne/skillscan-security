@@ -8,7 +8,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: dtamade/fafafa-skills-capture-analytics
 # corpus-url: https://github.com/dtamade/fafafa-skills-capture-analytics/blob/ab09af2329c408eb4c778b7fd14f7a2481f881bf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

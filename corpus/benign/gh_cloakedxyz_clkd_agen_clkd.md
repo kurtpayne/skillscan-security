@@ -16,7 +16,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: cloakedxyz/clkd-agent-skill
 # corpus-url: https://github.com/cloakedxyz/clkd-agent-skill/blob/6dbdff0fae94852011d5b45ada912d0dafcb2be7/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Guidance for building, debugging, and publishing Raycast extensions
 # corpus-source: github-scrape-r3
 # corpus-repo: lemikeone/Codex-skill-raycast-extension
 # corpus-url: https://github.com/lemikeone/Codex-skill-raycast-extension/blob/8a4329656bf1d009771477248c86105f6563f9c1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

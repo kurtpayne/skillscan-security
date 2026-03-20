@@ -6,7 +6,7 @@ metadata: {"openclaw":{"emoji":"[ig]","requires":{"anyBins":["powershell","pwsh"
 # corpus-source: github-scrape-r3
 # corpus-repo: seph1709/instagram-page
 # corpus-url: https://github.com/seph1709/instagram-page/blob/ff1a2c1e8629bcb2a402c73fa04cc147b7f4a16b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

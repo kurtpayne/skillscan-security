@@ -6,7 +6,7 @@ tags: [instagram, scraper, osint, social-media, data-extraction, cli, marketing]
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/insta-fetch
 # corpus-url: https://github.com/lxgicstudios/insta-fetch/blob/ff37b83212deaa903aff693d4953747709d8d9f2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

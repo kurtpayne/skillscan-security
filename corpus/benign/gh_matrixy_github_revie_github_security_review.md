@@ -5,7 +5,7 @@ description: Analyze GitHub repository security alerts and generate remediation 
 # corpus-source: github-scrape-r3
 # corpus-repo: MaTriXy/github-review-skill
 # corpus-url: https://github.com/MaTriXy/github-review-skill/blob/671227a3f26008db9139414b95d466954995704e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

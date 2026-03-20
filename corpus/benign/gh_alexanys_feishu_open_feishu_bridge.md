@@ -5,7 +5,7 @@ description: Connect a Feishu (Lark) bot to Clawdbot via WebSocket long-connecti
 # corpus-source: github-scrape-r3
 # corpus-repo: AlexAnys/feishu-openclaw
 # corpus-url: https://github.com/AlexAnys/feishu-openclaw/blob/417b71b3e495c9322740e32eec4437581e3d937f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

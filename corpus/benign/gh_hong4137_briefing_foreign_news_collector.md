@@ -4,8 +4,8 @@ description: RSS 최적화 10개 매체에서 뉴스를 수집하고, RSS + 홈�
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: hong4137/briefing
-# corpus-url: https://github.com/hong4137/briefing/blob/8b4f60608b234fff6eeb248161bc18ed721b3e54/foreign-news-collector-v5-SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/hong4137/briefing/blob/cf3d8a203a32f044c3d7aa0c85f7025ecde16660/foreign-news-collector-v5-SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

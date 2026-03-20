@@ -5,7 +5,7 @@ description: "引导 AI 在本仓库或使用 Hile 的项目中，正确选用�
 # corpus-source: github-scrape-r3
 # corpus-repo: cevio/hile
 # corpus-url: https://github.com/cevio/hile/blob/de770121768d0aab3babf3544205b806176f9009/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

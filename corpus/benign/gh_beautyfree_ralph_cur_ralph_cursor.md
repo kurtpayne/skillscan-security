@@ -11,7 +11,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: beautyfree/ralph-cursor
 # corpus-url: https://github.com/beautyfree/ralph-cursor/blob/35cf9f9d0f5f2fccafd3291a8383c2808b9c397b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

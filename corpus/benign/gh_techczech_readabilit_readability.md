@@ -15,7 +15,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: techczech/readability-skill
 # corpus-url: https://github.com/techczech/readability-skill/blob/96873eb802deadf77d66c4ffe6204859738e1cd4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

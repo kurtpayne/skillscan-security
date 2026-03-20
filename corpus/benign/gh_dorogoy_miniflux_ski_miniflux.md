@@ -13,7 +13,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: dorogoy/miniflux-skill
 # corpus-url: https://github.com/dorogoy/miniflux-skill/blob/874a33d7cbaef001eff8e311c1b778899b31e823/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

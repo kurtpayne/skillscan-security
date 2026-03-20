@@ -6,7 +6,7 @@ argument-hint: "[product description or naming brief]"
 # corpus-source: github-scrape-r3
 # corpus-repo: youngchingjui/claude-product-naming-skill
 # corpus-url: https://github.com/youngchingjui/claude-product-naming-skill/blob/14a68b9a82394e7768c7b91889bc1d3f888d3adf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

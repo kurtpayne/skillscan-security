@@ -5,7 +5,7 @@ description: Use when answering SAP ECC 6.0 questions about transaction codes, S
 # corpus-source: github-scrape-r3
 # corpus-repo: BrandedTamarasu-glitch/SAPKnowledge
 # corpus-url: https://github.com/BrandedTamarasu-glitch/SAPKnowledge/blob/6590f425ac9c3897db50fcd4666fbc335d66bdd2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

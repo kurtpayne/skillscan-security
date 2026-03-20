@@ -6,7 +6,7 @@ allowed-tools: Read, Write, Bash, WebFetch, NotebookEdit
 # corpus-source: github-scrape-r3
 # corpus-repo: lemon888yyy/ces
 # corpus-url: https://github.com/lemon888yyy/ces/blob/98b9f32bb0e962c173f19a098b58c3be3c1b07d4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

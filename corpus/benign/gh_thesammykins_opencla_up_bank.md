@@ -5,7 +5,7 @@ description: "Interact with Up Bank (api.up.com.au) to retrieve account balances
 # corpus-source: github-scrape-r3
 # corpus-repo: thesammykins/openclaw-upbanking
 # corpus-url: https://github.com/thesammykins/openclaw-upbanking/blob/dbd33037393124d656b9870ea6bf297476216df4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

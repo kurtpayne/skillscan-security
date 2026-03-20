@@ -7,7 +7,7 @@ argument-hint: "[file, function, class, or directory to explain]"
 # corpus-source: github-scrape-r3
 # corpus-repo: adityamparikh/explain-code-skill
 # corpus-url: https://github.com/adityamparikh/explain-code-skill/blob/279c740ec7fc2dc85612c659357f829675e83e39/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

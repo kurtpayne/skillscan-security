@@ -5,7 +5,7 @@ description: Run typos CLI on files and produce LLM-reviewable spelling fixes wi
 # corpus-source: github-scrape-r3
 # corpus-repo: luojiyin1987/typos-skill
 # corpus-url: https://github.com/luojiyin1987/typos-skill/blob/594319915cedd3cb4f69862d778409766ced68f1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

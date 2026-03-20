@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: wrode/flow-diagram
 # corpus-url: https://github.com/wrode/flow-diagram/blob/654b83350db72f0b495d1bc85db35c61fc3911f1/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Flow Diagram

@@ -5,7 +5,7 @@ description: "Miriad platform reference: execute (JavaScript tool chaining — p
 # corpus-source: github-scrape-r3
 # corpus-repo: sanity-labs/skill-miriad-core
 # corpus-url: https://github.com/sanity-labs/skill-miriad-core/blob/8025b2af7b6de32eca5b8dd14ddc5f9aac76b31f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: crazycs520/note
 # corpus-url: https://github.com/crazycs520/note/blob/53f32b90e89f0687edeaf995a9ac52592eefc609/mac_os_skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # 	software

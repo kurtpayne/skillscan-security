@@ -5,7 +5,7 @@ description: Run nf-core bioinformatics pipelines (rnaseq, sarek, atacseq) on se
 # corpus-source: github-scrape-r3
 # corpus-repo: NathanSkene/claude-nextflow-skill
 # corpus-url: https://github.com/NathanSkene/claude-nextflow-skill/blob/e0b63e2e80fa36ce47d30086dbd08d8e0d66914c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

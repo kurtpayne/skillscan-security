@@ -16,7 +16,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: dailycafi/ml-training-skill
 # corpus-url: https://github.com/dailycafi/ml-training-skill/blob/0641942d65242f963147e364cfcf48e6f49b2fcd/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

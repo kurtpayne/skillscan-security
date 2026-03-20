@@ -5,7 +5,7 @@ description: "Orchestrates a swarm of parallel agents to complete a list of inde
 # corpus-source: github-scrape-r3
 # corpus-repo: craggles17/swarm
 # corpus-url: https://github.com/craggles17/swarm/blob/b902bcf896847233aa12d2854f8691b30dd6b79e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

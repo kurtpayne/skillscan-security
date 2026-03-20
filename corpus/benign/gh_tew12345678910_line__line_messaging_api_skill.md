@@ -5,7 +5,7 @@ description: Teach and validate LINE Messaging API payload design. Use when buil
 # corpus-source: github-scrape-r3
 # corpus-repo: Tew12345678910/line-messaging-api-skill
 # corpus-url: https://github.com/Tew12345678910/line-messaging-api-skill/blob/286907515b1cbb5f80c0c9a38fb922426d16ef68/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

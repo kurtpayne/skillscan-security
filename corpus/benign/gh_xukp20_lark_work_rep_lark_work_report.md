@@ -5,7 +5,7 @@ description: Use this skill when the user wants to report task results to Feishu
 # corpus-source: github-scrape-r3
 # corpus-repo: xukp20/lark-work-report-skill
 # corpus-url: https://github.com/xukp20/lark-work-report-skill/blob/71c676ec5474755b46000c23fb1dfc78c234056c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

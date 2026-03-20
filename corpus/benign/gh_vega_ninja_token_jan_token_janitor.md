@@ -5,7 +5,7 @@ description: Audit OpenClaw token usage and find waste. Use when the user says "
 # corpus-source: github-scrape-r3
 # corpus-repo: vega-ninja/token-janitor
 # corpus-url: https://github.com/vega-ninja/token-janitor/blob/3b1a25b744d19ea7a9f3e7bfce91a1c9f7b6daa8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

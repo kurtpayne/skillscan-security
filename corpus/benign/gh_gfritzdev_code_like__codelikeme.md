@@ -5,7 +5,7 @@ description: "React/Next.js expert style guide: generate clean TypeScript compon
 # corpus-source: github-scrape-r3
 # corpus-repo: gfritzdev/code-like-me
 # corpus-url: https://github.com/gfritzdev/code-like-me/blob/10bb19f1441ca4faa0bc7707dfdddec43c282970/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

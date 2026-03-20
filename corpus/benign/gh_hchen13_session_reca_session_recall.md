@@ -5,7 +5,7 @@ description: "Search past session transcripts to recover lost conversation conte
 # corpus-source: github-scrape-r3
 # corpus-repo: hchen13/session-recall
 # corpus-url: https://github.com/hchen13/session-recall/blob/d8a5589e0cf4e4934ded4dba176fbebb40a6544e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

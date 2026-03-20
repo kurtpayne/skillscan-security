@@ -5,7 +5,7 @@ description: Leafer AI skill for generating and explaining LeaferJS (Leafer) can
 # corpus-source: github-scrape-r3
 # corpus-repo: leaferjs/ai-docs
 # corpus-url: https://github.com/leaferjs/ai-docs/blob/ad2bd7d3db825562a8808c1bf786a98e1a6d269f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

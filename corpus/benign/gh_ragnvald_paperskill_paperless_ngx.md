@@ -5,7 +5,7 @@ description: "Search and retrieve documents from a Paperless-ngx archive via RES
 # corpus-source: github-scrape-r3
 # corpus-repo: ragnvald/paperskill
 # corpus-url: https://github.com/ragnvald/paperskill/blob/491e89c4deae9a1791635ad70546f0f1f2a7c9f2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

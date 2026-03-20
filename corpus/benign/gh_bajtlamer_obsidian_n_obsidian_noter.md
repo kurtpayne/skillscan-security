@@ -8,7 +8,7 @@ argument-hint: [source-path]
 # corpus-source: github-scrape-r3
 # corpus-repo: Bajtlamer/obsidian-noter
 # corpus-url: https://github.com/Bajtlamer/obsidian-noter/blob/c61684a644c9ebab148f2f116e45aa2528e7aab0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

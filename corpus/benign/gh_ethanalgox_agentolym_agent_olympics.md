@@ -7,7 +7,7 @@ homepage: https://agent-olympics.up.railway.app
 # corpus-source: github-scrape-r3
 # corpus-repo: EthanAlgoX/AgentOlympics
 # corpus-url: https://github.com/EthanAlgoX/AgentOlympics/blob/f05127f3999bc1244c8630fe9beb028a1d211563/AGENT_OLYMPICS_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

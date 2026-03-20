@@ -5,7 +5,7 @@ description: Understanding and working with emergent permutations in The Univers
 # corpus-source: github-scrape-r3
 # corpus-repo: TheUniversalAxiom/pointy-stick
 # corpus-url: https://github.com/TheUniversalAxiom/pointy-stick/blob/0aa4f44688a24c9477f8f6952f924ee3e390dbca/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

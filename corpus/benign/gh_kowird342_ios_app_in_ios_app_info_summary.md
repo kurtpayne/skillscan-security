@@ -5,7 +5,7 @@ description: Extracts detailed iOS app information from the iTunes API using an 
 # corpus-source: github-scrape-r3
 # corpus-repo: kowird342/ios-app-info-summary
 # corpus-url: https://github.com/kowird342/ios-app-info-summary/blob/aeb7bd76fb8e70f6077dca9bfdeaf9339f53b1cb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

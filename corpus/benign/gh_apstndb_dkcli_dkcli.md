@@ -14,7 +14,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: apstndb/dkcli
 # corpus-url: https://github.com/apstndb/dkcli/blob/bdf51065a62f7829972b435f5c8c75f9ad7b8819/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

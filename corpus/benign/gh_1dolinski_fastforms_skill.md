@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: 1dolinski/fastforms
 # corpus-url: https://github.com/1dolinski/fastforms/blob/bd5a5a88e3e6faf52b482eec866faacfb428eefb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # fastforms

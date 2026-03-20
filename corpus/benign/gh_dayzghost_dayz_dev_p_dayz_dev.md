@@ -6,7 +6,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch
 # corpus-source: github-scrape-r3
 # corpus-repo: DayZGhost/dayz-dev-plugin
 # corpus-url: https://github.com/DayZGhost/dayz-dev-plugin/blob/a6e39bedb4858e367a3163e38fa929bbd1c11ff5/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

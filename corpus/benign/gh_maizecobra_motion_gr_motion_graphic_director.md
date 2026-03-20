@@ -5,7 +5,7 @@ description: "Creative direction and design intelligence for Remotion motion gra
 # corpus-source: github-scrape-r3
 # corpus-repo: MaizeCobra/motion-graphic-director-skill
 # corpus-url: https://github.com/MaizeCobra/motion-graphic-director-skill/blob/3983380933258e65f2f86115b09bc778f4accd9c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

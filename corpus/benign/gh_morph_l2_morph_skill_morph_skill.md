@@ -6,7 +6,7 @@ description: AI Agent skill for Morph L2 — wallet, explorer, DEX swap, cross-c
 # corpus-source: github-scrape-r3
 # corpus-repo: morph-l2/morph-skill
 # corpus-url: https://github.com/morph-l2/morph-skill/blob/ee80e7c7b6abb6c92db19f99f3d622c8e2088857/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

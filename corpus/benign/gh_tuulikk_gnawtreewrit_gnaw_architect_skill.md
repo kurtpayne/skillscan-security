@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Tuulikk/GnawTreeWriter
 # corpus-url: https://github.com/Tuulikk/GnawTreeWriter/blob/37d0a0084bcf23305e5e64fdb3f6e1ac8cb659db/GNAW_ARCHITECT_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Skill: GnawTree Architect 🧠🏗️

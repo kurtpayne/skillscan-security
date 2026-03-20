@@ -5,7 +5,7 @@ description: Use PyQtAuto to automate and test PySide6 applications. PyQtAuto wo
 # corpus-source: github-scrape-r3
 # corpus-repo: gvellut/pyqtauto
 # corpus-url: https://github.com/gvellut/pyqtauto/blob/86046d13513a594e401f1a85beda2d3fd2f71205/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

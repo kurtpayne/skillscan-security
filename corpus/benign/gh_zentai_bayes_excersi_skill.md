@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: zentai/bayes_excersice
 # corpus-url: https://github.com/zentai/bayes_excersice/blob/bd96311cba5e29db9b946d976780f28a0945c333/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Skill: DRR Dependency Analysis (Credit Scope) — Leg1 Spread Ticket Generator

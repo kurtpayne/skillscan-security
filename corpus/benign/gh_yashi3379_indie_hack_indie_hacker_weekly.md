@@ -5,7 +5,7 @@ description: Weekly collection and translation of overseas indie hacker success 
 # corpus-source: github-scrape-r3
 # corpus-repo: yashi3379/indie-hacker-weekly-skill
 # corpus-url: https://github.com/yashi3379/indie-hacker-weekly-skill/blob/33572fd011fd15731f8d61796f8ed97e3adfc1a2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

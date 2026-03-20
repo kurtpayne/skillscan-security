@@ -7,7 +7,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: RelevanceAI/agent-skills
 # corpus-url: https://github.com/RelevanceAI/agent-skills/blob/46425807c45681397af400a66149028a0df6a6aa/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

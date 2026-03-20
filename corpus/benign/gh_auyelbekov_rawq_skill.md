@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: auyelbekov/rawq
 # corpus-url: https://github.com/auyelbekov/rawq/blob/97a013905ec4be2affe12d57a3d85e210109de6d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # rawq — Agent Usage Guide

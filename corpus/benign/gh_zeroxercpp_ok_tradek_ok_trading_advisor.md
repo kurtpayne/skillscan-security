@@ -25,7 +25,7 @@ agent:
 # corpus-source: github-scrape-r3
 # corpus-repo: zeroxerCpp/OK-TradeKit-signal-middleware
 # corpus-url: https://github.com/zeroxerCpp/OK-TradeKit-signal-middleware/blob/5fafe3f18405bdf0d94aee80461db3bf1ab9e943/signal_skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

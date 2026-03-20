@@ -6,7 +6,7 @@ allowed-tools: Bash
 # corpus-source: github-scrape-r3
 # corpus-repo: wannabehero/charles-proxy-extract-skill
 # corpus-url: https://github.com/wannabehero/charles-proxy-extract-skill/blob/148cf9349911385b78c1964b2081194037db2df9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

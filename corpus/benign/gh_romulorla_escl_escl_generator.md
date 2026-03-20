@@ -5,7 +5,7 @@ description: Convert complete electrical schematic PDFs to ESCL (Electrical Sche
 # corpus-source: github-scrape-r3
 # corpus-repo: romulorla/escl
 # corpus-url: https://github.com/romulorla/escl/blob/8d4ac0641c8f6d5828705f27f9c5a5a09844eb23/escl-generator-skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

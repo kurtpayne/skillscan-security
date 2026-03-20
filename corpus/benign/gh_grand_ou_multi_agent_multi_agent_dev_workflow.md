@@ -12,7 +12,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: Grand-ou/multi-agent-dev-workflow
 # corpus-url: https://github.com/Grand-ou/multi-agent-dev-workflow/blob/a0ea0e6a9f587bb49b6329e3be5de7e20d617680/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

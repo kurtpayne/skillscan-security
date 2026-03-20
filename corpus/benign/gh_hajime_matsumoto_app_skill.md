@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: hajime-matsumoto/app-state-diagram-cli
 # corpus-url: https://github.com/hajime-matsumoto/app-state-diagram-cli/blob/e3730e47f1e49e81338b28b44d6229942a12e9d8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # ALPS CLI Tool Assistant - Complete Skill Summary

@@ -10,7 +10,7 @@ userInvocable: true
 # corpus-source: github-scrape-r3
 # corpus-repo: rafaels-dev/organizze-clawhub-skill
 # corpus-url: https://github.com/rafaels-dev/organizze-clawhub-skill/blob/1e0d5961ddbc83279976c39d6af7fd07f46ade45/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

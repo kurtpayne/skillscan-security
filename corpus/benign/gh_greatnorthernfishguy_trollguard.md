@@ -7,7 +7,7 @@ hook: trollguard_hook.py::get_instance
 # corpus-source: github-scrape-r3
 # corpus-repo: greatnorthernfishguy-hub/TrollGuard
 # corpus-url: https://github.com/greatnorthernfishguy-hub/TrollGuard/blob/edca950053127dd7f71fa13b1b49783fd4383d16/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: This skill helps Claude write secure web applications. Use when wor
 # corpus-source: github-scrape-r3
 # corpus-repo: Bigtablet/bigtablet-homepage-web
 # corpus-url: https://github.com/Bigtablet/bigtablet-homepage-web/blob/a7d2bc7a36f2af3867675f06c7a994a40d19fa8e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

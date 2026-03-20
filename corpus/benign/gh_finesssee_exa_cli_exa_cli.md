@@ -5,7 +5,7 @@ description: AI-powered web search and content extraction via Exa API. Use for w
 # corpus-source: github-scrape-r3
 # corpus-repo: Finesssee/exa-cli
 # corpus-url: https://github.com/Finesssee/exa-cli/blob/d4f60b51dc1ba3b6f21dab12b178582b7b84593b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

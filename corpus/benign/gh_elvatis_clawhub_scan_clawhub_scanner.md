@@ -5,7 +5,7 @@ description: "Scan installed ClawHub skills for malware, credential theft, promp
 # corpus-source: github-scrape-r3
 # corpus-repo: elvatis/clawhub-scanner
 # corpus-url: https://github.com/elvatis/clawhub-scanner/blob/f47f4a281f0ae22a3f662fe639195591818742bf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

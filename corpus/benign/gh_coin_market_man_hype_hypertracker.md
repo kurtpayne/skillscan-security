@@ -5,7 +5,7 @@ description: Access Hyperliquid cohort analytics, order flow, liquidation risk, 
 # corpus-source: github-scrape-r3
 # corpus-repo: Coin-Market-Man/hypertracker-skills
 # corpus-url: https://github.com/Coin-Market-Man/hypertracker-skills/blob/7b433566afaa53bf7db6528c2a2894c8bbf0d924/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

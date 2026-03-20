@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: nielskaspers/bold-designs
 # corpus-url: https://github.com/nielskaspers/bold-designs/blob/725ea413770e30e446a203a46ad7093f538208a5/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Bold Designs Skill

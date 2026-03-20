@@ -5,7 +5,7 @@ description: Write changelog entries for Hugging Face Hub features. Use when ask
 # corpus-source: github-scrape-r3
 # corpus-repo: gary149/hf-changelog-skill
 # corpus-url: https://github.com/gary149/hf-changelog-skill/blob/f83d26947226ddb2edafa9bc99aa557bc8dbb7e2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -38,7 +38,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: PlusOne/venice.ai-router-openclaw
 # corpus-url: https://github.com/PlusOne/venice.ai-router-openclaw/blob/25de9a6033f7d6875d1447ba0f2d7f7f8e753dce/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -8,7 +8,7 @@ version: 1.0.0
 # corpus-source: github-scrape-r3
 # corpus-repo: artmsilva/lit-best-practices
 # corpus-url: https://github.com/artmsilva/lit-best-practices/blob/490293a83edb956dac6fd5b7e0460754bde62228/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

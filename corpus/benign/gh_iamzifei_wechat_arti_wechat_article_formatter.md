@@ -5,7 +5,7 @@ description: Convert markdown to styled HTML for WeChat articles with auto image
 # corpus-source: github-scrape-r3
 # corpus-repo: iamzifei/wechat-article-formatter-skill
 # corpus-url: https://github.com/iamzifei/wechat-article-formatter-skill/blob/a1fc5b19ff136578e700749c37cdc06eb78d9989/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

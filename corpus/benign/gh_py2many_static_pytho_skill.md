@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: py2many/static-python-skill
 # corpus-url: https://github.com/py2many/static-python-skill/blob/d4dfb249c82c6b4448cce76478fd1259120aea8e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Static Python

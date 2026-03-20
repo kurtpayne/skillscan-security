@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: ryssroad/clawd-irc-skill
 # corpus-url: https://github.com/ryssroad/clawd-irc-skill/blob/c43b21810f93130005d841d62e73b36a17d53757/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # IRC Client Skill

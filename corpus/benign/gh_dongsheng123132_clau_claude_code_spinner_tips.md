@@ -8,7 +8,7 @@ tags: ["spinner", "tips", "learning", "productivity", "bilingual", "claude-code"
 # corpus-source: github-scrape-r3
 # corpus-repo: dongsheng123132/claude-code-spinner-tips
 # corpus-url: https://github.com/dongsheng123132/claude-code-spinner-tips/blob/8b73528ec11e223ab0b2278de395ed21a8737ddb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

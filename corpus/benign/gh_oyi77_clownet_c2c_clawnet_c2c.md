@@ -19,7 +19,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: oyi77/clownet-c2c
 # corpus-url: https://github.com/oyi77/clownet-c2c/blob/f2e3a056f58a8ac494ae32a6dae02d5922d215c9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

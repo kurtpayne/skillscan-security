@@ -5,7 +5,7 @@ description: Add verified citations to academic papers and proposals. Use when w
 # corpus-source: github-scrape-r3
 # corpus-repo: chrisliu298/citation-assistant
 # corpus-url: https://github.com/chrisliu298/citation-assistant/blob/84eda81bb13eb53ac4ddbb6eded65d6185c79435/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

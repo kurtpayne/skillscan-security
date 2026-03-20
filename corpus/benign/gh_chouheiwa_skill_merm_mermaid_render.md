@@ -5,7 +5,7 @@ description: "Render Mermaid diagrams to SVG/PNG/PDF with optional hand-drawn (s
 # corpus-source: github-scrape-r3
 # corpus-repo: chouheiwa/skill-mermaid-render
 # corpus-url: https://github.com/chouheiwa/skill-mermaid-render/blob/bc7289b8b5d78579c9affa0a147c30fe09809a8b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

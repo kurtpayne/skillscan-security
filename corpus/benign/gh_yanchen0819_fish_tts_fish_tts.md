@@ -5,7 +5,7 @@ description: Text-to-speech using Fish Audio API. Use when user requests audio, 
 # corpus-source: github-scrape-r3
 # corpus-repo: YanChen0819/fish-tts-skill
 # corpus-url: https://github.com/YanChen0819/fish-tts-skill/blob/73e446b36dd1861df3ba3ee149fe6969303fa8c9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

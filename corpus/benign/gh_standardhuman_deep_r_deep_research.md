@@ -5,7 +5,7 @@ description: Conduct comprehensive, multi-source research on any topic using the
 # corpus-source: github-scrape-r3
 # corpus-repo: standardhuman/deep-research-skill
 # corpus-url: https://github.com/standardhuman/deep-research-skill/blob/80912a2766b1e7055a794ab8725462b6cd02391d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

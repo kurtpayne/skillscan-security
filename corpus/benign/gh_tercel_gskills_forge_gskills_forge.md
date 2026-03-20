@@ -19,7 +19,7 @@ instructions: >
 # corpus-source: github-scrape-r3
 # corpus-repo: tercel/gskills-forge
 # corpus-url: https://github.com/tercel/gskills-forge/blob/95eeb72767a19b479fb5b68f1152d65d1e2c1fbb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Language-agnostic project architecture principles for AI-assisted d
 # corpus-source: github-scrape-r3
 # corpus-repo: abczsl520/project-arch-core
 # corpus-url: https://github.com/abczsl520/project-arch-core/blob/86f910a878e452343583cf894bfd6dbcc931dbc7/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

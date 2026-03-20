@@ -5,7 +5,7 @@ description: Develop, debug, and structure Python crawlers built with the Feapde
 # corpus-source: github-scrape-r3
 # corpus-repo: d0ublecl1ck/feapder-dev
 # corpus-url: https://github.com/d0ublecl1ck/feapder-dev/blob/40b50867388c52b6fb26b78be7368d76eecc5ea0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

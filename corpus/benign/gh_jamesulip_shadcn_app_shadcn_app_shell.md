@@ -13,7 +13,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: jamesulip/shadcn-app-shell
 # corpus-url: https://github.com/jamesulip/shadcn-app-shell/blob/b5d0f6b503199a8f903356dba1b560027ace0c2f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Delegates coding tasks to Gemini CLI for prototyping, debugging, an
 # corpus-source: github-scrape-r3
 # corpus-repo: GuDaStudio/collaborating-with-gemini
 # corpus-url: https://github.com/GuDaStudio/collaborating-with-gemini/blob/b05f3c56eec265e21dfe1553c3581c81afdf5a3f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

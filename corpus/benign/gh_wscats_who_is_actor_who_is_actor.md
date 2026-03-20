@@ -15,7 +15,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: Wscats/who-is-actor
 # corpus-url: https://github.com/Wscats/who-is-actor/blob/fc5f4158b3f51a86720567f583b9d5965e5c6d3c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

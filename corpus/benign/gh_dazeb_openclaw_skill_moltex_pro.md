@@ -8,7 +8,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: dazeb/openclaw-skill-moltex-trader
 # corpus-url: https://github.com/dazeb/openclaw-skill-moltex-trader/blob/3ffb5e9fc9b8ec61d3dea86856a572e31f8f3ab3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

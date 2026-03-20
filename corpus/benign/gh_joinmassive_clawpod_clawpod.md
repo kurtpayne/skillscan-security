@@ -8,7 +8,7 @@ metadata: {"openclaw":{"emoji":"🔓","homepage":"https://clawpod.joinmassive.co
 # corpus-source: github-scrape-r3
 # corpus-repo: joinmassive/clawpod
 # corpus-url: https://github.com/joinmassive/clawpod/blob/7e900790a79529c36ee2a06d807ebd74be3ef07d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

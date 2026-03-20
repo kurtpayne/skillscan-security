@@ -9,7 +9,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: dafang/react-to-weapp-skills
 # corpus-url: https://github.com/dafang/react-to-weapp-skills/blob/0ba89ac794ac84cb578350d0fa56775dd7e337da/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

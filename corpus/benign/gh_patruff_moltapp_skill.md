@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: patruff/moltapp
 # corpus-url: https://github.com/patruff/moltapp/blob/e471dad4fa4b232ef560ab9a6dbb335532368018/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # MoltApp — Open AI Trading Benchmark

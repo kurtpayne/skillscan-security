@@ -21,7 +21,7 @@ allowed-tools:
 # corpus-source: github-scrape-r3
 # corpus-repo: Y1fe1-Yang/ph-viral-skill
 # corpus-url: https://github.com/Y1fe1-Yang/ph-viral-skill/blob/6c7de465a79847208309c081de675212a7413818/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

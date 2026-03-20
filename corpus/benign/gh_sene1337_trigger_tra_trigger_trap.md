@@ -5,7 +5,7 @@ description: Trap and rewrite/cancel undesired outbound agent asks before they r
 # corpus-source: github-scrape-r3
 # corpus-repo: sene1337/trigger-trap
 # corpus-url: https://github.com/sene1337/trigger-trap/blob/d8be0a9ccce3537a108efae6bff5d1c706600908/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Research accelerator portfolio companies using Firecrawl and Tavily
 # corpus-source: github-scrape-r3
 # corpus-repo: RS42-AI/scout-ai-lite
 # corpus-url: https://github.com/RS42-AI/scout-ai-lite/blob/a4d22c97a3c9b3b6a6a57a86acab82cfaf89a921/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

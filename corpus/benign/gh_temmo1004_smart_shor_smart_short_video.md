@@ -60,7 +60,7 @@ questions:
 # corpus-source: github-scrape-r3
 # corpus-repo: temmo1004/smart-short-video
 # corpus-url: https://github.com/temmo1004/smart-short-video/blob/4b001c5d479baad355f9f244c5d2fa4f75a7f418/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

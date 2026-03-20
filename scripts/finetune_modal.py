@@ -277,10 +277,13 @@ def run_finetune(
     #                             Root cause: injection eval/train sets share
     #                             the same hand-crafted sources, limiting
     #                             out-of-distribution generalisation.
-    #                             Improvement expected once arXiv 2602.06547
-    #                             Tier 3 dataset (157 OOD examples) lands.
+    #                             Improvement path: (a) hand-craft more
+    #                             diverse injection examples (Agent Hijacker
+    #                             P1/P4, graph injection, temporal payloads),
+    #                             or (b) generate ground-truth labels from
+    #                             skillscan-trace behavioral sandbox runs.
     #                             0.77 is the v0.1 production floor.
-    #                             Raise back to 0.85 after Tier 3 data lands.
+    #                             Raise back to 0.85 once injection F1 > 0.80.
     # Results are written to corpus/EVAL_RESULTS.md (generated in local
     # entrypoint after the remote function returns).
     # -----------------------------------------------------------------------

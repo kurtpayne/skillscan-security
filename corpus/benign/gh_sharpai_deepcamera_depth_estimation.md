@@ -55,8 +55,8 @@ capabilities:
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: SharpAI/DeepCamera
-# corpus-url: https://github.com/SharpAI/DeepCamera/blob/d51176f0e007f78cbde61d9c06b93111d017cf3c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/SharpAI/DeepCamera/blob/c7e9ddda012ad3f8e9e5a95e2d2776bcf7442224/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

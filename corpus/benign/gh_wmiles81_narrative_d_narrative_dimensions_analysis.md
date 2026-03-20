@@ -6,7 +6,7 @@ description: Physics-inspired story analysis system that treats narrative as tra
 # corpus-source: github-scrape-r3
 # corpus-repo: wmiles81/narrative-dimensions-analysis
 # corpus-url: https://github.com/wmiles81/narrative-dimensions-analysis/blob/2092e243cb385a2d9ab2c747c932434be04dff9e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

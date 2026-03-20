@@ -7,7 +7,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: houx15/claude-coach
 # corpus-url: https://github.com/houx15/claude-coach/blob/21d0704e7c62cfc7d0c42434c1119d4f47abfd6b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

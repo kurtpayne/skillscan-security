@@ -5,7 +5,7 @@ description: "Agent-agnostic autonomous loop creator. Use when asked to 'use ral
 # corpus-source: github-scrape-r3
 # corpus-repo: trevoraspencer/skill-ralph-loop-creator
 # corpus-url: https://github.com/trevoraspencer/skill-ralph-loop-creator/blob/22b61a38e8bcc58d6dfc51c553c2e0417aa6f7d1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

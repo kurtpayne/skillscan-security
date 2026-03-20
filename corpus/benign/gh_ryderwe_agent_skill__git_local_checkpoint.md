@@ -9,7 +9,7 @@ tools:
 # corpus-source: github-scrape-r3
 # corpus-repo: Ryderwe/agent-skill-git-checkpoint
 # corpus-url: https://github.com/Ryderwe/agent-skill-git-checkpoint/blob/2c5db689423820ae9b35c839780591efc0745962/%EF%BC%88%E6%89%8B%E5%8A%A8%E8%A7%A6%E5%8F%91%E7%89%88%E6%9C%AC%EF%BC%89SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

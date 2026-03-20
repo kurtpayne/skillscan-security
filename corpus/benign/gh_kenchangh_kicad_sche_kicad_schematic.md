@@ -5,7 +5,7 @@ description: "Generate, validate, and fix KiCad 8/9 schematic files (.kicad_sch)
 # corpus-source: github-scrape-r3
 # corpus-repo: kenchangh/kicad-schematic
 # corpus-url: https://github.com/kenchangh/kicad-schematic/blob/5ebbc911a14d8c6f024ff6b08116bb8ff062d590/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

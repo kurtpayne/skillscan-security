@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: 0xArtex/agentwallet-aos
 # corpus-url: https://github.com/0xArtex/agentwallet-aos/blob/e23837b018ae25d51ef608d471f4d31008d66600/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # AgentWallet — Non-Custodial Smart Wallets for AI Agents

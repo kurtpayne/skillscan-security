@@ -6,7 +6,7 @@ license: MIT
 # corpus-source: github-scrape-r3
 # corpus-repo: yfe404/web-scraper
 # corpus-url: https://github.com/yfe404/web-scraper/blob/40ef9f8c45d48e7d58087da4dfeb6394c9533495/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

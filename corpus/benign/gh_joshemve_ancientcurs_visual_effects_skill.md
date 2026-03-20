@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: joshemve/ancientcurse
 # corpus-url: https://github.com/joshemve/ancientcurse/blob/7539d0aad792e97b938d2fbca0d24f7b789e8aef/VISUAL_EFFECTS_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Visual Effects Skill Guide for Minecraft 1.20.1 Fabric

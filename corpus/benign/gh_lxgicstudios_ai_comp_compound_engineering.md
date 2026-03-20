@@ -8,7 +8,7 @@ keywords: compound, learning, memory, automation, agents, clawdbot, improvement,
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/ai-compound
 # corpus-url: https://github.com/lxgicstudios/ai-compound/blob/cf7cf787886767afc1f17380cb0e6a0b18783c72/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

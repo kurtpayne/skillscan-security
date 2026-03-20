@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: alexey-max-fedorov/gaia-ai
 # corpus-url: https://github.com/alexey-max-fedorov/gaia-ai/blob/8ac3900af44a47dd78c2c6b902ad4edf2269b8bc/DEMETER_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # DEMETER SKILL — DevOps & Platform Engineering

@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: DefiRevived/lido-mcp-server
 # corpus-url: https://github.com/DefiRevived/lido-mcp-server/blob/d4252b68880470ca2a7d6210521dd6bd5189e89b/lido.skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # lido.skill.md - Lido Staking Agent Skill

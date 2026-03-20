@@ -5,7 +5,7 @@ description: A comprehensive collection of Agent Skills for context engineering,
 # corpus-source: github-scrape-r3
 # corpus-repo: muratcankoylan/Agent-Skills-for-Context-Engineering
 # corpus-url: https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering/blob/a60bf86998296f1facd5e287a51065008a733c2d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

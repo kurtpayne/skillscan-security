@@ -7,7 +7,7 @@ metadata: {"openclaw":{"emoji":"🧠","requires":{"bins":["node"]}}}
 # corpus-source: github-scrape-r3
 # corpus-repo: voidborne-d/session-memory-skill
 # corpus-url: https://github.com/voidborne-d/session-memory-skill/blob/588e237930bac070c5ff2a81004a3155cb002b41/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

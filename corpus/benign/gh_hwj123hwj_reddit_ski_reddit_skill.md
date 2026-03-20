@@ -8,7 +8,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: hwj123hwj/reddit-skill
 # corpus-url: https://github.com/hwj123hwj/reddit-skill/blob/9ce903b8802d3e16323e1ae8b165dc8201865d3b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

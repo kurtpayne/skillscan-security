@@ -12,7 +12,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: TaliesinYang/pre-flight-skill
 # corpus-url: https://github.com/TaliesinYang/pre-flight-skill/blob/572df4b6fa4e73a6e83cbb8bf310337e3f66fdcc/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

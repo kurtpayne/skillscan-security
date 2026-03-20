@@ -5,7 +5,7 @@ description: Interact with live Smalltalk images (Squeak, Cuis) via MCP. Evaluat
 # corpus-source: github-scrape-r3
 # corpus-repo: CorporateSmalltalkConsultingLtd/ClaudeSmalltalk
 # corpus-url: https://github.com/CorporateSmalltalkConsultingLtd/ClaudeSmalltalk/blob/384f1a381033e86a9fee9c68c234f763a7226ec0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

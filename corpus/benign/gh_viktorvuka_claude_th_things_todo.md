@@ -5,7 +5,7 @@ description: Generate a clickable Things 3 import link from tasks discussed in c
 # corpus-source: github-scrape-r3
 # corpus-repo: viktorvuka/claude-things-skill
 # corpus-url: https://github.com/viktorvuka/claude-things-skill/blob/33749b5388f19a31430bd525974e9480f12b3460/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

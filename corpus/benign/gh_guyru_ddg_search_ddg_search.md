@@ -5,7 +5,7 @@ description: Web search using DuckDuckGo. No API key required. Use this skill to
 # corpus-source: github-scrape-r3
 # corpus-repo: guyru/ddg-search
 # corpus-url: https://github.com/guyru/ddg-search/blob/92caa366f58f9b995819f0f6a479940ce266a403/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

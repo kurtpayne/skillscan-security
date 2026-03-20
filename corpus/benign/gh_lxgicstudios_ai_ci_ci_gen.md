@@ -5,7 +5,7 @@ description: Generate GitHub Actions workflows from your project. Use when setti
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/ai-ci
 # corpus-url: https://github.com/lxgicstudios/ai-ci/blob/bd19b3163b45f6a0cf86513b689504f99bf93d40/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

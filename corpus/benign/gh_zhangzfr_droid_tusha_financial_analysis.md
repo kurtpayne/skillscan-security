@@ -5,7 +5,7 @@ description: Perform comprehensive financial analysis including DCF modeling, ra
 # corpus-source: github-scrape-r3
 # corpus-repo: zhangzfr/Droid_tushare
 # corpus-url: https://github.com/zhangzfr/Droid_tushare/blob/385764c8b3998c68aeb8c386fa08521e0c252f36/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

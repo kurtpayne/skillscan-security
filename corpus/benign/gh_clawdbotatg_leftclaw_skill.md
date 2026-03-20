@@ -2,8 +2,8 @@
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: clawdbotatg/leftclaw-services
-# corpus-url: https://github.com/clawdbotatg/leftclaw-services/blob/ca8510f5908e3d45ed3fe35d48f51525cdf6cd8e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/clawdbotatg/leftclaw-services/blob/6f082f8bec0e59a8a10b1004ccaec58d0f64350f/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # LeftClaw Services — How to Hire

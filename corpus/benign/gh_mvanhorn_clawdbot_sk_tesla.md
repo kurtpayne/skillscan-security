@@ -73,7 +73,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: mvanhorn/clawdbot-skill-tesla
 # corpus-url: https://github.com/mvanhorn/clawdbot-skill-tesla/blob/8e04caf638e6d85cfc8fa039abefa36e1235b5f2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

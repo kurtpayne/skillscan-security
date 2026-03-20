@@ -5,7 +5,7 @@ description: "Scaffold a newly created Next.js project with Hendaz defaults: com
 # corpus-source: github-scrape-r3
 # corpus-repo: akhenda/hendaz-next-essentials
 # corpus-url: https://github.com/akhenda/hendaz-next-essentials/blob/b5b44b95ddac9cad348d5ef98f6fa29cef00d356/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: 6missedcalls/video-editing-skill
 # corpus-url: https://github.com/6missedcalls/video-editing-skill/blob/7dc6e1da66f43eff44c3692d4b84e06aef6590b6/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Video Editing

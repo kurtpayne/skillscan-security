@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: xingangshi/config_tools
 # corpus-url: https://github.com/xingangshi/config_tools/blob/a96d825e519e84b778c04f448cbf6cb9ee3136fc/git_skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 ### Git skills

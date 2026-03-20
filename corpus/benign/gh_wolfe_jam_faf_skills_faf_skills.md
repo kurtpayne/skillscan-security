@@ -6,7 +6,7 @@ license: MIT
 # corpus-source: github-scrape-r3
 # corpus-repo: Wolfe-Jam/faf-skills
 # corpus-url: https://github.com/Wolfe-Jam/faf-skills/blob/f0c287390447a0cc18a7e8efefd20b6b506c29fd/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

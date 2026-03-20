@@ -5,7 +5,7 @@ description: Get refactoring suggestions with colored diffs. Use when improving 
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/refactor-suggest
 # corpus-url: https://github.com/lxgicstudios/refactor-suggest/blob/e35366188e995487b78a9963a69529ac289e87bd/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

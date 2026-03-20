@@ -5,7 +5,7 @@ description: Colyseus is a powerful, open-source multiplayer game framework for 
 # corpus-source: github-scrape-r3
 # corpus-repo: BatuhanK/skills-colyseus
 # corpus-url: https://github.com/BatuhanK/skills-colyseus/blob/65539d22b7e6192657d4466f2857bc6e67e3f519/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

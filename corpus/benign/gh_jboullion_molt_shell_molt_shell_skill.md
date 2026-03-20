@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: jboullion/molt-shell
 # corpus-url: https://github.com/jboullion/molt-shell/blob/e3cb5f1ad0a127020fa4d3819d5351f28a917d5d/molt-shell-skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # 🐚 MoltShell Skill

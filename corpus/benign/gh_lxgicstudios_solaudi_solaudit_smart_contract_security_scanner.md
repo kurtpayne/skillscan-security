@@ -5,7 +5,7 @@ description: Solidity smart contract security auditor. Detect reentrancy, overfl
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/solaudit
 # corpus-url: https://github.com/lxgicstudios/solaudit/blob/a0d7aa0a15e9abe60571b924efdecaa5a1f1fb1b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

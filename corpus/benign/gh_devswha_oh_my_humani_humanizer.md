@@ -17,8 +17,8 @@ allowed-tools:
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: devswha/oh-my-humanizer
-# corpus-url: https://github.com/devswha/oh-my-humanizer/blob/878c3df27f32bf7661bc6383f6312c53a7eadea8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/devswha/oh-my-humanizer/blob/aa93f4d048c72cb4b1b1a9f36b5230e217dc7ab2/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

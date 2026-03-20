@@ -24,8 +24,8 @@ metadata:
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: phoenixjyb/openclaw-3dprint
-# corpus-url: https://github.com/phoenixjyb/openclaw-3dprint/blob/f20eb29ffb859b4d0c184b3223aadd7a8fae6bc5/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/phoenixjyb/openclaw-3dprint/blob/b7460be0d2e482a72c6376cf20a6f2320c491188/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

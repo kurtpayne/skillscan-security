@@ -5,7 +5,7 @@ description: Search and fetch articles from Grokipedia.com — xAI's AI-generate
 # corpus-source: github-scrape-r3
 # corpus-repo: kirillleventcov/grokipedia-parser
 # corpus-url: https://github.com/kirillleventcov/grokipedia-parser/blob/7c058d85ac2d850b2bcb3ef7e04f7ea3eda5ee4e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

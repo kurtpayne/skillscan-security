@@ -12,7 +12,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: drillan/headed-fetcher
 # corpus-url: https://github.com/drillan/headed-fetcher/blob/52bb90452b54be60f5da865cae33ad8c177380c6/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

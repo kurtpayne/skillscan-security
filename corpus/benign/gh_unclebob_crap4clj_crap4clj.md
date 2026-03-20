@@ -5,7 +5,7 @@ description: Use when the user asks for a CRAP report, cyclomatic complexity ana
 # corpus-source: github-scrape-r3
 # corpus-repo: unclebob/crap4clj
 # corpus-url: https://github.com/unclebob/crap4clj/blob/992a5dd41bb337a843c02fb4829a69af7bfcf595/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

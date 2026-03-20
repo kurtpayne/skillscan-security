@@ -5,7 +5,7 @@ description: Memory preservation for Claude Code sessions. Use when approaching 
 # corpus-source: github-scrape-r3
 # corpus-repo: plinde/total-recall
 # corpus-url: https://github.com/plinde/total-recall/blob/d5fe5fad2b75cf049ceadd57cba6a347f9d4c923/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

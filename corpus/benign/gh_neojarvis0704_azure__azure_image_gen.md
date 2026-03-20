@@ -22,7 +22,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: neojarvis0704/azure-image-gen
 # corpus-url: https://github.com/neojarvis0704/azure-image-gen/blob/9a0fda72b933bca729544cbb9df3e222451b832a/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

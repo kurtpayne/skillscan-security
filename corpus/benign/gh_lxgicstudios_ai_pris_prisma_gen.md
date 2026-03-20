@@ -5,7 +5,7 @@ description: Generate Prisma schema from plain English. Use when starting a data
 # corpus-source: github-scrape-r3
 # corpus-repo: lxgicstudios/ai-prisma-gen
 # corpus-url: https://github.com/lxgicstudios/ai-prisma-gen/blob/d8319549d0d6e8e61df2ab3158569ab8a98ff9a6/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

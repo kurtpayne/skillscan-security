@@ -7,7 +7,7 @@ metadata: {"clawdbot":{"requires":{"bins":[],"env":["MAILESCROW_API_URL"]}}}
 # corpus-source: github-scrape-r3
 # corpus-repo: acroca/mailescrow
 # corpus-url: https://github.com/acroca/mailescrow/blob/79424cf5dde9e823000a43b446b5dee71bce7c2b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

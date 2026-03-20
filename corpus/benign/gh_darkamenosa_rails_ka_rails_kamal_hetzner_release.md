@@ -5,7 +5,7 @@ description: Use when deploying a Rails + Inertia.js app to production with Kama
 # corpus-source: github-scrape-r3
 # corpus-repo: darkamenosa/rails-kamal-hetzner-release
 # corpus-url: https://github.com/darkamenosa/rails-kamal-hetzner-release/blob/2989d7f9e43d1049f059530fc11fd0ab38874e74/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

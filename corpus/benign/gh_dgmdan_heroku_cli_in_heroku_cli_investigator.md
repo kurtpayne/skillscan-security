@@ -5,7 +5,7 @@ description: Step-by-step guidance for using the Heroku CLI (~>10.17.0) to inspe
 # corpus-source: github-scrape-r3
 # corpus-repo: dgmdan/heroku-cli-investigator-skill
 # corpus-url: https://github.com/dgmdan/heroku-cli-investigator-skill/blob/1bd63513715393b6483f3ff69fd38c78d4be07a8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

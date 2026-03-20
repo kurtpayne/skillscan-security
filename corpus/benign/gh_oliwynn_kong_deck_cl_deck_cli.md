@@ -10,7 +10,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: oliwynn-kong/deck-cli-skill
 # corpus-url: https://github.com/oliwynn-kong/deck-cli-skill/blob/f43d62076fad925b68434c250c8b82ba7eca0156/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

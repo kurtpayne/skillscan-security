@@ -5,7 +5,7 @@ description: Monitor research grant opportunities and funding calls in epidemiol
 # corpus-source: github-scrape-r3
 # corpus-repo: fccoelho/grant-monitor
 # corpus-url: https://github.com/fccoelho/grant-monitor/blob/7545bb398612cf6623020bdc98cd2e224cb56ecc/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

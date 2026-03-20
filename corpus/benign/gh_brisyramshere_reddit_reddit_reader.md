@@ -5,7 +5,7 @@ description: 通过 Reddit OAuth2 API 搜索和阅读 Reddit 帖子、评论和�
 # corpus-source: github-scrape-r3
 # corpus-repo: brisyramshere/reddit-skill
 # corpus-url: https://github.com/brisyramshere/reddit-skill/blob/1e117ea1a9c3de4f86220a26aa44fcd9de0e7eb4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

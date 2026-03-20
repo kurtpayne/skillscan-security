@@ -5,7 +5,7 @@ description: Chat-based Azure infrastructure assistance using Azure CLI and port
 # corpus-source: github-scrape-r3
 # corpus-repo: bmdhodl/azure-infra-skill
 # corpus-url: https://github.com/bmdhodl/azure-infra-skill/blob/d35b389fd065b22f6db4246e6318f5187a9b7db9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

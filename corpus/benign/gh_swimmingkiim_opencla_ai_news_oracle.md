@@ -7,7 +7,7 @@ version: 1.1.0
 # corpus-source: github-scrape-r3
 # corpus-repo: swimmingkiim/openclaw-skill-ai-news-oracle
 # corpus-url: https://github.com/swimmingkiim/openclaw-skill-ai-news-oracle/blob/8ed2d449356ed580f613db4b84e62ab7bf1b39e5/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

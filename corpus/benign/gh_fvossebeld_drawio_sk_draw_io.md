@@ -5,7 +5,7 @@ description: Generate polished draw.io diagrams for Azure architectures with WAF
 # corpus-source: github-scrape-r3
 # corpus-repo: FVossebeld/drawio-skill
 # corpus-url: https://github.com/FVossebeld/drawio-skill/blob/f4337413009cfdf7e784fe6dbbc6dc4ecfd70571/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -7,8 +7,8 @@ prev: ./hr
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: Mint-System/Odoo-Wiki
-# corpus-url: https://github.com/Mint-System/Odoo-Wiki/blob/4cb08e8537a9e46ce79056f2cc16ed9840fa93b6/HR%20Employee%20Skill.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/Mint-System/Odoo-Wiki/blob/876572fb118650538445fa2a997885c7621f0437/HR%20Employee%20Skill.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

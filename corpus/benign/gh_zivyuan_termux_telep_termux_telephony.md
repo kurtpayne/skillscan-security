@@ -6,7 +6,7 @@ metadata: {"clawdbot":{"emoji":"📱","requires":{"bins":["curl","jq"]}}}
 # corpus-source: github-scrape-r3
 # corpus-repo: zivyuan/termux-telephony
 # corpus-url: https://github.com/zivyuan/termux-telephony/blob/e7f4540a126edfee108c002e1a6a3537ef2f6176/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

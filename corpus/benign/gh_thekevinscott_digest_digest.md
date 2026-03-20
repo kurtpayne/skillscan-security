@@ -5,7 +5,7 @@ description: Extract insights from transcripts into actionable artifact files.
 # corpus-source: github-scrape-r3
 # corpus-repo: thekevinscott/digest
 # corpus-url: https://github.com/thekevinscott/digest/blob/4b30b96d5c057bb20650595a5a07da3670ad2901/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

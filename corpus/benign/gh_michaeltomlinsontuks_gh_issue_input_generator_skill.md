@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: michaeltomlinsontuks/issueTool
 # corpus-url: https://github.com/michaeltomlinsontuks/issueTool/blob/48affa6043ba55360a7f66a4ac24a8087c59b889/gh-issue-input-generator-SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # GitHub Issue Hierarchy Input Generator

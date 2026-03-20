@@ -5,7 +5,7 @@ description: Enforce a precise, minimal design system inspired by Linear, Notion
 # corpus-source: github-scrape-r3
 # corpus-repo: SammyReifel/bioproject
 # corpus-url: https://github.com/SammyReifel/bioproject/blob/fa209d79c3cf0cfdf483f5b9679b8e93524b6701/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

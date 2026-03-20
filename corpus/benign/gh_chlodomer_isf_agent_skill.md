@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Chlodomer/isf-agent
 # corpus-url: https://github.com/Chlodomer/isf-agent/blob/caf6cbc9ac56d7732edeff83b2cab48a1944b646/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # ISF Grant Proposal Assistant

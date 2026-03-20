@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Write, Edit, Glob
 # corpus-source: github-scrape-r3
 # corpus-repo: jysh1214/vodka
 # corpus-url: https://github.com/jysh1214/vodka/blob/60592ece7d14b067c9cde858c75fce892691af81/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

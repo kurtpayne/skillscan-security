@@ -10,7 +10,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: Mifuyuu/ux-ui-experience
 # corpus-url: https://github.com/Mifuyuu/ux-ui-experience/blob/f5453aa29ee6a0d88a9433a362f935daae5849ab/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

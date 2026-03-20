@@ -5,7 +5,7 @@ description: "Web search via self-hosted SearxNG. Aggregates Google, Bing, DuckD
 # corpus-source: github-scrape-r3
 # corpus-repo: ythx-101/ask-search
 # corpus-url: https://github.com/ythx-101/ask-search/blob/2ab964849b8d4a3b1dfb160bc9e2ca3596887a56/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

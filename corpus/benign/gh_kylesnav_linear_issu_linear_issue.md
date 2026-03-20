@@ -6,7 +6,7 @@ description: Full Linear issue lifecycle. Use when the user wants to "create a L
 # corpus-source: github-scrape-r3
 # corpus-repo: kylesnav/linear-issue-skill
 # corpus-url: https://github.com/kylesnav/linear-issue-skill/blob/f52db854472837e9443e6549d2df1d3e67a7ec44/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

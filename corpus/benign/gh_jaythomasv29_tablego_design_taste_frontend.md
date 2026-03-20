@@ -5,7 +5,7 @@ description: Senior UI/UX Engineer. Architect digital interfaces overriding defa
 # corpus-source: github-scrape-r3
 # corpus-repo: jaythomasv29/tablego
 # corpus-url: https://github.com/jaythomasv29/tablego/blob/eb86c0e7aefc034a975bf5b033ed4f9d142a169a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

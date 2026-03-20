@@ -5,7 +5,7 @@ description: Transform YouTube videos into beautifully formatted ebook articles 
 # corpus-source: github-scrape-r3
 # corpus-repo: zarazhangrui/youtube-to-ebook
 # corpus-url: https://github.com/zarazhangrui/youtube-to-ebook/blob/7f67fd6b55a272012df3767cf6d8c54bd2d7a9f3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

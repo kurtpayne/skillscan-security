@@ -5,7 +5,7 @@ description: "Launch and manage Claude Code CLI sessions for coding tasks. Use w
 # corpus-source: github-scrape-r3
 # corpus-repo: xiaoshenming/openclaw-claude-code-skills
 # corpus-url: https://github.com/xiaoshenming/openclaw-claude-code-skills/blob/34f91b96c92963e9e1237b140b4669ea5419d87a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

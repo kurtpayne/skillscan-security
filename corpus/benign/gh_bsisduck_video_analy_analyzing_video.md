@@ -7,7 +7,7 @@ allowed-tools: Bash, Read, Agent
 # corpus-source: github-scrape-r3
 # corpus-repo: bsisduck/video-analyzer-skill
 # corpus-url: https://github.com/bsisduck/video-analyzer-skill/blob/292999a02fed549b4cddfd7f95252cc34a1de7de/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

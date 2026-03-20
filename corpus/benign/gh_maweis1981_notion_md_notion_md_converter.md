@@ -11,7 +11,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: maweis1981/notion-md-converter
 # corpus-url: https://github.com/maweis1981/notion-md-converter/blob/dd72af35b1616454d0e4a819586c55249f0076ba/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

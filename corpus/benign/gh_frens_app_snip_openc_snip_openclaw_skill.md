@@ -7,7 +7,7 @@ metadata: {"openclaw":{"emoji":"✂️","requires":{"bins":["curl","jq"],"env":[
 # corpus-source: github-scrape-r3
 # corpus-repo: frens-app/snip-openclaw-skill
 # corpus-url: https://github.com/frens-app/snip-openclaw-skill/blob/b8d88aaa5f6cf236a575a28f70b0e1edd1d049a4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

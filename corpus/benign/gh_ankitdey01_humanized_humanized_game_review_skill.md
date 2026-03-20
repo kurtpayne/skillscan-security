@@ -5,7 +5,7 @@ description: Write authentic, teenager-voiced game reviews with positives, negat
 # corpus-source: github-scrape-r3
 # corpus-repo: ankitdey01/humanized-game-review-skill
 # corpus-url: https://github.com/ankitdey01/humanized-game-review-skill/blob/6f6ba315fcbe0902d386e6f42807a0deaf86a4b2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

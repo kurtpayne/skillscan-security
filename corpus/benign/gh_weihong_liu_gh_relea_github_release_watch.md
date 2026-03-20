@@ -8,7 +8,7 @@ compatibility:
 # corpus-source: github-scrape-r3
 # corpus-repo: Weihong-Liu/gh-release-watch-skills
 # corpus-url: https://github.com/Weihong-Liu/gh-release-watch-skills/blob/594a1847bd2badb4e7e74f3c38601094e1768db1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

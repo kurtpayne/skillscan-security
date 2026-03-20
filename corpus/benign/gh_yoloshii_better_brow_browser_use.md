@@ -31,7 +31,7 @@ triggers:
 # corpus-source: github-scrape-r3
 # corpus-repo: yoloshii/better-browser-use
 # corpus-url: https://github.com/yoloshii/better-browser-use/blob/db3b4897a3117bcbf9b7ec3446fcf9a8db6a6c88/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

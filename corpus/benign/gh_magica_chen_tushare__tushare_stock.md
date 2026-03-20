@@ -30,7 +30,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: Magica-Chen/tushare-stock-skill
 # corpus-url: https://github.com/Magica-Chen/tushare-stock-skill/blob/0e6def7211e1dee6db1c629be8fc7a5aa33f348d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

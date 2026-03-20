@@ -19,7 +19,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: lacymorrow/openclaw-alpaca-trading-skill
 # corpus-url: https://github.com/lacymorrow/openclaw-alpaca-trading-skill/blob/9fd73de2cc0eb7332e1e21e73fb187d7f46cf571/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

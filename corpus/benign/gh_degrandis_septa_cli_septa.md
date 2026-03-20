@@ -75,7 +75,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: DeGrandis/septa-cli
 # corpus-url: https://github.com/DeGrandis/septa-cli/blob/64f2a22822bd22e772e69250a0abe7e6d25e676d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

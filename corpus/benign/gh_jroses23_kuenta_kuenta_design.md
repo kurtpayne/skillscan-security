@@ -12,7 +12,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: JROSES23/KUENTA
 # corpus-url: https://github.com/JROSES23/KUENTA/blob/fa214b47f6bb0e9bf22558e47bde5646fe49b916/KUENTA_DESIGN_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

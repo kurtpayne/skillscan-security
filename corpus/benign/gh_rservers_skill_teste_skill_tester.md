@@ -12,7 +12,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: rservers/skill-tester
 # corpus-url: https://github.com/rservers/skill-tester/blob/d29e1529f74469d25acfa7287b2c0a5e50a46e0e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

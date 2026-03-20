@@ -22,7 +22,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: texiaoyao/office-automation-skill
 # corpus-url: https://github.com/texiaoyao/office-automation-skill/blob/111beb1b0a629ba93429aec0c983ab07c3fa2680/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

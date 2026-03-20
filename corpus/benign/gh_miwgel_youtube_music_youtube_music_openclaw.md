@@ -7,7 +7,7 @@ metadata: {"openclaw":{"emoji":"🎵","os":["darwin"],"requires":{"bins":["osasc
 # corpus-source: github-scrape-r3
 # corpus-repo: miwgel/youtube-music-openclaw
 # corpus-url: https://github.com/miwgel/youtube-music-openclaw/blob/02f9ee6517e75cc61df52ac1f30f62a3f2c6711c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

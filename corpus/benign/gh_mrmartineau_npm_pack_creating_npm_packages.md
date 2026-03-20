@@ -5,7 +5,7 @@ description: 'Scaffold new TypeScript npm packages with ESM + CJS dual output, B
 # corpus-source: github-scrape-r3
 # corpus-repo: mrmartineau/npm-package
 # corpus-url: https://github.com/mrmartineau/npm-package/blob/d5701389569cc92d665b89f39dd952485336493c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

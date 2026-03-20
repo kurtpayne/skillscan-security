@@ -5,7 +5,7 @@ description: Generate hierarchical Inf diagram notes as YAML files in the inf-no
 # corpus-source: github-scrape-r3
 # corpus-repo: jysh1214/inf
 # corpus-url: https://github.com/jysh1214/inf/blob/9ef646a0a71e3461e25d42e1457ab3fa045bbdd9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

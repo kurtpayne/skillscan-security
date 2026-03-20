@@ -5,7 +5,7 @@ description: Build SKILL.md files for Claude Code, Codex, Amp, OpenCode. Product
 # corpus-source: github-scrape-r3
 # corpus-repo: gmickel/better-skill-builder
 # corpus-url: https://github.com/gmickel/better-skill-builder/blob/9067d2c8333ddffddbb84245dfda0ca88e431411/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

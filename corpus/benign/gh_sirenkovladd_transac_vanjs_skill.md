@@ -2,8 +2,8 @@
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: sirenkovladd/transactify
-# corpus-url: https://github.com/sirenkovladd/transactify/blob/1b9266e92c3291837ef346755e0c179c2d87c19e/vanjs_skill.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/sirenkovladd/transactify/blob/ea027bebcae965950c3b7e12e8bb252cb433132a/vanjs_skill.md
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # VanJS Development Skill

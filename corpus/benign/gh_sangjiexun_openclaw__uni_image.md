@@ -23,7 +23,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: sangjiexun/openclaw-skill-UniImage
 # corpus-url: https://github.com/sangjiexun/openclaw-skill-UniImage/blob/30a40584ab2843a079d860a05683b7f64088c8b1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

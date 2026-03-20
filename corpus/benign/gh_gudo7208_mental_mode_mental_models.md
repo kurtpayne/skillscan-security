@@ -12,7 +12,7 @@ user-invocable: true
 # corpus-source: github-scrape-r3
 # corpus-repo: gudo7208/mental-models
 # corpus-url: https://github.com/gudo7208/mental-models/blob/8aea9114d2e1dd633f3148e3079cc0fb3c08484b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

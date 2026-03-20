@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: gil-air-may/scribe
 # corpus-url: https://github.com/gil-air-may/scribe/blob/2e3b21ff66feb4d6ff495b32be6ef7aed1dd8519/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Session Scribe

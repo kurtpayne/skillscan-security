@@ -5,7 +5,7 @@ description: "Mathpix API 文档转换 -- PDF/图片/PPT/Word 转 Markdown、LaT
 # corpus-source: github-scrape-r3
 # corpus-repo: YonganZhang/everything-to-md-for-agent
 # corpus-url: https://github.com/YonganZhang/everything-to-md-for-agent/blob/b0780d92486d5ed2d0db3e46bb22e6a020f9c1f3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

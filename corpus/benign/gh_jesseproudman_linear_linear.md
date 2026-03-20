@@ -5,7 +5,7 @@ description: Interact with Linear project management. Use for creating, searchin
 # corpus-source: github-scrape-r3
 # corpus-repo: jesseproudman/linear-skill
 # corpus-url: https://github.com/jesseproudman/linear-skill/blob/ddfc971aee3cab871e33c098e297aa59432c6ddf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

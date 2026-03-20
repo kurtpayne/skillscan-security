@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: parsaeisa/Notes
 # corpus-url: https://github.com/parsaeisa/Notes/blob/67f37ae47d7e46c0027ababd23d6c9fa9300e904/Soft%20skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Soft skill

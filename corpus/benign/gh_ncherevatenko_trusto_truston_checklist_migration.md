@@ -5,7 +5,7 @@ description: Migrate TrustOn inspection checklist items to a new version in the 
 # corpus-source: github-scrape-r3
 # corpus-repo: ncherevatenko/truston-checklist-migration-skill
 # corpus-url: https://github.com/ncherevatenko/truston-checklist-migration-skill/blob/b489ec10076243eea3e66eeb0e4b61fab657bcac/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

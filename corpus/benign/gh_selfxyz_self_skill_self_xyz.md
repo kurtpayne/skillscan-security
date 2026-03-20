@@ -5,7 +5,7 @@ description: "Integrate Self (self.xyz) — a privacy-first identity protocol us
 # corpus-source: github-scrape-r3
 # corpus-repo: selfxyz/self-skill
 # corpus-url: https://github.com/selfxyz/self-skill/blob/b8951ad809080d429d027c1cc4bcf966c1aca80d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

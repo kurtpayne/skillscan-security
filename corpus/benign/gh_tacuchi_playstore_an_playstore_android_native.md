@@ -10,7 +10,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: Tacuchi/playstore-android-native
 # corpus-url: https://github.com/Tacuchi/playstore-android-native/blob/80c9c43b84d2624483502fffab563f68b1875ba9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

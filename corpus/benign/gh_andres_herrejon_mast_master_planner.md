@@ -14,7 +14,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: Andres-Herrejon/master-planner-claude-skill
 # corpus-url: https://github.com/Andres-Herrejon/master-planner-claude-skill/blob/47d0d3315a01013febb465c4c03f14c038aa718b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

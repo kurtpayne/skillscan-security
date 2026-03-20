@@ -5,7 +5,7 @@ description: Create, edit, export, and review draw.io diagrams. Use for native .
 # corpus-source: github-scrape-r3
 # corpus-repo: Sunwood-ai-labs/draw-io-skill
 # corpus-url: https://github.com/Sunwood-ai-labs/draw-io-skill/blob/e0de57b0d4541113efa0ff4c6952425119b3314a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

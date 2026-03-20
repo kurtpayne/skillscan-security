@@ -6,7 +6,7 @@ metadata: { "openclaw": { "emoji": "💜", "requires": { "bins": ["python", "oll
 # corpus-source: github-scrape-r3
 # corpus-repo: rougecoin-project/gltch_agent
 # corpus-url: https://github.com/rougecoin-project/gltch_agent/blob/ad28bea067648bf97fba47bdf64b5926bb6ee867/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

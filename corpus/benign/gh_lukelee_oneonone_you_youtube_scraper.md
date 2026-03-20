@@ -6,7 +6,7 @@ metadata: {"openclaw": {"emoji": "🎬", "requires": {"bins": ["yt-dlp", "python
 # corpus-source: github-scrape-r3
 # corpus-repo: LUKELEE-OneOnOne/youtube-scraper-openclaw
 # corpus-url: https://github.com/LUKELEE-OneOnOne/youtube-scraper-openclaw/blob/0af5e2e4ab9e68e3b4fe96aac426d17993ec551b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

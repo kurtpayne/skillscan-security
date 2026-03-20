@@ -13,7 +13,7 @@ security:
 # corpus-source: github-scrape-r3
 # corpus-repo: Op3nlyLiv3ly/communication-copilot
 # corpus-url: https://github.com/Op3nlyLiv3ly/communication-copilot/blob/7e9259807aaf998fa22dc7624d89978bb4bc7336/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

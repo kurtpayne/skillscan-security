@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: migkapa/chatkit-skill
 # corpus-url: https://github.com/migkapa/chatkit-skill/blob/557a90d2f584ea7931d2e396e12b0eaca43ced5a/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # ChatKit Skill

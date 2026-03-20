@@ -5,7 +5,7 @@ description: Use when improving spec documents, instruction sets, prompts, requi
 # corpus-source: github-scrape-r3
 # corpus-repo: keithmackay/plsfix
 # corpus-url: https://github.com/keithmackay/plsfix/blob/a361ef26e5f554f03a9e1a945a9a5a92391a8ecf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

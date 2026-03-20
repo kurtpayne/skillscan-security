@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: TONresistor/teleton-plugins
 # corpus-url: https://github.com/TONresistor/teleton-plugins/blob/c9baf2d3a0d7a2d4f23e1648c87fd071ed9ad279/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Teleton Plugin Builder

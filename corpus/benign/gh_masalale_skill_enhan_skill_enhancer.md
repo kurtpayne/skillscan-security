@@ -5,7 +5,7 @@ description: "Enhance skills created with skill-creator using research-backed pa
 # corpus-source: github-scrape-r3
 # corpus-repo: Masalale/skill-enhancer
 # corpus-url: https://github.com/Masalale/skill-enhancer/blob/23147eb593f1706525b12e2d35bf682f04b4e3bd/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

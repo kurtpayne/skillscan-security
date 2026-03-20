@@ -5,7 +5,7 @@ description: Native integration with a local ComfyUI instance to list workflows/
 # corpus-source: github-scrape-r3
 # corpus-repo: hrdtbs/comfyui-operator-skill
 # corpus-url: https://github.com/hrdtbs/comfyui-operator-skill/blob/68b2c4b0a184ea4920d80173bd33a9e679d89847/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -7,7 +7,7 @@ metadata: {"openclaw":{"emoji":"🎬","requires":{"env":["RUNWAY_API_SECRET"],"b
 # corpus-source: github-scrape-r3
 # corpus-repo: runwayml/openclaw-skill-send-video-message
 # corpus-url: https://github.com/runwayml/openclaw-skill-send-video-message/blob/078aa119d73755538c150e8086afe37aa5ab84bb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

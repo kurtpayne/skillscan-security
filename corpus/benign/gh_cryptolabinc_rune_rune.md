@@ -5,7 +5,7 @@ description: Encrypted organizational memory workflow for Rune with activation c
 # corpus-source: github-scrape-r3
 # corpus-repo: CryptoLabInc/rune
 # corpus-url: https://github.com/CryptoLabInc/rune/blob/1cbb253505fe5b9a2fee59cc3bad144b0f6aa5e3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

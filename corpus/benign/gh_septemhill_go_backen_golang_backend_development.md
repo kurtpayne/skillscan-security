@@ -5,7 +5,7 @@ description: Architectural standards and coding practices for the Go backend.
 # corpus-source: github-scrape-r3
 # corpus-repo: septemhill/go-backend-dev-skill
 # corpus-url: https://github.com/septemhill/go-backend-dev-skill/blob/e44dbc8319d48eaa07a23990aeb7090b9f34cd02/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

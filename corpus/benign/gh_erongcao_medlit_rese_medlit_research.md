@@ -5,7 +5,7 @@ description: 医学文献检索、批判性评价与综合分析。支持PubMed/
 # corpus-source: github-scrape-r3
 # corpus-repo: erongcao/medlit-research
 # corpus-url: https://github.com/erongcao/medlit-research/blob/cc245745bf39315a97d11dc9cc77f9502ce833d0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

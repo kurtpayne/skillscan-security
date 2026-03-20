@@ -6,7 +6,7 @@ type: workflow
 # corpus-source: github-scrape-r3
 # corpus-repo: Digidai/product-manager-skills
 # corpus-url: https://github.com/Digidai/product-manager-skills/blob/645147b823b2fad5646bf6a64b7d0ec0318d1ad9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

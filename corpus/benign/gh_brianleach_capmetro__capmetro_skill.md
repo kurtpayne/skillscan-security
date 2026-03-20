@@ -20,7 +20,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: brianleach/capmetro-skill
 # corpus-url: https://github.com/brianleach/capmetro-skill/blob/969cedf686fa20da3bb3b281acf1bda990c5a53d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

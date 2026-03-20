@@ -6,7 +6,7 @@ description: Track elapsed time from a set epoch with tamper-evident locking. Li
 # corpus-source: github-scrape-r3
 # corpus-repo: rm289/hour-meter
 # corpus-url: https://github.com/rm289/hour-meter/blob/895980c2bb16e17d85d99569dbf6dfb742959566/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

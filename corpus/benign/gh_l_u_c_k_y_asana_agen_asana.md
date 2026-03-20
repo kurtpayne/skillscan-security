@@ -8,7 +8,7 @@ metadata: {"openclaw":{"requires":{"env":["ASANA_PAT"]},"primaryEnv":"ASANA_PAT"
 # corpus-source: github-scrape-r3
 # corpus-repo: L-U-C-K-Y/asana-agent-skill
 # corpus-url: https://github.com/L-U-C-K-Y/asana-agent-skill/blob/d294b48ccd75cd202035b686d51c785387c7ab93/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

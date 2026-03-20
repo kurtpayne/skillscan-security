@@ -13,7 +13,7 @@ metadata: {"clawdbot":{"emoji":"🥥","requires":{"bins":["node","npm"]}}}
 # corpus-source: github-scrape-r3
 # corpus-repo: cashubtc/cashu-skill
 # corpus-url: https://github.com/cashubtc/cashu-skill/blob/0e176227db2ef975d9940c79a6d4cf3f20b9213b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

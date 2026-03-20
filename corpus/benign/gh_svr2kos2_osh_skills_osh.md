@@ -5,7 +5,7 @@ description: Control remote devices via OSH (OpenClaw Remote Bridge). Execute sh
 # corpus-source: github-scrape-r3
 # corpus-repo: svr2kos2/osh-skills
 # corpus-url: https://github.com/svr2kos2/osh-skills/blob/4700ce87f513c2e03ac32b6cb5418e8fdaf05e7f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

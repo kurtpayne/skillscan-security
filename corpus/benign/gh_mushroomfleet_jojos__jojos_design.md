@@ -5,7 +5,7 @@ description: Design advisory system channeling Hirohiko Araki's JoJo's Bizarre A
 # corpus-source: github-scrape-r3
 # corpus-repo: MushroomFleet/jojos-design-skill
 # corpus-url: https://github.com/MushroomFleet/jojos-design-skill/blob/fc06e372db1d0da53e5bbf243a9eb0a906d2bb73/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

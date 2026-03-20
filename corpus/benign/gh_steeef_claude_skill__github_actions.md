@@ -12,7 +12,7 @@ allowed-tools:
 # corpus-source: github-scrape-r3
 # corpus-repo: steeef/claude-skill-github-actions
 # corpus-url: https://github.com/steeef/claude-skill-github-actions/blob/11e0dc78fa5e68590172c3dbf3ee23782662af16/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

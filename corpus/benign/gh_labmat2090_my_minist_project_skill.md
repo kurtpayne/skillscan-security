@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Labmat2090/my-ministry-organizer
 # corpus-url: https://github.com/Labmat2090/my-ministry-organizer/blob/2e6aeae0defe975d1ddd25e5bba3f2ce2f4c1f23/PROJECT_SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # My Ministry Organizer App - Project Skill

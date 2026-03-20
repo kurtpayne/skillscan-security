@@ -18,7 +18,7 @@ allowed-tools:
 # corpus-source: github-scrape-r3
 # corpus-repo: JEONG-JIWOO/prompt-distill
 # corpus-url: https://github.com/JEONG-JIWOO/prompt-distill/blob/93786161ae5f870684a22a41bf107ba833a0f81a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -6,7 +6,7 @@ when_to_use: When users ask about Zendesk tickets, support metrics, CSAT ratings
 # corpus-source: github-scrape-r3
 # corpus-repo: andmarios/zendesk-skill
 # corpus-url: https://github.com/andmarios/zendesk-skill/blob/d568e204c01ac7f23fd21cc1cef0bce3447ce7da/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

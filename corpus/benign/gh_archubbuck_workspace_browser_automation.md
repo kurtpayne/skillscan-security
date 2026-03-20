@@ -5,8 +5,8 @@ license: ISC
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: archubbuck/workspace-architect
-# corpus-url: https://github.com/archubbuck/workspace-architect/blob/5d8d1a3414061d0b2e1d35ca6ca2f60209f0173d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/archubbuck/workspace-architect/blob/950be502020a074d4a567108af394b4ae2acbff3/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -7,7 +7,7 @@ author: halthelobster
 # corpus-source: github-scrape-r3
 # corpus-repo: halthelobster/proactive-agent
 # corpus-url: https://github.com/halthelobster/proactive-agent/blob/058ed007012a2c88465d2a59edc5cab48596aa59/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

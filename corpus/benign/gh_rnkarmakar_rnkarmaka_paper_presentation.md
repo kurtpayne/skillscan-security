@@ -5,7 +5,7 @@ description: Generate rigorous mathematical HTML presentations from academic pap
 # corpus-source: github-scrape-r3
 # corpus-repo: rnkarmakar/rnkarmakar.github.io
 # corpus-url: https://github.com/rnkarmakar/rnkarmakar.github.io/blob/279876c0b646045cc9de69d3f47279ee0bbe08c3/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

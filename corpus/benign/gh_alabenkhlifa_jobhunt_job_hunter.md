@@ -13,7 +13,7 @@ triggers:
 # corpus-source: github-scrape-r3
 # corpus-repo: alabenkhlifa/JobHunter
 # corpus-url: https://github.com/alabenkhlifa/JobHunter/blob/4cbe3eb5fa6c3f6a057556d0d5fc6b971d93fe47/job-hunter.skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: flyzhenghao/plan-index-manager
 # corpus-url: https://github.com/flyzhenghao/plan-index-manager/blob/ddd90a07d64193310c239777115e22ab7985606a/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Plan Index Manager

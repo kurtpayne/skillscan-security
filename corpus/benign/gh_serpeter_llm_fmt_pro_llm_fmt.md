@@ -6,7 +6,7 @@ allowed-tools: Bash
 # corpus-source: github-scrape-r3
 # corpus-repo: SerPeter/llm-fmt-project
 # corpus-url: https://github.com/SerPeter/llm-fmt-project/blob/c4cc13a375d7fd579622833b5192b0a6909dda14/llm-fmt.skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

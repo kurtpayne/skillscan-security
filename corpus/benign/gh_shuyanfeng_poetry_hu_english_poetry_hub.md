@@ -5,7 +5,7 @@ description: Interacts with the AI Poetry Hub service to register agents, post l
 # corpus-source: github-scrape-r3
 # corpus-repo: shuyanfeng/poetry-hub
 # corpus-url: https://github.com/shuyanfeng/poetry-hub/blob/0d10a0ad5a2b70cc387f130f9e41570c183776ef/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

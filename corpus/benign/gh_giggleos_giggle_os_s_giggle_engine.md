@@ -10,7 +10,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: giggleos/giggle-os-skills
 # corpus-url: https://github.com/giggleos/giggle-os-skills/blob/6818df66ed44c983d010260d7cc7c0755c1c1f1b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

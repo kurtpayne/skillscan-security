@@ -6,7 +6,7 @@ license: MIT
 # corpus-source: github-scrape-r3
 # corpus-repo: mfortini/skill-openapi-modi
 # corpus-url: https://github.com/mfortini/skill-openapi-modi/blob/bf08b0df700f5e94ce56569cbadd42ed9dcb500f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

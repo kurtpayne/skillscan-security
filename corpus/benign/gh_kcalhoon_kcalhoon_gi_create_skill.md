@@ -6,7 +6,7 @@ argument-hint: <skill-name> [--global]
 # corpus-source: github-scrape-r3
 # corpus-repo: kcalhoon/kcalhoon.github.io
 # corpus-url: https://github.com/kcalhoon/kcalhoon.github.io/blob/9628420f539c0cea08a778410486a3ca4147fa90/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

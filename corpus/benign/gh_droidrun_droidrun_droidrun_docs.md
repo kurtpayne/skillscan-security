@@ -5,7 +5,7 @@ description: DroidRun documentation reference. Use when users ask about DroidRun
 # corpus-source: github-scrape-r3
 # corpus-repo: droidrun/droidrun
 # corpus-url: https://github.com/droidrun/droidrun/blob/98b762d06a77e243fca66e830b7fa98d7c0124ee/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

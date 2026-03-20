@@ -6,7 +6,7 @@ metadata: {"openclaw":{"emoji":"🎬","requires":{"bins":["bash"],"os":["darwin"
 # corpus-source: github-scrape-r3
 # corpus-repo: gm3087/video-highlight-extractor
 # corpus-url: https://github.com/gm3087/video-highlight-extractor/blob/e327b59524756f83ea16048148683142db04dbdf/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

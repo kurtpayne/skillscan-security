@@ -5,7 +5,7 @@ description: Create stunning, animation-rich HTML presentations from scratch or 
 # corpus-source: github-scrape-r3
 # corpus-repo: zarazhangrui/frontend-slides
 # corpus-url: https://github.com/zarazhangrui/frontend-slides/blob/384d1a07ba1fd59ff626b141caa65f51a44ccc73/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -7,7 +7,7 @@ metadata: { "openclaw": { "category": "productivity", "emoji": "📚", "requires
 # corpus-source: github-scrape-r3
 # corpus-repo: tencent-lexiang/lexiang-mcp-skill
 # corpus-url: https://github.com/tencent-lexiang/lexiang-mcp-skill/blob/eaa327b41dd1327732f03db6df1da37ca9ad7d2e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

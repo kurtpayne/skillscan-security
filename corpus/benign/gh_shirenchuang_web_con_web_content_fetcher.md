@@ -13,7 +13,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: shirenchuang/web-content-fetcher
 # corpus-url: https://github.com/shirenchuang/web-content-fetcher/blob/4ccf499b0685fe2ea632c1e10d90ee54e94c31e4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

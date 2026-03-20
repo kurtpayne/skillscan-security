@@ -10,7 +10,7 @@ description: >-
 # corpus-source: github-scrape-r3
 # corpus-repo: ovitrif/obsidian-vault-skill
 # corpus-url: https://github.com/ovitrif/obsidian-vault-skill/blob/21af3966d22705f55c7ed57369e7ecb76cd264c5/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

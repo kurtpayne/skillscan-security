@@ -5,7 +5,7 @@ description: Atualiza e mantém changelog.md/CHANGELOG.md de projetos frontend e
 # corpus-source: github-scrape-r3
 # corpus-repo: flaviodotcom/fullstack-changelog-ptbr
 # corpus-url: https://github.com/flaviodotcom/fullstack-changelog-ptbr/blob/76513bf7d08b121ec0b51de2aaf505e5bcdc3e78/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

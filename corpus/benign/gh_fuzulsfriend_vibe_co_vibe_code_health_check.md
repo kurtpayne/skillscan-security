@@ -18,7 +18,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: FuzulsFriend/vibe-code-health-check
 # corpus-url: https://github.com/FuzulsFriend/vibe-code-health-check/blob/5690ba6a6c137054ab81d16871b4b71018dafad9/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: This skill should be used when the user asks to "summarise my call"
 # corpus-source: github-scrape-r3
 # corpus-repo: HartreeWorks/skill--summarise-granola
 # corpus-url: https://github.com/HartreeWorks/skill--summarise-granola/blob/981dc217547c0a085c5e113367c0076725428886/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Audit subscriptions AND optimize credit card rewards. Analyzes bank
 # corpus-source: github-scrape-r3
 # corpus-repo: cathrynlavery/spend-optimizer
 # corpus-url: https://github.com/cathrynlavery/spend-optimizer/blob/7986632a3b47d2ef7f6bd2565c5e26b5dc1dd693/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

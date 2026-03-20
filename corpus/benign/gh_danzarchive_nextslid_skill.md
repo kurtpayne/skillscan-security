@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: danzarchive/nextslide
 # corpus-url: https://github.com/danzarchive/nextslide/blob/fba6a036a864ee6c0ef948abc57b2a8087dfd0fd/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # NextSlide

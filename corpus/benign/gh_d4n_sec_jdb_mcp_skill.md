@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: d4n-sec/jdb-mcp
 # corpus-url: https://github.com/d4n-sec/jdb-mcp/blob/88d41e7ca2df74977f82f9c22bc34c0db455c94b/Skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Java Debugging Skill for AI Agents (JDB-MCP)

@@ -9,7 +9,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: chrisliu298/karpathy-guidelines
 # corpus-url: https://github.com/chrisliu298/karpathy-guidelines/blob/5115802477121e98d9cb12c67e261c2c6903f5ac/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

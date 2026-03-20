@@ -5,7 +5,7 @@ description: Deploy applications to Fly.io using flyctl. Handles project detecti
 # corpus-source: github-scrape-r3
 # corpus-repo: ianpcook/fly-deploy
 # corpus-url: https://github.com/ianpcook/fly-deploy/blob/ef80c2ebb3a38146bd8381c5add89c51321cc504/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

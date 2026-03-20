@@ -6,7 +6,7 @@ allowed-tools: Bash(playwright-cli:*), Bash(python:*), Bash(az:*), Bash(pwsh:*),
 # corpus-source: github-scrape-r3
 # corpus-repo: jonburchel/docs-screenshot
 # corpus-url: https://github.com/jonburchel/docs-screenshot/blob/3b292ab5f823a6c94ee0377069a29a016e51ec1f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

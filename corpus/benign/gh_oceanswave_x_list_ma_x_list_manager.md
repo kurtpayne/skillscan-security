@@ -6,7 +6,7 @@ argument-hint: 'add "AI Announcements" @elonmusk, remove @handle "List Name", ba
 # corpus-source: github-scrape-r3
 # corpus-repo: Oceanswave/x-list-manager
 # corpus-url: https://github.com/Oceanswave/x-list-manager/blob/9697137475b91af59ac242c40b50be5e9ed288e4/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

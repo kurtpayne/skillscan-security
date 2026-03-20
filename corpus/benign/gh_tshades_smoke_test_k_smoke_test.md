@@ -5,7 +5,7 @@ name: smoke-test
 # corpus-source: github-scrape-r3
 # corpus-repo: tshades/smoke-test-kit
 # corpus-url: https://github.com/tshades/smoke-test-kit/blob/5d0d3d852c3fc622d1338fe88819231746684984/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

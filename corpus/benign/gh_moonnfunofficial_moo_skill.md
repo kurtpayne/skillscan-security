@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: moonnfunOfficial/moon_skills
 # corpus-url: https://github.com/moonnfunOfficial/moon_skills/blob/21a4ac0a626d328307131c2f1e3d2ee00eaed402/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # MoonfunSDK - BSC Meme Token Creation Tool

@@ -5,7 +5,7 @@ description: Build a comprehensive, data-driven Go-To-Market strategy with reven
 # corpus-source: github-scrape-r3
 # corpus-repo: apoloss/go-to-market-skill
 # corpus-url: https://github.com/apoloss/go-to-market-skill/blob/11bf6490f096ef5726719f2d52d59cf999aa7149/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

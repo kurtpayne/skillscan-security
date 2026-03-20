@@ -5,7 +5,7 @@ description: Configure, customize, and manage the Zed code editor. Use when the 
 # corpus-source: github-scrape-r3
 # corpus-repo: zmanian/zed-skill
 # corpus-url: https://github.com/zmanian/zed-skill/blob/81e1b07fc55333364937929c9fb7714892bb0871/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

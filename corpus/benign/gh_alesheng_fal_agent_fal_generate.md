@@ -8,7 +8,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: aleSheng/fal-agent
 # corpus-url: https://github.com/aleSheng/fal-agent/blob/5e802a5f78a748756a181fcbc49cb7eb6d8a3213/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Build and maintain Raycast extensions using the Raycast API. Trigge
 # corpus-source: github-scrape-r3
 # corpus-repo: alexi-build/raycast-extensions-skill
 # corpus-url: https://github.com/alexi-build/raycast-extensions-skill/blob/e9ee1d3f472c4e6e355d987af010191e4d662f98/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

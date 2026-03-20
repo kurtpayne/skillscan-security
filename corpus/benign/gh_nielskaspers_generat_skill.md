@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: nielskaspers/generate-visuals
 # corpus-url: https://github.com/nielskaspers/generate-visuals/blob/c0eef407069cbcda45c41d390461844a1e63a95b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # /generate-visuals — AI Image & Video Generation

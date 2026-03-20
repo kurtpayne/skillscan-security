@@ -1,49 +1,7 @@
 ---
 name: chief
 version: 1.0.0
-description: |
-  Your principal-engineer mentor and developer growth partner. chief works hand-in-hand
-  with developers — analyzing real code, coaching on craft, and orchestrating the full
-  engineering lifecycle. When invoked directly (/chief), runs a developer coaching session:
-  audits recent work, identifies patterns (good and bad), and produces a personalized
-  growth plan with one concrete focus for the week.
-
-  chief also includes a full suite of workflow skills. When you notice the developer is at
-  these stages, suggest the appropriate skill:
-  - Wanting developer coaching or growth feedback → suggest /chief (this skill)
-  - Setting up chief on a new project, or CHIEF.md is missing → suggest /chief-init
-  - Developer says "just do it", "take over", "stop asking", "handle it" → suggest /chief-cook
-  - Developer wants to commit and push their work → suggest /chief-push
-  - Brainstorming a new idea → suggest /office-hours
-  - Reviewing a plan (strategy) → suggest /plan-ceo-review
-  - Reviewing a plan (architecture) → suggest /plan-eng-review
-  - Reviewing a plan (design) → suggest /plan-design-review
-  - Creating a design system → suggest /design-consultation
-  - Debugging errors → suggest /investigate
-  - Testing the app → suggest /qa
-  - Code review before merge → suggest /review
-  - Visual design audit → suggest /design-review
-  - Ready to deploy / create PR → suggest /ship
-  - Post-ship doc updates → suggest /document-release
-  - Weekly retrospective → suggest /retro
-  - Wanting a second opinion or adversarial code review → suggest /codex
-  - Working with production or live systems → suggest /careful
-  - Want to scope edits to one module/directory → suggest /freeze
-  - Maximum safety mode (destructive warnings + edit restrictions) → suggest /guard
-  - Removing edit restrictions → suggest /unfreeze
-  - Upgrading chief to latest version → suggest /chief-upgrade
-  - Working through PR review comments → suggest /chief-resolve
-
-  If the user pushes back on skill suggestions ("stop suggesting things",
-  "I don't need suggestions", "too aggressive"):
-  1. Stop suggesting for the rest of this session
-  2. Run: chief-config set proactive false
-  3. Say: "Got it — I'll stop suggesting skills. Just tell me to be proactive
-     again if you change your mind."
-
-  If the user says "be proactive again" or "turn on suggestions":
-  1. Run: chief-config set proactive true
-  2. Say: "Proactive suggestions are back on."
+description: Developer coaching session — audits recent work, names patterns, gives one concrete focus.
 allowed-tools:
   - Bash
   - Read
@@ -55,152 +13,52 @@ allowed-tools:
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: onlypfachi/chief
-# corpus-url: https://github.com/onlypfachi/chief/blob/e53e265f3aaeb244afadd2757a26490f35fa830c/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/onlypfachi/chief/blob/63c541d141f0b554f59628df20689abc3b1973b0/SKILL.md.tmpl
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
-<!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
-<!-- Regenerate: bun run gen:skill-docs -->
 
-## Preamble (run first)
-
-```bash
-_UPD=$(~/.claude/skills/chief/bin/chief-update-check 2>/dev/null || .claude/skills/chief/bin/chief-update-check 2>/dev/null || true)
-[ -n "$_UPD" ] && echo "$_UPD" || true
-mkdir -p ~/.chief/sessions
-touch ~/.chief/sessions/"$PPID"
-_SESSIONS=$(find ~/.chief/sessions -mmin -120 -type f 2>/dev/null | wc -l | tr -d ' ')
-find ~/.chief/sessions -mmin +120 -type f -delete 2>/dev/null || true
-_CONTRIB=$(~/.claude/skills/chief/bin/chief-config get chief_contributor 2>/dev/null || true)
-_PROACTIVE=$(~/.claude/skills/chief/bin/chief-config get proactive 2>/dev/null || echo "true")
-_BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
-echo "BRANCH: $_BRANCH"
-echo "PROACTIVE: $_PROACTIVE"
-_LAKE_SEEN=$([ -f ~/.chief/.completeness-intro-seen ] && echo "yes" || echo "no")
-echo "LAKE_INTRO: $_LAKE_SEEN"
-mkdir -p ~/.chief/analytics
-echo '{"skill":"chief","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","repo":"'$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "unknown")'"}'  >> ~/.chief/analytics/skill-usage.jsonl 2>/dev/null || true
-```
-
-If `PROACTIVE` is `"false"`, do not proactively suggest chief skills — only invoke
-them when the user explicitly asks. The user opted out of proactive suggestions.
-
-If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/chief/chief-upgrade/SKILL.md` and follow the "Inline upgrade flow" (auto-upgrade if configured, otherwise AskUserQuestion with 4 options, write snooze state if declined). If `JUST_UPGRADED <from> <to>`: tell user "Running chief v{to} (just updated!)" and continue.
-
-If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
-Tell the user: "chief follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
-
-```bash
-open https://garryslist.org/posts/boil-the-ocean
-touch ~/.chief/.completeness-intro-seen
-```
-
-Only run `open` if the user says yes. Always run `touch` to mark as seen. This only happens once.
-
-## AskUserQuestion Format
-
-**ALWAYS follow this structure for every AskUserQuestion call:**
-1. **Re-ground:** State the project, the current branch (use the `_BRANCH` value printed by the preamble — NOT any branch from conversation history or gitStatus), and the current plan/task. (1-2 sentences)
-2. **Simplify:** Explain the problem in plain English a smart 16-year-old could follow. No raw function names, no internal jargon, no implementation details. Use concrete examples and analogies. Say what it DOES, not what it's called.
-3. **Recommend:** `RECOMMENDATION: Choose [X] because [one-line reason]` — always prefer the complete option over shortcuts (see Completeness Principle). Include `Completeness: X/10` for each option. Calibration: 10 = complete implementation (all edge cases, full coverage), 7 = covers happy path but skips some edges, 3 = shortcut that defers significant work. If both options are 8+, pick the higher; if one is ≤5, flag it.
-4. **Options:** Lettered options: `A) ... B) ... C) ...` — when an option involves effort, show both scales: `(human: ~X / CC: ~Y)`
-
-Assume the user hasn't looked at this window in 20 minutes and doesn't have the code open. If you'd need to read the source to understand your own explanation, it's too complex.
-
-Per-skill instructions may add additional formatting rules on top of this baseline.
-
-## Completeness Principle — Boil the Lake
-
-AI-assisted coding makes the marginal cost of completeness near-zero. When you present options:
-
-- If Option A is the complete implementation (full parity, all edge cases, 100% coverage) and Option B is a shortcut that saves modest effort — **always recommend A**. The delta between 80 lines and 150 lines is meaningless with CC+chief. "Good enough" is the wrong instinct when "complete" costs minutes more.
-- **Lake vs. ocean:** A "lake" is boilable — 100% test coverage for a module, full feature implementation, handling all edge cases, complete error paths. An "ocean" is not — rewriting an entire system from scratch, adding features to dependencies you don't control, multi-quarter platform migrations. Recommend boiling lakes. Flag oceans as out of scope.
-- **When estimating effort**, always show both scales: human team time and CC+chief time. The compression ratio varies by task type — use this reference:
-
-| Task type | Human team | CC+chief | Compression |
-|-----------|-----------|-----------|-------------|
-| Boilerplate / scaffolding | 2 days | 15 min | ~100x |
-| Test writing | 1 day | 15 min | ~50x |
-| Feature implementation | 1 week | 30 min | ~30x |
-| Bug fix + regression test | 4 hours | 15 min | ~20x |
-| Architecture / design | 2 days | 4 hours | ~5x |
-| Research / exploration | 1 day | 3 hours | ~3x |
-
-- This principle applies to test coverage, error handling, documentation, edge cases, and feature completeness. Don't skip the last 10% to "save time" — with AI, that 10% costs seconds.
-
-**Anti-patterns — DON'T do this:**
-- BAD: "Choose B — it covers 90% of the value with less code." (If A is only 70 lines more, choose A.)
-- BAD: "We can skip edge case handling to save time." (Edge case handling costs minutes with CC.)
-- BAD: "Let's defer test coverage to a follow-up PR." (Tests are the cheapest lake to boil.)
-- BAD: Quoting only human-team effort: "This would take 2 weeks." (Say: "2 weeks human / ~1 hour CC.")
-
-## Contributor Mode
-
-If `_CONTRIB` is `true`: you are in **contributor mode**. You're a chief user who also helps make it better.
-
-**At the end of each major workflow step** (not after every single command), reflect on the chief tooling you used. Rate your experience 0 to 10. If it wasn't a 10, think about why. If there is an obvious, actionable bug OR an insightful, interesting thing that could have been done better by chief code or skill markdown — file a field report. Maybe our contributor will help make us better!
-
-**Calibration — this is the bar:** For example, `$B js "await fetch(...)"` used to fail with `SyntaxError: await is only valid in async functions` because chief didn't wrap expressions in async context. Small, but the input was reasonable and chief should have handled it — that's the kind of thing worth filing. Things less consequential than this, ignore.
-
-**NOT worth filing:** user's app bugs, network errors to user's URL, auth failures on user's site, user's own JS logic bugs.
-
-**To file:** write `~/.chief/contributor-logs/{slug}.md` with **all sections below** (do not truncate — include every section through the Date/Version footer):
-
-```
-# {Title}
-
-Hey chief team — ran into this while using /{skill-name}:
-
-**What I was trying to do:** {what the user/agent was attempting}
-**What happened instead:** {what actually happened}
-**My rating:** {0-10} — {one sentence on why it wasn't a 10}
-
-## Steps to reproduce
-1. {step}
-
-## Raw output
-```
-{paste the actual error or unexpected output here}
-```
-
-## What would make this a 10
-{one sentence: what chief should have done differently}
-
-**Date:** {YYYY-MM-DD} | **Version:** {chief version} | **Skill:** /{skill}
-```
-
-Slug: lowercase, hyphens, max 60 chars (e.g. `browse-js-no-await`). Skip if file already exists. Max 3 reports per session. File inline and continue — don't stop the workflow. Tell user: "Filed chief field report: {title}"
-
-## Completion Status Protocol
-
-When completing a skill workflow, report status using one of:
-- **DONE** — All steps completed successfully. Evidence provided for each claim.
-- **DONE_WITH_CONCERNS** — Completed, but with issues the user should know about. List each concern.
-- **BLOCKED** — Cannot proceed. State what is blocking and what was tried.
-- **NEEDS_CONTEXT** — Missing information required to continue. State exactly what you need.
-
-### Escalation
-
-It is always OK to stop and say "this is too hard for me" or "I'm not confident in this result."
-
-Bad work is worse than no work. You will not be penalized for escalating.
-- If you have attempted a task 3 times without success, STOP and escalate.
-- If you are uncertain about a security-sensitive change, STOP and escalate.
-- If the scope of work exceeds what you can verify, STOP and escalate.
-
-Escalation format:
-```
-STATUS: BLOCKED | NEEDS_CONTEXT
-REASON: [1-2 sentences]
-ATTEMPTED: [what you tried]
-RECOMMENDATION: [what the user should do next]
-```
+{{PREAMBLE}}
 
 If `PROACTIVE` is `false`: do NOT proactively suggest other chief skills during this session.
 Only run skills the user explicitly invokes. This preference persists across sessions via
 `chief-config`.
+
+## Skill routing
+
+When you notice the developer is at one of these stages, suggest the appropriate skill:
+- Setting up chief on a new project, or CHIEF.md is missing → suggest /chief-init
+- Developer says "just do it", "take over", "stop asking", "handle it" → suggest /chief-cook
+- Developer wants to commit and push their work → suggest /chief-push
+- Brainstorming a new idea → suggest /office-hours
+- Reviewing a plan (strategy) → suggest /plan-ceo-review
+- Reviewing a plan (architecture) → suggest /plan-eng-review
+- Reviewing a plan (design) → suggest /plan-design-review
+- Creating a design system → suggest /design-consultation
+- Debugging errors → suggest /investigate
+- Testing the app → suggest /qa
+- Code review before merge → suggest /review
+- Visual design audit → suggest /design-review
+- Ready to deploy / create PR → suggest /ship
+- Post-ship doc updates → suggest /document-release
+- Weekly retrospective → suggest /retro
+- Wanting a second opinion or adversarial code review → suggest /codex
+- Working with production or live systems → suggest /careful
+- Want to scope edits to one module/directory → suggest /freeze
+- Maximum safety mode (destructive warnings + edit restrictions) → suggest /guard
+- Removing edit restrictions → suggest /unfreeze
+- Upgrading chief to latest version → suggest /chief-upgrade
+- Working through PR review comments → suggest /chief-resolve
+
+If the user pushes back on skill suggestions ("stop suggesting things",
+"I don't need suggestions", "too aggressive"):
+1. Stop suggesting for the rest of this session
+2. Run: chief-config set proactive false
+3. Say: "Got it — I'll stop suggesting skills. Just tell me to be proactive again if you change your mind."
+
+If the user says "be proactive again" or "turn on suggestions":
+1. Run: chief-config set proactive true
+2. Say: "Proactive suggestions are back on."
 
 # /chief — Developer Coaching
 
@@ -610,24 +468,7 @@ closing statement.
 Persistent headless Chromium. First call auto-starts (~3s), then ~100-200ms per command.
 Auto-shuts down after 30 min idle. State persists between calls (cookies, tabs, sessions).
 
-## SETUP (run this check BEFORE any browse command)
-
-```bash
-_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-B=""
-[ -n "$_ROOT" ] && [ -x "$_ROOT/.claude/skills/chief/browse/dist/browse" ] && B="$_ROOT/.claude/skills/chief/browse/dist/browse"
-[ -z "$B" ] && B=~/.claude/skills/chief/browse/dist/browse
-if [ -x "$B" ]; then
-  echo "READY: $B"
-else
-  echo "NEEDS_SETUP"
-fi
-```
-
-If `NEEDS_SETUP`:
-1. Tell the user: "chief browse needs a one-time build (~10 seconds). OK to proceed?" Then STOP and wait.
-2. Run: `cd <SKILL_DIR> && ./setup`
-3. If `bun` is not installed: `curl -fsSL https://bun.sh/install | bash`
+{{BROWSE_SETUP}}
 
 ## IMPORTANT
 
@@ -832,131 +673,11 @@ $B css ".button" "background-color"
 
 ## Snapshot System
 
-The snapshot is your primary tool for understanding and interacting with pages.
-
-```
--i        --interactive           Interactive elements only (buttons, links, inputs) with @e refs
--c        --compact               Compact (no empty structural nodes)
--d <N>    --depth                 Limit tree depth (0 = root only, default: unlimited)
--s <sel>  --selector              Scope to CSS selector
--D        --diff                  Unified diff against previous snapshot (first call stores baseline)
--a        --annotate              Annotated screenshot with red overlay boxes and ref labels
--o <path> --output                Output path for annotated screenshot (default: /tmp/browse-annotated.png)
--C        --cursor-interactive    Cursor-interactive elements (@c refs — divs with pointer, onclick)
-```
-
-All flags can be combined freely. `-o` only applies when `-a` is also used.
-Example: `$B snapshot -i -a -C -o /tmp/annotated.png`
-
-**Ref numbering:** @e refs are assigned sequentially (@e1, @e2, ...) in tree order.
-@c refs from `-C` are numbered separately (@c1, @c2, ...).
-
-After snapshot, use @refs as selectors in any command:
-```bash
-$B click @e3       $B fill @e4 "value"     $B hover @e1
-$B html @e2        $B css @e5 "color"      $B attrs @e6
-$B click @c1       # cursor-interactive ref (from -C)
-```
-
-**Output format:** indented accessibility tree with @ref IDs, one element per line.
-```
-  @e1 [heading] "Welcome" [level=1]
-  @e2 [textbox] "Email"
-  @e3 [button] "Submit"
-```
-
-Refs are invalidated on navigation — run `snapshot` again after `goto`.
+{{SNAPSHOT_FLAGS}}
 
 ## Command Reference
 
-### Navigation
-| Command | Description |
-|---------|-------------|
-| `back` | History back |
-| `forward` | History forward |
-| `goto <url>` | Navigate to URL |
-| `reload` | Reload page |
-| `url` | Print current URL |
-
-### Reading
-| Command | Description |
-|---------|-------------|
-| `accessibility` | Full ARIA tree |
-| `forms` | Form fields as JSON |
-| `html [selector]` | innerHTML of selector (throws if not found), or full page HTML if no selector given |
-| `links` | All links as "text → href" |
-| `text` | Cleaned page text |
-
-### Interaction
-| Command | Description |
-|---------|-------------|
-| `click <sel>` | Click element |
-| `cookie <name>=<value>` | Set cookie on current page domain |
-| `cookie-import <json>` | Import cookies from JSON file |
-| `cookie-import-browser [browser] [--domain d]` | Import cookies from Comet, Chrome, Arc, Brave, or Edge (opens picker, or use --domain for direct import) |
-| `dialog-accept [text]` | Auto-accept next alert/confirm/prompt. Optional text is sent as the prompt response |
-| `dialog-dismiss` | Auto-dismiss next dialog |
-| `fill <sel> <val>` | Fill input |
-| `header <name>:<value>` | Set custom request header (colon-separated, sensitive values auto-redacted) |
-| `hover <sel>` | Hover element |
-| `press <key>` | Press key — Enter, Tab, Escape, ArrowUp/Down/Left/Right, Backspace, Delete, Home, End, PageUp, PageDown, or modifiers like Shift+Enter |
-| `scroll [sel]` | Scroll element into view, or scroll to page bottom if no selector |
-| `select <sel> <val>` | Select dropdown option by value, label, or visible text |
-| `type <text>` | Type into focused element |
-| `upload <sel> <file> [file2...]` | Upload file(s) |
-| `useragent <string>` | Set user agent |
-| `viewport <WxH>` | Set viewport size |
-| `wait <sel|--networkidle|--load>` | Wait for element, network idle, or page load (timeout: 15s) |
-
-### Inspection
-| Command | Description |
-|---------|-------------|
-| `attrs <sel|@ref>` | Element attributes as JSON |
-| `console [--clear|--errors]` | Console messages (--errors filters to error/warning) |
-| `cookies` | All cookies as JSON |
-| `css <sel> <prop>` | Computed CSS value |
-| `dialog [--clear]` | Dialog messages |
-| `eval <file>` | Run JavaScript from file and return result as string (path must be under /tmp or cwd) |
-| `is <prop> <sel>` | State check (visible/hidden/enabled/disabled/checked/editable/focused) |
-| `js <expr>` | Run JavaScript expression and return result as string |
-| `network [--clear]` | Network requests |
-| `perf` | Page load timings |
-| `storage [set k v]` | Read all localStorage + sessionStorage as JSON, or set <key> <value> to write localStorage |
-
-### Visual
-| Command | Description |
-|---------|-------------|
-| `diff <url1> <url2>` | Text diff between pages |
-| `pdf [path]` | Save as PDF |
-| `responsive [prefix]` | Screenshots at mobile (375x812), tablet (768x1024), desktop (1280x720). Saves as {prefix}-mobile.png etc. |
-| `screenshot [--viewport] [--clip x,y,w,h] [selector|@ref] [path]` | Save screenshot (supports element crop via CSS/@ref, --clip region, --viewport) |
-
-### Snapshot
-| Command | Description |
-|---------|-------------|
-| `snapshot [flags]` | Accessibility tree with @e refs for element selection. Flags: -i interactive only, -c compact, -d N depth limit, -s sel scope, -D diff vs previous, -a annotated screenshot, -o path output, -C cursor-interactive @c refs |
-
-### Meta
-| Command | Description |
-|---------|-------------|
-| `chain` | Run commands from JSON stdin. Format: [["cmd","arg1",...],...] |
-
-### Tabs
-| Command | Description |
-|---------|-------------|
-| `closetab [id]` | Close tab |
-| `newtab [url]` | Open new tab |
-| `tab <id>` | Switch to tab |
-| `tabs` | List open tabs |
-
-### Server
-| Command | Description |
-|---------|-------------|
-| `handoff [message]` | Open visible Chrome at current page for user takeover |
-| `restart` | Restart server |
-| `resume` | Re-snapshot after user takeover, return control to AI |
-| `status` | Health check |
-| `stop` | Shutdown server |
+{{COMMAND_REFERENCE}}
 
 ## Tips
 

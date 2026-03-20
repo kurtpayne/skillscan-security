@@ -5,7 +5,7 @@ description: Generate production-ready Rails applications with Inertia.js, React
 # corpus-source: github-scrape-r3
 # corpus-repo: darkamenosa/rails-inertia-stack
 # corpus-url: https://github.com/darkamenosa/rails-inertia-stack/blob/7b044489dc4bbec35016374616e1e767af61f7d7/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

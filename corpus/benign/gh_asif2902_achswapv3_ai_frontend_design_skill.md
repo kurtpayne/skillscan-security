@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: Asif2902/achswapv3
 # corpus-url: https://github.com/Asif2902/achswapv3/blob/d5872d3d00a429fdb0f34f77acd966535e291c4a/AI_Frontend_Design_Skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # AI Frontend Design Rules — No More Slop

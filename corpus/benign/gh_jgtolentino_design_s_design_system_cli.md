@@ -7,7 +7,7 @@ allowed-tools: [Read, Write, Edit, Bash, Grep, Glob]
 # corpus-source: github-scrape-r3
 # corpus-repo: jgtolentino/design-system-cli
 # corpus-url: https://github.com/jgtolentino/design-system-cli/blob/65df4dfdf17ccf18d76ca14e2258089a651e6410/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

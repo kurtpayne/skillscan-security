@@ -12,7 +12,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: Boos4721/douyin-pusher
 # corpus-url: https://github.com/Boos4721/douyin-pusher/blob/09e62b431119246507fa755582db6fe8f36ea7f8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -11,7 +11,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: oguzhandilber/gemini-search-image-video-creator
 # corpus-url: https://github.com/oguzhandilber/gemini-search-image-video-creator/blob/eb77f2b64e6ef914cd65fb9c131f8c6a3a009303/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

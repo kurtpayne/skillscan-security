@@ -5,7 +5,7 @@ description: Connect Codex or other MCP-capable clients to WordPress.com and run
 # corpus-source: github-scrape-r3
 # corpus-repo: willmot/wordpress-com-codex-skill
 # corpus-url: https://github.com/willmot/wordpress-com-codex-skill/blob/0d2fcbbef043e42cbcc5434270609687da023075/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

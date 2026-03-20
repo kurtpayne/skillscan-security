@@ -7,7 +7,7 @@ author: BrainForge_AI
 # corpus-source: github-scrape-r3
 # corpus-repo: LuisRodriguezpuerto934/autoposter-pro
 # corpus-url: https://github.com/LuisRodriguezpuerto934/autoposter-pro/blob/2265479f6aba15ac949d6978d6865414971daffa/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

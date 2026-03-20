@@ -5,7 +5,7 @@ description: Use this skill when you need to work with Apple Reminders.app on ma
 # corpus-source: github-scrape-r3
 # corpus-repo: vinitu/macos-reminders-skill
 # corpus-url: https://github.com/vinitu/macos-reminders-skill/blob/1abe52c3d3917f18409f4d9c716f55e31a70f438/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

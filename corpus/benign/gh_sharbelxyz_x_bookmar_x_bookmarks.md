@@ -32,7 +32,7 @@ security:
 # corpus-source: github-scrape-r3
 # corpus-repo: sharbelxyz/x-bookmarks
 # corpus-url: https://github.com/sharbelxyz/x-bookmarks/blob/acf1860bbae4b845596f2a3090329593cbfedb48/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

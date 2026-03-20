@@ -5,7 +5,7 @@ description: Complete Qlik analytics platform integration supporting both Qlik C
 # corpus-source: github-scrape-r3
 # corpus-repo: undsoul/qlik-cloud-skills
 # corpus-url: https://github.com/undsoul/qlik-cloud-skills/blob/a050bfcba683bdd8a67a308ed410e29ab0586f16/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -20,7 +20,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: brianleach/mta-skill
 # corpus-url: https://github.com/brianleach/mta-skill/blob/8121858365c7606dad422bc3cd48ad4a24dfffc8/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

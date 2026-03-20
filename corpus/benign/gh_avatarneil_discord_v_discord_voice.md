@@ -36,7 +36,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: avatarneil/discord-voice
 # corpus-url: https://github.com/avatarneil/discord-voice/blob/bc84830b657ac52a6b2ec42f3fa947fb3e6620f7/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

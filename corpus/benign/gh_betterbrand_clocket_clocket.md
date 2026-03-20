@@ -9,7 +9,7 @@ description: >
 # corpus-source: github-scrape-r3
 # corpus-repo: betterbrand/clocket
 # corpus-url: https://github.com/betterbrand/clocket/blob/630ba63f929dda34b453ef3626978af9f1165be2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

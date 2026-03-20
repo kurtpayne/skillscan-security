@@ -6,7 +6,7 @@ version: 1.5.0
 # corpus-source: github-scrape-r3
 # corpus-repo: awesome-skills/manim-skill
 # corpus-url: https://github.com/awesome-skills/manim-skill/blob/e2cdc1e9f5d2f39392cdafd30b2b04b31b673d60/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

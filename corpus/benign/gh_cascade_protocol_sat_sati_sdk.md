@@ -4,8 +4,8 @@ description: "Build with SATI (Solana Agent Trust Infrastructure) - on-chain age
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: cascade-protocol/sati
-# corpus-url: https://github.com/cascade-protocol/sati/blob/1c4a4740a24c52388088a54dc8b0a32c2780874d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/cascade-protocol/sati/blob/dff4028b42cbaa5a26cc782ef76d9fda84a29926/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

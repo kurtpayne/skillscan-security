@@ -5,7 +5,7 @@ description: "Local git timeline CLI. Query commit history across 50+ repositori
 # corpus-source: github-scrape-r3
 # corpus-repo: junghan0611/gitcli
 # corpus-url: https://github.com/junghan0611/gitcli/blob/3304640660f18ea24cf39de582ac4d601df33a70/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: 轻量级全平台 RSS 订阅管理器。一键聚合 YouTube、Vim
 # corpus-source: github-scrape-r3
 # corpus-repo: ALBEDO-TABAI/lets-go-rss
 # corpus-url: https://github.com/ALBEDO-TABAI/lets-go-rss/blob/357c113516fbeb61c2bf11e3ac03f103ce72d0d2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

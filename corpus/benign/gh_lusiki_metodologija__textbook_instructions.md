@@ -5,7 +5,7 @@ description: Guidelines for writing and editing academic textbook chapters aimed
 # corpus-source: github-scrape-r3
 # corpus-repo: lusiki/Metodologija-za-komunikologe-v2
 # corpus-url: https://github.com/lusiki/Metodologija-za-komunikologe-v2/blob/48d051db6687a08aaa925574aaa27cd2980c33d0/textbook-instructions-SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

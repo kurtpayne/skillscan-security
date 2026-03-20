@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: jieshuo-ai/narrator-ai-cli
 # corpus-url: https://github.com/jieshuo-ai/narrator-ai-cli/blob/33fca947515a2c9825f1ec636e8777a4f4592e21/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # narrator-ai CLI Skill

@@ -5,7 +5,7 @@ description: Analyze and selectively clean macOS development caches to reclaim d
 # corpus-source: github-scrape-r3
 # corpus-repo: Ppang0405/mac-cleaner-skills
 # corpus-url: https://github.com/Ppang0405/mac-cleaner-skills/blob/93e22881dd71ffdf7f389dd9d50df6e4f4ef89ed/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -8,7 +8,7 @@ metadata: {"openclaw":{"requires":{"bins":["python3","bash"],"env":{"SERPER_API_
 # corpus-source: github-scrape-r3
 # corpus-repo: robbyczgw-cla/web-search-plus
 # corpus-url: https://github.com/robbyczgw-cla/web-search-plus/blob/54e4ab88ff4df9148a3eb64b44d2f8eaeeb79060/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

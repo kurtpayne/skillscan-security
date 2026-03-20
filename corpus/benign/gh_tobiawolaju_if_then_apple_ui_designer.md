@@ -5,7 +5,7 @@ description: Redesign mobile app UI to feel unmistakably Apple-like, iOS-forward
 # corpus-source: github-scrape-r3
 # corpus-repo: tobiawolaju/if-then
 # corpus-url: https://github.com/tobiawolaju/if-then/blob/c034ebf2762d0d57b835cbc016e8fee1760c343a/skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

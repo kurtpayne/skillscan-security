@@ -7,7 +7,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: kawaxi/Scripts
 # corpus-url: https://github.com/kawaxi/Scripts/blob/5aa34ecb1dadaab76a7703c12b4bfd9f24a6b224/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

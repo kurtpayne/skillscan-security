@@ -7,7 +7,7 @@ description: |
 # corpus-source: github-scrape-r3
 # corpus-repo: zweien/image-gen-skill
 # corpus-url: https://github.com/zweien/image-gen-skill/blob/1c91e23861860e18d49d7cc7d7eaf7158b3eb7ab/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

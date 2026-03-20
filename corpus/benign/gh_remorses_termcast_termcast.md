@@ -5,7 +5,7 @@ description: Build TUIs with a Raycast-like React API using termcast. Implements
 # corpus-source: github-scrape-r3
 # corpus-repo: remorses/termcast
 # corpus-url: https://github.com/remorses/termcast/blob/6bf831ea73ffb59d5f4db54117732b2ad3939ab0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

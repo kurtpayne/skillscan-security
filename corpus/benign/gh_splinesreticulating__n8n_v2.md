@@ -5,7 +5,7 @@ description: Comprehensive n8n v2.0 reference for building workflow automation. 
 # corpus-source: github-scrape-r3
 # corpus-repo: splinesreticulating/n8n-v2-workflow-skill
 # corpus-url: https://github.com/splinesreticulating/n8n-v2-workflow-skill/blob/311102d5911e6d2423413b12ad8a55d1cd6ec828/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Use when the user describes a recent event, recurring behavior, emo
 # corpus-source: github-scrape-r3
 # corpus-repo: Victoriakaey/reflect
 # corpus-url: https://github.com/Victoriakaey/reflect/blob/3535418d95043cc00eb93cf2097c4d0f5f054627/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

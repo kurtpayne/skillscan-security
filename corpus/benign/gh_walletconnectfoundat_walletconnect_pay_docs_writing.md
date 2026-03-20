@@ -5,7 +5,7 @@ description: Write and review documentation for WalletConnect products using Min
 # corpus-source: github-scrape-r3
 # corpus-repo: WalletConnectFoundation/wc-pay-docs
 # corpus-url: https://github.com/WalletConnectFoundation/wc-pay-docs/blob/976891dc2220a93e9fea2f5076140c8a74ced09a/docs-writing-skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

@@ -5,7 +5,7 @@ description: Email marketing automation with SendFox API via agent-first CLI. Us
 # corpus-source: github-scrape-r3
 # corpus-repo: cathrynlavery/sendfox-skill
 # corpus-url: https://github.com/cathrynlavery/sendfox-skill/blob/3dedd8795f84c183db0675eb28474ad35736e803/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

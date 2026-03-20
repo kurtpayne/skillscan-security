@@ -16,7 +16,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: spboyer/repo-issue-triage
 # corpus-url: https://github.com/spboyer/repo-issue-triage/blob/7790ca937d29fe7a93bca08ba996978549e71e3f/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

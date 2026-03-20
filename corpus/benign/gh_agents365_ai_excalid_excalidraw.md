@@ -7,7 +7,7 @@ metadata: {"openclaw":{"requires":{"bins":["curl"]},"emoji":"🎨"}}
 # corpus-source: github-scrape-r3
 # corpus-repo: Agents365-ai/excalidraw-skill
 # corpus-url: https://github.com/Agents365-ai/excalidraw-skill/blob/be98631d622fe292e2ae0b9770e64526ca5e2482/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

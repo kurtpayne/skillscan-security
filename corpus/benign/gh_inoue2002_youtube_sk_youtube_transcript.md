@@ -5,7 +5,7 @@ description: YouTube動画の文字起こし（トランスクリプト）をダ
 # corpus-source: github-scrape-r3
 # corpus-repo: inoue2002/youtube-skill
 # corpus-url: https://github.com/inoue2002/youtube-skill/blob/4c2458f0bed9c4d59de2510fecec9f9043735fac/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

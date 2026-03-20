@@ -7,7 +7,7 @@ author: Pushpinder Pal Singh
 # corpus-source: github-scrape-r3
 # corpus-repo: hanzoskill/cursor-agent
 # corpus-url: https://github.com/hanzoskill/cursor-agent/blob/86cb37d1b2ef9a05d2bf5dac4ed0ccfdd967ceeb/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

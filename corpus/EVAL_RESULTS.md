@@ -7,7 +7,7 @@
 | Date | Gate | Reason |
 |---|---|---|
 | 2026-03-20 | 0.90 → 0.80 | Eval set reseeded with `benchmark_injection` and `graph_injection` examples; harder eval warranted a lower initial gate. |
-| 2026-03-20 | 0.80 → 0.77 | 9 consecutive runs plateaued at 0.73–0.78 macro F1 with `protectai/deberta-v3-base-prompt-injection-v2` + LoRA r=32. Root cause: injection eval/train sets share the same hand-crafted sources, limiting out-of-distribution generalisation. Gate will be raised to 0.85 once arXiv 2602.06547 Tier 3 dataset (157 OOD examples) is incorporated. |
+| 2026-03-20 | 0.80 → 0.77 | 9 consecutive runs plateaued at 0.73–0.78 macro F1 with `protectai/deberta-v3-base-prompt-injection-v2` + LoRA r=32. Root cause: injection eval/train sets share the same hand-crafted sources, limiting out-of-distribution generalisation. Gate will be raised to 0.85 once injection recall improves via (a) hand-crafted examples covering underrepresented archetypes or (b) ground-truth labels from `skillscan-trace` behavioral sandbox execution. |
 
 ## Latest Run
 

@@ -13,7 +13,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: dylanpersonguy/skills
 # corpus-url: https://github.com/dylanpersonguy/skills/blob/d50e4f16e8bf4b0da3f162cdc8694b104e522e13/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

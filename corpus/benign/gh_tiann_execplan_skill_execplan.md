@@ -5,7 +5,7 @@ description: When writing complex features or significant refactors or user ask 
 # corpus-source: github-scrape-r3
 # corpus-repo: tiann/execplan-skill
 # corpus-url: https://github.com/tiann/execplan-skill/blob/b4e511759b27a398f9f30c602e49c7676c2273ab/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

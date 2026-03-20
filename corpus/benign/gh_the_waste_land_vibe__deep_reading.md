@@ -5,7 +5,7 @@ description: Use when reading books, academic papers, or long-form documents fro
 # corpus-source: github-scrape-r3
 # corpus-repo: the-waste-land/vibe-reading
 # corpus-url: https://github.com/the-waste-land/vibe-reading/blob/9668e6cc6feb79f0047c176ecb7e78ba0fae0490/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

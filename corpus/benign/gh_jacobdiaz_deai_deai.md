@@ -22,7 +22,7 @@ allowed-tools:
 # corpus-source: github-scrape-r3
 # corpus-repo: jacobdiaz/DeAi
 # corpus-url: https://github.com/jacobdiaz/DeAi/blob/a7bdc6d989bd7ab044a1bf3a8a2348524760dcc0/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

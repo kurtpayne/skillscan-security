@@ -7,7 +7,7 @@ metadata: {"clawdbot":{"emoji":"🍽️","requires":{"env":["RESY_API_KEY","RESY
 # corpus-source: github-scrape-r3
 # corpus-repo: chandeepsingh/resy-openclaw-skill
 # corpus-url: https://github.com/chandeepsingh/resy-openclaw-skill/blob/830b1db969895142460a7f6b1f56fe87893ffbab/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

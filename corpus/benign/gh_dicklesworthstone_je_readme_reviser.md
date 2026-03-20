@@ -11,7 +11,7 @@ x_jfp_generated: true
 # corpus-source: github-scrape-r3
 # corpus-repo: Dicklesworthstone/jeffreysprompts.com
 # corpus-url: https://github.com/Dicklesworthstone/jeffreysprompts.com/blob/8fd8bebb4e74934ba86dc593b6845167102fd30d/readme-reviser-SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 # The README Reviser

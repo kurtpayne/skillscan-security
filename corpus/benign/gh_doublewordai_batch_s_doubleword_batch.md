@@ -5,7 +5,7 @@ description: Submit and manage batch inference jobs via the Doubleword Batch API
 # corpus-source: github-scrape-r3
 # corpus-repo: doublewordai/batch-skill
 # corpus-url: https://github.com/doublewordai/batch-skill/blob/a6835cf7fe99e8b23717d18f72efd8d6c7cc45fe/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

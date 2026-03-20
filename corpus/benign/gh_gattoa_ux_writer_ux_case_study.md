@@ -5,7 +5,7 @@ description: Transforms raw UX project notes into structured case study narrativ
 # corpus-source: github-scrape-r3
 # corpus-repo: gattoa/ux-writer
 # corpus-url: https://github.com/gattoa/ux-writer/blob/5acc3823042f4f32f24acea107d1c4251acfbd40/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

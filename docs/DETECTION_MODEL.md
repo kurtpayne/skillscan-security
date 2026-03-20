@@ -146,7 +146,7 @@ The model outputs a binary label (`SAFE` / `INJECTION`) and a confidence score. 
 | `malicious/` | 23 | Mixed — real-world samples |
 | `graph_injection/` | 12 | Graph/cross-skill injection |
 
-**Latest eval results:** Macro F1 = 0.7544 (injection F1 = 0.667, benign F1 = 0.842). Gate lowered to 0.77 on 2026-03-20 after 9 consecutive runs plateaued at 0.73–0.78 (root cause: eval/train sets share the same hand-crafted sources; OOD generalisation limited until arXiv 2602.06547 Tier 3 data lands). Adapter push pending next fine-tune run. See `corpus/EVAL_RESULTS.md` for full history.
+**Latest eval results:** Macro F1 = 0.7544 (injection F1 = 0.667, benign F1 = 0.842). Gate lowered to 0.77 on 2026-03-20 after 9 consecutive runs plateaued at 0.73–0.78 (root cause: eval/train sets share the same hand-crafted sources; the model is not seeing enough out-of-distribution injection patterns). Improvement path: hand-craft more diverse injection examples across underrepresented archetypes (Agent Hijacker P1/P4, graph injection, temporal payloads), or generate ground-truth labels from `skillscan-trace` behavioral sandbox execution. Gate will be raised to 0.85 once injection F1 exceeds 0.80. Adapter push pending next fine-tune run. See `corpus/EVAL_RESULTS.md` for full history.
 
 **Known limitation:** The base model's published accuracy (95.25%) is measured on a 20k general prompt-injection held-out set, not on SKILL.md-format files. The SkillScan fine-tune is specifically optimized for the skill file format and covers archetypes (Agent Hijacker, graph injection) not present in the base model's training data.
 

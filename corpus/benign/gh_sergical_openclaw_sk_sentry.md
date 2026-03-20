@@ -5,7 +5,7 @@ description: Set up Sentry observability for OpenClaw (install plugin, configure
 # corpus-source: github-scrape-r3
 # corpus-repo: sergical/openclaw-skill-sentry
 # corpus-url: https://github.com/sergical/openclaw-skill-sentry/blob/c6fb08fa3fd298c1c065f9962d767324718e7494/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

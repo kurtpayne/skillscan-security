@@ -3,7 +3,7 @@
 # corpus-source: github-scrape-r3
 # corpus-repo: bcharleson/openclaw-macmini-setup-guide
 # corpus-url: https://github.com/bcharleson/openclaw-macmini-setup-guide/blob/ea7bff28034ca50d63513ec922fc3fa1a4d95b46/claude-skill.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # OpenClaw Mac Mini Setup - Claude Skill

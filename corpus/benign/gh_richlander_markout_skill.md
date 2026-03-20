@@ -2,8 +2,8 @@
 # corpus-label: benign
 # corpus-source: github-scrape-r3
 # corpus-repo: richlander/markout
-# corpus-url: https://github.com/richlander/markout/blob/d717f08107a02aa2747756562ae8ee6aec7cf63b/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-url: https://github.com/richlander/markout/blob/8009e0e5f17c8793af6d173a1d0d85bce61f2a3e/SKILL.md
+# corpus-round: 2026-03-20
 # corpus-format: plain_instructions
 ---
 # Markout — Coding Agent Integration Guide

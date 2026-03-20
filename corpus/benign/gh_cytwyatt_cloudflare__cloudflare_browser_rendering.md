@@ -14,7 +14,7 @@ metadata:
 # corpus-source: github-scrape-r3
 # corpus-repo: cytwyatt/cloudflare-browser-rendering-skill
 # corpus-url: https://github.com/cytwyatt/cloudflare-browser-rendering-skill/blob/22b59032645ac614603c733bd65bb9e5ce4a7ce2/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

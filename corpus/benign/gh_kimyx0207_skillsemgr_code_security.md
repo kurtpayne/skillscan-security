@@ -7,7 +7,7 @@ context: fork
 # corpus-source: github-scrape-r3
 # corpus-repo: KimYx0207/SkillSemgrep
 # corpus-url: https://github.com/KimYx0207/SkillSemgrep/blob/eb6dd5127f5dedc325b9364edf71a2034e5e35b1/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

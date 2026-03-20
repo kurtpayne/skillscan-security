@@ -5,7 +5,7 @@ description: Set up, diagnose, flash, and support development for M5Stack boards
 # corpus-source: github-scrape-r3
 # corpus-repo: Sunwood-ai-labs/m5stack-arduino-cli-skill
 # corpus-url: https://github.com/Sunwood-ai-labs/m5stack-arduino-cli-skill/blob/53a6fb1326de2ce92b6b605df85c830393f6df8e/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

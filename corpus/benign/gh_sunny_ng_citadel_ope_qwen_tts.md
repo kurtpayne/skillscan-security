@@ -5,7 +5,7 @@ description: Generate speech locally on Apple Silicon using Qwen3-TTS via MLX. S
 # corpus-source: github-scrape-r3
 # corpus-repo: sunny-ng-citadel/openclaw-mlx-qwen-tts-skill
 # corpus-url: https://github.com/sunny-ng-citadel/openclaw-mlx-qwen-tts-skill/blob/30f6a0154ee7af0f9a069d82aa6eea59b6771c49/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

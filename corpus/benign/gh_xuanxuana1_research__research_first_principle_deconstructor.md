@@ -5,7 +5,7 @@ description: Rigorous Socratic interrogator and research architect that helps re
 # corpus-source: github-scrape-r3
 # corpus-repo: Xuanxuana1/research-first-principle-deconstructor
 # corpus-url: https://github.com/Xuanxuana1/research-first-principle-deconstructor/blob/fa7b938e755de8feb2a23e0da6c1316fdb3fa732/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 

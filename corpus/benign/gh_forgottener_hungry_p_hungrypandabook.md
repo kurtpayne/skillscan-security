@@ -8,7 +8,7 @@ metadata: {"hungrypanda":{"emoji":"🐼","category":"food-delivery","api_base":"
 # corpus-source: github-scrape-r3
 # corpus-repo: forgottener/hungry-panda-book
 # corpus-url: https://github.com/forgottener/hungry-panda-book/blob/4d42040e1c85bfb2269e27a2d197dde57a92707d/SKILL.md
-# corpus-round: 2026-03-19
+# corpus-round: 2026-03-20
 # corpus-format: markdown_fm
 ---
 
