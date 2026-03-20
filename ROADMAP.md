@@ -789,6 +789,18 @@ Schedule the corpus researcher agent to run weekly (Sundays). PRs should be auto
 
 ---
 
+### Issue CR4 — Back-translation augmentation
+
+For each of the weakest injection examples in the training set (those misclassified in the most recent eval run), generate paraphrase variants via round-trip translation: source English → 3–4 target languages (French, Spanish, Chinese, German) → back to English using a high-quality translation model (DeepL or GPT-4o). Each source example produces 4–5 natural English variants with different surface phrasing but the same semantic attack vector.
+
+**Rationale:** `deberta-v3-base` is an English-only model. Raw multilingual examples produce noisy signal due to subword fragmentation of non-English tokens. Back-translation preserves the attack semantics while expanding the decision boundary in the English embedding space — strictly better than multilingual examples for this classifier. This is distinct from multilingual classifier support (a future milestone requiring `deberta-v3-large-multilingual`).
+
+**Implementation:** Script in `scripts/backtranslate_augment.py`. Targets the 20–30 injection examples with the lowest model confidence in the most recent eval run. Output goes to `corpus/backtranslated/` (private corpus split — not committed to the public repo).
+
+**Acceptance criteria:** At least 80 back-translated injection examples added. Injection recall on the held-out eval set improves by ≥ 0.05 in the subsequent fine-tune run.
+
+---
+
 ## Deprioritized / Deferred
 The following items from earlier roadmap drafts are explicitly deprioritized until the above milestones are complete.
 
