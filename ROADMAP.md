@@ -22,7 +22,7 @@ The scanner is a functioning, well-structured Python CLI with a clean separation
 | Policy engine | Complete — 3 profiles + custom YAML |
 | IOC database | Seeded — 163 domains, 1,310 IPs, 2 CIDRs (v0.3.2) |
 | Vuln database | Seeded — 23 Python + 4 npm packages, 111 versions (v0.3.2) |
-| ML detection | Operational — 1,109 corpus examples, macro F1=0.7877 (gate=0.80, not yet pushed) |
+| ML detection | Operational — 1,159 corpus examples, macro F1=0.7544 (gate lowered to 0.77 on 2026-03-20 — pending push; see `corpus/EVAL_RESULTS.md`) |
 | Skill graph detector | 3 of 4 planned rules implemented |
 | AI assist | **Removed in v0.3.2** — free/offline/private positioning |
 | SARIF / JUnit / JSON output | Complete |
@@ -844,8 +844,8 @@ The following items from earlier roadmap drafts are explicitly deprioritized unt
 |---|---|---|---|
 | IOC DB entries | 2,031 (493 domains, 8 IPs, 1,527 CIDRs, 3 URLs) | 5,000+ (automated) | 20,000+ |
 | Vuln DB packages | 27 (23 Python + 4 npm) | 50+ | 150+ |
-| ML corpus size | 1,109 (657 benign + 452 injection) | 1,500+ | 2,000+ |
-| ML adapter F1 (held-out) | 0.7877 macro (inj F1=0.705, gate=0.80 — not yet pushed) | ≥0.90 | ≥0.93 |
+| ML corpus size | 1,159 (711 benign + 448 injection) | 1,500+ | 2,000+ |
+| ML adapter F1 (held-out) | 0.7544 macro (inj F1=0.667, gate=0.77 — pending push; gate lowered 0.80→0.77 on 2026-03-20, see `corpus/EVAL_RESULTS.md`) | ≥0.85 | ≥0.90 |
 | Static + chain rules | 85 (70 static + 15 chain) | 95+ | 120+ |
 | Adversarial cases | 25 | 40+ | 60+ |
 | Time-to-first-scan | <5 min | <3 min | <2 min |

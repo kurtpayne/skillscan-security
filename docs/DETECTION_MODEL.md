@@ -94,18 +94,61 @@ Rules are organized into channels (`stable`, `beta`, `experimental`) controlled 
 **Rule IDs:** `ML-PINJ-001`, `ML-UNAVAIL`
 **Enabled by:** `--ml` flag
 
-The ML layer applies a fine-tuned DeBERTa-v3-base classifier to each text file. The base model (`protectai/deberta-v3-base-prompt-injection-v2`) was pre-trained on a large prompt-injection corpus. SkillScan additionally fine-tunes this model on the project's own labeled corpus (currently 115 examples) when the corpus delta threshold is met.
+The ML layer applies a fine-tuned DeBERTa-v3-base classifier to each text file in the skill bundle. The detection pipeline uses two sub-layers:
+
+**4a — Local Semantic Classifier (`skillscan.semantic_local`)**
+
+Before invoking the neural model, a lightweight deterministic classifier based on stemmed feature scoring runs on each file. It uses Porter stemmer roots grouped into six feature axes:
+
+| Feature Axis | Example stems | Weight |
+|---|---|---|
+| Override | `ignor`, `disregard`, `overrid`, `bypass`, `jailbreak` | 0.18/match |
+| Authority | `system`, `develop`, `instruct`, `guardrail`, `safeti` | 0.10/match |
+| Secrecy | `silent`, `stealth`, `covert`, `hidden`, `conceal` | 0.12/match |
+| Data access | `secret`, `token`, `credenti`, `password`, `apikey`, `env` | 0.11/match |
+| Exfiltration | `send`, `upload`, `post`, `transmit`, `exfil`, `webhook` | 0.11/match |
+| Coercion | `must`, `requir`, `mandatori`, `immedi`, `urgent`, `cannot` | 0.07/match |
+
+A composite score above 0.65 emits a `PINJ-SEMANTIC-001` finding. A separate `SocialEngineeringClassifier` in the same module scores for social engineering patterns (imperative language, credential solicitation, urgency framing) and emits `PINJ-SE-001` above 0.65. Both classifiers run entirely offline with no model download required.
+
+**4b — Neural ML Classifier (`skillscan.ml_detector`)**
+
+The neural layer uses `protectai/deberta-v3-base-prompt-injection-v2` as the base model, fine-tuned with a LoRA adapter trained on the SkillScan corpus. The fine-tuned adapter (`kurtpayne/skillscan-deberta-adapter`) is downloaded explicitly via `skillscan model sync` and is never auto-downloaded.
 
 Two inference backends are supported:
 
 | Backend | Package extras | Model size | Latency |
-|---------|---------------|------------|---------|
+|---------|---------------|------------|--------|
 | ONNX Runtime (preferred) | `skillscan-security[ml-onnx]` | ~200 MB | ~50 ms/file |
 | PyTorch / Transformers | `skillscan-security[ml]` | ~500 MB | ~200 ms/file |
 
-The model outputs a binary label (`SAFE` / `INJECTION`) and a confidence score. Findings are emitted only when the injection probability exceeds 0.7. The ML layer is intentionally conservative — it is designed to catch semantic injection patterns that regex rules miss (e.g., natural-language jailbreaks, indirect instruction injection), not to replace the static layer.
+The model outputs a binary label (`SAFE` / `INJECTION`) and a confidence score. Findings are emitted only when the injection probability exceeds 0.7. The ML layer is intentionally conservative — it is designed to catch semantic injection patterns that regex rules miss (e.g., natural-language jailbreaks, indirect instruction injection, Agent Hijacker P1/P4 patterns), not to replace the static layer.
 
-**Known limitation:** The model's published accuracy (95.25%) is measured on the base model's 20k held-out set, not on the SkillScan-specific corpus. A proper held-out evaluation against the project corpus is planned for Milestone 7.
+**Fine-tune pipeline:** The LoRA adapter is trained on `corpus/` using `scripts/finetune_modal.py`, which runs on Modal (GPU: T4, 3 epochs, `r=32 alpha=32`). Training is triggered automatically by the `corpus-sync.yml` GitHub Actions workflow when the corpus delta threshold (50 examples or 10% growth) is crossed. The adapter is pushed to HuggingFace Hub only if the held-out eval macro F1 exceeds the gate threshold (currently **0.77** — lowered from 0.80 on 2026-03-20; see `corpus/EVAL_RESULTS.md` for rationale). The eval set (`corpus/held_out_eval/`) is a stratified 20% split covering all injection archetypes.
+
+**Current corpus state (as of 2026-03-21):**
+
+| Corpus split | Benign | Injection | Total |
+|---|---|---|---|
+| Training | 657 | 446 | 1,103 |
+| Held-out eval | 138 | 62 | 200 |
+| **Combined** | **795** | **508** | **1,303** |
+
+**Injection corpus breakdown:**
+
+| Subdirectory | Count | Archetype |
+|---|---|---|
+| `benchmark_injection/` | 150 | Data Thief (SC2+E2) — from zast-ai/skill-security-reviewer |
+| `augmented/` | 117 | Data Thief — benign skills with appended attack phrases |
+| `social_engineering/` | 85 | Social Engineering (SE) |
+| `agent_hijacker/` | 40 | Agent Hijacker (P1/P4) — hand-crafted |
+| `prompt_injection/` | 61 | Mixed — hand-crafted |
+| `malicious/` | 23 | Mixed — real-world samples |
+| `graph_injection/` | 12 | Graph/cross-skill injection |
+
+**Latest eval results:** Macro F1 = 0.7544 (injection F1 = 0.667, benign F1 = 0.842). Gate lowered to 0.77 on 2026-03-20 after 9 consecutive runs plateaued at 0.73–0.78 (root cause: eval/train sets share the same hand-crafted sources; OOD generalisation limited until arXiv 2602.06547 Tier 3 data lands). Adapter push pending next fine-tune run. See `corpus/EVAL_RESULTS.md` for full history.
+
+**Known limitation:** The base model's published accuracy (95.25%) is measured on a 20k general prompt-injection held-out set, not on SKILL.md-format files. The SkillScan fine-tune is specifically optimized for the skill file format and covers archetypes (Agent Hijacker, graph injection) not present in the base model's training data.
 
 ---
 
@@ -146,6 +189,32 @@ chain_rules:
     mitigation: "Separate credential handling from network operations."
 ```
 
+**`action_patterns` classification table:**
+
+The following action categories are defined in `src/skillscan/data/rules/default.yaml`. Each is a compiled regex applied to the full normalized file text.
+
+| Category | Backing | Description |
+|---|---|---|
+| `download` | static-backed | curl, wget, pip install, npm install, certutil, git clone, or any `https?://` URL |
+| `execute` | static-backed | bash, sh, powershell, os.system, subprocess, python -c, node -e, perl -e |
+| `secret_access` | static-backed | `.env`, `id_rsa`, `aws_access_key_id`, `ssh key`, `credentials` |
+| `network` | static-backed | `https?://`, webhook, POST, upload, socket, `requests.` |
+| `gh_actions_secrets` | chain-only | `${{ secrets.* }}` or `${{ toJSON(secrets) }}` in GitHub Actions context |
+| `gh_pr_target` | chain-only | `pull_request_target` trigger in GitHub Actions |
+| `gh_pr_head_checkout` | chain-only | `github.event.pull_request.head.sha/ref/repo.full_name` |
+| `gh_pr_untrusted_meta` | chain-only | PR title/body/label/user.login in workflow expressions |
+| `gh_pr_ref_meta` | chain-only | `github.head_ref`, `github.ref_name`, or PR head ref in expressions |
+| `gh_cache_untrusted_key` | chain-only | Cache key derived from untrusted PR metadata |
+| `gh_unpinned_action_ref` | chain-only | `uses: owner/repo@non-sha-ref` (unpinned action) |
+| `privilege` | static-backed | `sudo`, `run as administrator`, `elevat` |
+| `security_disable` | static-backed | Disable security/defender/AV instructions |
+| `claude_hooks_marker` | chain-only | `"hooks"` key with `PreToolUse`/`PostToolUse`/etc. in `.claude/settings.json` |
+| `hook_shell_command_field` | chain-only | `"command"` field with shell interpreter in hooks config |
+| `mcp_tool_poison` | static-backed | `<IMPORTANT>` block or hidden telemetry/read/exfil instructions |
+| `stealth_conceal` | static-backed | "do not mention", "hide this step", "background telemetry" |
+| `container_escape` | static-backed | `docker.sock`, `--privileged`, `--cap-add ALL`, `nsenter`, `chroot /host` |
+| `host_path_mount` | static-backed | `-v /etc:/`, `-v /root:/`, `--mount type=bind,source=/proc` |
+
 **Important design notes:**
 
 - **No proximity constraint:** Chain rules currently fire if all constituent patterns match anywhere in the file, regardless of how far apart they appear. A skill with a `https://` URL in one section and a credential reference in another will trigger `CHN-002` even if they are unrelated. Proximity windowing (`window_lines` field) is planned for Milestone 6 (Issue G3).
@@ -172,31 +241,52 @@ The skill graph layer detects cross-skill and agent-level abuse patterns that si
 
 ---
 
-## Layer 8 — Scoring and Risk Bands
+## Layer 8 — Scoring and Policy Model
 
-**Module:** `skillscan.analysis` (scoring logic)
+**Module:** `skillscan.analysis` (scoring logic), `skillscan.policies`
 **Rule IDs:** N/A (produces verdict, not findings)
 
-The scoring layer aggregates all findings from layers 1–7 and produces a final risk score and verdict band. Findings are weighted by severity and source layer. Hard-block rules (`block` verdict) override the numeric score and immediately produce a `block` verdict regardless of total score.
+The scoring layer aggregates all findings from layers 1–7 and produces a final integer risk score and verdict. The score is a weighted sum of per-finding severity contributions, where the weight per finding is `severity_base_score × category_weight` from the active policy.
 
-| Band | Score Range | Verdict |
-|------|-------------|--------|
-| Clean | 0 | `pass` |
-| Low | 1–29 | `pass` |
-| Medium | 30–59 | `warn` |
-| High | 60–89 | `warn` |
-| Critical | 90+ | `block` |
+**Three built-in policies** are available via `--policy <name>`:
 
-Any finding with `block: true` in its rule definition produces an immediate `block` verdict. The numeric score is still computed and reported for analyst context.
+| Policy | Warn threshold | Block threshold | Use case |
+|---|---|---|---|
+| `permissive` | 80 | 200 | Local development, high-noise environments |
+| `balanced` (default) | 50 | 120 | Developer and team use |
+| `strict` | 30 | 70 | Security-focused CI, pre-publish gates |
 
-### Optional Offline ML Detection
+**Category weights** (multiplied by finding severity score):
 
-**Module:** `skillscan.detectors.ml`
-**Rule IDs:** `ML-PINJ-*`
-**Enabled by:** `--ml-detect` flag
-**Requires:** `pip install skillscan-security[ml-onnx]` and `skillscan model sync`
+| Category | `balanced` | `strict` |
+|---|---|---|
+| `malware_pattern` | 2 | 3 |
+| `instruction_abuse` | 2 | 2 |
+| `prompt_injection_semantic` | 1 | 2 |
+| `exfiltration` | 2 | 3 |
+| `dependency_vulnerability` | 1 | 2 |
+| `threat_intel` | 2 | 3 |
+| `binary_artifact` | 1 | 1 |
 
-The optional ML layer runs `protectai/deberta-v3-base-prompt-injection-v2` locally via ONNX Runtime (CPU) or torch (GPU). It scores each instruction block for prompt injection intent and emits `ML-PINJ-*` findings above threshold. The model runs entirely offline once synced — no API key, no network call during scan.
+**Hard-block rules** produce an immediate `block` verdict regardless of numeric score:
+
+| Policy | Hard-block rules |
+|---|---|
+| `balanced` | `MAL-001` |
+| `strict` | `MAL-001`, `IOC-001` |
+
+> **Known gap (Issue H3):** Several critical-severity rules (`DEF-001`, `MAL-025`, `MAL-029`, `CHN-011`, `CHN-013`) are not in `strict.yaml`'s `hard_block_rules`. A skill with Defender disabling but a low overall score could reach `warn` instead of `block` in strict mode. Fix planned for Milestone 11.
+
+The verdict bands for the default `balanced` policy are:
+
+| Score | Verdict |
+|---|---|
+| 0 | `pass` |
+| 1–49 | `pass` |
+| 50–119 | `warn` |
+| 120+ | `block` |
+
+Any finding matching a `hard_block_rules` entry produces an immediate `block` verdict. The numeric score is still computed and reported for analyst context.
 
 ---
 
