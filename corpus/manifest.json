@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-20T06:59:27+00:00",
-  "total_examples": 825,
+  "last_updated": "2026-03-20T14:54:45+00:00",
+  "total_examples": 828,
   "label_counts": {
     "benign": 661,
-    "injection": 164
+    "injection": 167
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -685,6 +685,9 @@
     "malicious/a31_glassworm_chrome_rat.md": "d3ced4d4b7cc514aa14f65ab6d493ac9456979a872dc3fb24ce1c1a3af8b5b08",
     "malicious/a32_electron_asar_c2.md": "7da855f108d92c3a73a97e7590f719bc9dc50ad4d9f735d868c5260a2022e0d5",
     "malicious/a32_openclaw_gatewayurl.md": "97fbb4c3feba1c77fa0eaecf16155fdf5aadfdf99c85e9c024bf6dff133e9637",
+    "malicious/a33_ai_gated_malware_llm_c2.md": "f41421d63981c23672a41c778482db6399cd93fc163bc1927a7fe4bf6c58bfa5",
+    "malicious/a34_npm_postinstall_env_exfil.md": "0dd9577c77ade26bbc4c45d46f98e4199813d428b44ec9adfe5c4c59c5f243da",
+    "malicious/a35_prompt_control_heartbeat.md": "52f7c2563928c76d8432e9e5eb57816d9f257c436d2dd5e56c3493e356c24057",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",
