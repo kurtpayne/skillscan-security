@@ -51,7 +51,8 @@
       "tar",
       "unzipper",
       "archiver",
-      "mcp-atlassian"
+      "mcp-atlassian",
+      "@aborruso/ckan-mcp-server"
     ]
   },
   "python": {
@@ -705,6 +706,13 @@
         "id": "CVE-2026-27825",
         "severity": "high",
         "fixed": "0.17.0"
+      }
+    },
+    "@aborruso/ckan-mcp-server": {
+      "0.4.84": {
+        "id": "CVE-2026-33060",
+        "severity": "medium",
+        "fixed": "0.4.85"
       }
     }
   }

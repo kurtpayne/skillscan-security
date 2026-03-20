@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "last_updated": "2026-03-20T14:54:45+00:00",
-  "total_examples": 828,
+  "last_updated": "2026-03-20T15:31:38+00:00",
+  "total_examples": 830,
   "label_counts": {
     "benign": 661,
-    "injection": 167
+    "injection": 169
   },
   "sha256_index": {
     "benign/12_benign_minimal_SKILL.md": "3c38faa854564d1037657869bb433a5a539a0c1a8adc283d5eff55a37913e2a1",
@@ -688,6 +688,8 @@
     "malicious/a33_ai_gated_malware_llm_c2.md": "f41421d63981c23672a41c778482db6399cd93fc163bc1927a7fe4bf6c58bfa5",
     "malicious/a34_npm_postinstall_env_exfil.md": "0dd9577c77ade26bbc4c45d46f98e4199813d428b44ec9adfe5c4c59c5f243da",
     "malicious/a35_prompt_control_heartbeat.md": "52f7c2563928c76d8432e9e5eb57816d9f257c436d2dd5e56c3493e356c24057",
+    "malicious/a36_ghostclaw_skillmd_malware.md": "f5daa8573828573062b6636bed29504f977769153afdb2f0afc60cccb6a84057",
+    "malicious/a37_lotai_ai_assistant_c2.md": "175047d5bec8978222a9f651712e5415b3f5f9ce60c030b6c9ec5f018ad06085",
     "prompt_injection/a23_prompt_injection.md": "0e555f4eb8fe2eebd8d80dfde00746aaca2cf29fe149e742e44f805eb31e102b",
     "prompt_injection/pi01_role_override_description.md": "d48b40de1b0e552a1763b6d31c21b6ef97237124dc9a30dcbb88f7e9aa058630",
     "prompt_injection/pi02_role_override_notes.md": "945c6386bd9cc8fb44ceec0aef2ace9f1c6d60e437c1b3e90cb388ca4fa39332",

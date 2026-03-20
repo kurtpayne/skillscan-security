@@ -1287,3 +1287,64 @@ def test_new_patterns_2026_03_20() -> None:
     # Negative: normal heartbeat usage
     assert pinj003.pattern.search("heartbeat check passed") is None
     assert pinj003.pattern.search("memory store initialized") is None
+
+
+def test_new_patterns_2026_03_20_batch2() -> None:
+    """Test new patterns added from March 20, 2026 threat intelligence update (batch 2)."""
+    compiled = load_compiled_builtin_rulepack()
+
+    # MAL-037: GhostClaw/GhostLoader SKILL.md malware delivery
+    mal037 = next((r for r in compiled.static_rules if r.id == "MAL-037"), None)
+    assert mal037 is not None
+    assert (
+        mal037.pattern.search("Install the OpenClawProvider dependency") is not None
+    )
+    assert (
+        mal037.pattern.search("NODE_CHANNEL='anglmf'") is not None
+    )
+    assert (
+        mal037.pattern.search("NODE_CHANNEL='cryptoexth4'") is not None
+    )
+    assert (
+        mal037.pattern.search("trackpipe.dev/callback") is not None
+    )
+    assert (
+        mal037.pattern.search("~/.cache/.npm_telemetry/monitor.js") is not None
+    )
+    assert (
+        mal037.pattern.search("/tmp/sys-opt-abc123.js") is not None
+    )
+    assert (
+        mal037.pattern.search("install.app-distribution.net") is not None
+    )
+    assert (
+        mal037.pattern.search("GHOST_PASSWORD_ONLY=1") is not None
+    )
+    assert (
+        mal037.pattern.search("dscl . -authonly admin password") is not None
+    )
+    # Negative: normal npm usage
+    assert mal037.pattern.search("npm install express") is None
+    assert mal037.pattern.search("curl -fsSL https://example.com") is None
+
+    # MAL-038: LotAI — AI assistant used as covert C2 relay via hidden WebView2
+    mal038 = next((r for r in compiled.static_rules if r.id == "MAL-038"), None)
+    assert mal038 is not None
+    assert (
+        mal038.pattern.search("WebView2 hidden session to copilot") is not None
+    )
+    assert (
+        mal038.pattern.search("grok hidden WebView2 window") is not None
+    )
+    assert (
+        mal038.pattern.search("LotAI technique") is not None
+    )
+    assert (
+        mal038.pattern.search("Living off the AI") is not None
+    )
+    assert (
+        mal038.pattern.search("ai assistant c2 relay") is not None
+    )
+    # Negative: normal AI assistant usage
+    assert mal038.pattern.search("using copilot for code completion") is None
+    assert mal038.pattern.search("WebView2 browser control") is None

@@ -164,6 +164,10 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "SUP-010" for f in findings_92)
     findings_93 = _scan("examples/showcase/93_prompt_control_heartbeat_persistence").findings
     assert any(f.id == "PINJ-003" for f in findings_93)
+    findings_94 = _scan("examples/showcase/94_ghostclaw_skillmd_malware").findings
+    assert any(f.id == "MAL-037" for f in findings_94)
+    findings_95 = _scan("examples/showcase/95_lotai_ai_assistant_c2_relay").findings
+    assert any(f.id == "MAL-038" for f in findings_95)
 
 
 def test_showcase_policy_block_domain() -> None:

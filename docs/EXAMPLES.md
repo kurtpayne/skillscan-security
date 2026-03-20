@@ -100,6 +100,8 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `91_ai_gated_malware_llm_c2` | AI-gated malware using OpenAI GPT-3.5-Turbo API for C2 decision-making including evasion generation and environment analysis | `MAL-036` |
 | `92_npm_postinstall_env_exfil` | Malicious npm packages exfiltrating environment variables via postinstall scripts to webhook.site and agentmail | `SUP-010` |
 | `93_prompt_control_heartbeat_persistence` | Prompt control persistence via heartbeat file and memory store manipulation for persistent AI agent C2 | `PINJ-003` |
+| `94_ghostclaw_skillmd_malware` | GhostClaw/GhostLoader campaign delivering macOS infostealers via malicious SKILL.md files targeting OpenClaw workflows | `MAL-037` |
+| `95_lotai_ai_assistant_c2_relay` | LotAI technique using hidden WebView2 sessions to route C2 through AI assistants like Copilot and Grok | `MAL-038` |
 ## Commands
 
 ```bash

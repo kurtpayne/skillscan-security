@@ -1,4 +1,43 @@
-## 2026-03-20 — AI-Gated Malware C2, npm Postinstall Env Exfil, Prompt Control Persistence, mcp-atlassian CVEs
+## 2026-03-20 (batch 2) — GhostClaw SKILL.md Malware, LotAI AI Assistant C2, CKAN MCP Server SSRF
+
+**Sources:**
+- [Jamf Threat Labs — GhostClaw/GhostLoader: Malware in GitHub Repositories Targeting AI Workflows](https://www.jamf.com/blog/ghostclaw-ghostloader-malware-github-repositories-ai-workflows/)
+- [BlackFog — LotAI: Weaponizing AI Tools for Data Exfiltration](https://www.blackfog.com/lotai-weaponizing-ai-tools-for-data-exfiltration/)
+- [dev.to/airano — Malware Found in AI Agent Skills: A Security Advisory](https://dev.to/airano/malware-found-in-ai-agent-skills-a-security-advisory-3e7k)
+- [CVE-2026-33060 — CKAN MCP Server SSRF](https://cvefeed.io/vuln/detail/CVE-2026-33060)
+
+**Event Summary:** Two new detection rules, two IOC domains, and one new CVE were added. Jamf Threat Labs published a detailed analysis of the GhostClaw/GhostLoader campaign, where malicious SKILL.md files in GitHub repositories deliver macOS infostealers via OpenClaw AI-assisted workflows. The attack uses the fake "OpenClawProvider" dependency to execute a base64-encoded curl-to-bash payload from IP 91.92.242.30, with persistence via `~/.cache/.npm_telemetry/monitor.js` and C2 communication through `trackpipe.dev`. A dev.to security advisory confirmed five malicious skills from the `openclaw/skills` repository (auto-updater, gog, excel, nano-pdf, youtube-watcher) affecting approximately 1,016 downloads. BlackFog documented the LotAI (Living off the AI) technique, where malware uses hidden WebView2 sessions to route C2 traffic through trusted AI assistant domains like Copilot and Grok, encoding reconnaissance data in URL query parameters and extracting commands from AI responses. CVE-2026-33060 was disclosed as an SSRF vulnerability in the @aborruso/ckan-mcp-server npm package (< 0.4.85) via the `base_url` parameter in `ckan_package_search` and `sparql_query` tools.
+
+**New Patterns Added:**
+
+### MAL-037: GhostClaw/GhostLoader SKILL.md malware delivery via OpenClaw workflows
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.88
+- **Pattern:** Detects `OpenClawProvider` dependency references, `GHOST_PASSWORD_ONLY` environment variable, `NODE_CHANNEL` set to `anglmf` or `cryptoexth4`, `trackpipe.dev` C2 domain, persistence paths (`~/.cache/.npm_telemetry/monitor.js`, `/tmp/sys-opt-*.js`), `install.app-distribution.net` Windows payload domain, `curl -k` to known malicious IPs, and `dscl . -authonly` credential validation.
+- **Justification:** Direct detection of the GhostClaw campaign documented by Jamf Threat Labs. The malware targets OpenClaw AI-assisted workflows by embedding malicious setup instructions in SKILL.md files.
+
+### MAL-038: LotAI — AI assistant used as covert C2 relay via hidden WebView2
+- **Category:** malware_pattern
+- **Severity:** high
+- **Confidence:** 0.83
+- **Pattern:** Detects `WebView2` combined with AI assistant references (`copilot`, `grok`, `hidden session`), `LotAI`, `Living off the AI`, and `ai assistant` combined with C2/exfiltration keywords.
+- **Justification:** Detection of the LotAI technique documented by BlackFog, where malware abuses AI assistants with URL-fetching capabilities as command-and-control relays to bypass network security controls.
+
+**IOC Updates:**
+- Added domain: `trackpipe.dev` (GhostClaw C2 callback domain)
+- Added domain: `install.app-distribution.net` (GhostClaw Windows payload distribution)
+
+**Vulnerability Updates:**
+- Added CVE-2026-33060 (medium SSRF, @aborruso/ckan-mcp-server < 0.4.85) to vuln_db.json
+
+**Corpus Updates:**
+- Added `corpus/malicious/a36_ghostclaw_skillmd_malware.md` — GhostClaw SKILL.md malware sample
+- Added `corpus/malicious/a37_lotai_ai_assistant_c2.md` — LotAI AI assistant C2 relay sample
+
+---
+
+## 2026-03-20 — AI-Gated Malware LLM C2, npm Postinstall Exfil, Prompt Control Persistence, mcp-atlassian CVEs
 
 **Sources:**
 - [Unit 42 — Analyzing the Current State of AI Use in Malware](https://unit42.paloaltonetworks.com/ai-use-in-malware/)

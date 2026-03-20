@@ -1,4 +1,4 @@
-version: "2026.03.20.1"
+version: "2026.03.20.2"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -2271,6 +2271,71 @@ static_rules:
       benchmark_set: core-static-v1
     references:
     - https://www.vectra.ai/blog/prompt-control-how-context-becomes-the-command-and-control-layer-for-ai-agents
+- id: MAL-037
+  category: malware_pattern
+  severity: high
+  confidence: 0.88
+  title: GhostClaw/GhostLoader SKILL.md malware delivery via OpenClaw workflows
+  pattern: (?i)(?:OpenClawProvider|GHOST_PASSWORD_ONLY|NODE_CHANNEL\s*=\s*["']?(?:anglmf|cryptoexth4)|trackpipe\.dev|\.cache/\.npm_telemetry/monitor\.js|/tmp/sys-opt-[^\s]*\.js|install\.app-distribution\.net|curl\s+-[a-zA-Z]*k[a-zA-Z]*.*\b(?:91\.92\.242|trackpipe)|dscl\s+\.\s+-authonly)
+  mitigation: Remove GhostClaw/GhostLoader infection markers. Do not install skills
+    that reference OpenClawProvider as a dependency or use curl with -k (insecure)
+    to fetch payloads from raw IPs. This pattern detects the GhostClaw campaign
+    documented by Jamf Threat Labs that delivers macOS infostealers via malicious
+    SKILL.md files in GitHub repositories.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-037
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-20'
+      last_modified: '2026-03-20'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://www.jamf.com/blog/ghostclaw-ghostloader-malware-github-repositories-ai-workflows/
+    - https://dev.to/airano/malware-found-in-ai-agent-skills-a-security-advisory-3e7k
+- id: MAL-038
+  category: malware_pattern
+  severity: high
+  confidence: 0.83
+  title: LotAI technique — AI assistant used as covert C2 relay via hidden WebView2
+  pattern: (?i)(?:(?:WebView2|webview2)[^\n]{0,120}(?:copilot|grok|ai\s*assistant|hidden\s*session)|(?:copilot|grok)[^\n]{0,120}(?:WebView2|webview2|hidden\s*(?:session|window))|LotAI|Living\s+off\s+the\s+AI|ai\s*assistant[^\n]{0,80}(?:c2|command.and.control|relay|exfiltrat))
+  mitigation: Do not use hidden WebView2 sessions to route traffic through AI assistants
+    as a covert C2 channel. This pattern detects the LotAI (Living off the AI)
+    technique where malware abuses Copilot, Grok, or similar AI assistants with
+    URL-fetching capabilities as command-and-control relays.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-038
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-20'
+      last_modified: '2026-03-20'
+    quality:
+      precision_estimate: 0.83
+      benchmark_set: core-static-v1
+    references:
+    - https://www.blackfog.com/lotai-weaponizing-ai-tools-for-data-exfiltration/
+    - https://www.proarch.com/blog/threats-vulnerabilities/ai-malware-c2-copilot-grok-security-risk
 
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
