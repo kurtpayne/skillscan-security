@@ -454,7 +454,7 @@ These items do not have a fixed milestone but should be addressed before a v1.0 
 
 ---
 
-## Milestone 12 — Binary Detection & Multi-Language Coverage (2 weeks)
+## Milestone 12 — Binary Detection & Multi-Language Coverage ✅ Complete
 
 ### Issue M1 — Opaque binary and unpackable archive detection
 

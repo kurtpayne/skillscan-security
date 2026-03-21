@@ -31,6 +31,7 @@ from skillscan.models import (
     ScanReport,
     Severity,
     Verdict,
+    detect_archive_format,
     is_archive,
 )
 from skillscan.remote import RemoteFetchError, fetch_remote_target, is_url_target
@@ -131,6 +132,14 @@ class ScanError(Exception):
     pass
 
 
+class ArchivePasswordError(Exception):
+    """Raised when an archive is password-protected and cannot be extracted."""
+
+
+class ArchiveFormatError(Exception):
+    """Raised when an archive format is not supported by available libraries."""
+
+
 def _safe_extract_zip(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
     total = 0
     with zipfile.ZipFile(src) as zf:
@@ -162,7 +171,113 @@ def _safe_extract_tar(src: Path, dst: Path, max_files: int, max_bytes: int) -> N
             total += member.size
             if total > max_bytes:
                 raise ScanError("Archive exceeds max bytes limit")
-        tf.extractall(dst, filter="data")
+        # filter='data' was added in Python 3.12; use manual extraction on 3.11
+        import sys
+        if sys.version_info >= (3, 12):
+            tf.extractall(dst, filter="data")
+        else:
+            for member in members:
+                tf.extract(member, dst)
+
+
+def _safe_extract_7z(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
+    try:
+        import py7zr  # optional extra
+    except ImportError as exc:
+        raise ArchiveFormatError("py7zr not installed; install skillscan[archives]") from exc
+    try:
+        with py7zr.SevenZipFile(src, mode="r") as sz:
+            entries = sz.list()
+            if len(entries) > max_files:
+                raise ScanError(f"Archive has too many files: {len(entries)}")
+            total = sum(e.uncompressed for e in entries if e.uncompressed)
+            if total > max_bytes:
+                raise ScanError("Archive exceeds max bytes limit")
+            for e in entries:
+                p = Path(e.filename)
+                if p.is_absolute() or ".." in p.parts:
+                    raise ScanError(f"Unsafe archive path: {e.filename}")
+            sz.extractall(path=dst)
+    except py7zr.exceptions.PasswordRequired as exc:
+        raise ArchivePasswordError("7z archive is password-protected") from exc
+
+
+def _safe_extract_rar(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
+    try:
+        import rarfile  # optional extra
+    except ImportError as exc:
+        raise ArchiveFormatError("rarfile not installed; install skillscan[archives]") from exc
+    try:
+        with rarfile.RarFile(src) as rf:
+            infos = rf.infolist()
+            if len(infos) > max_files:
+                raise ScanError(f"Archive has too many files: {len(infos)}")
+            total = sum(i.file_size for i in infos)
+            if total > max_bytes:
+                raise ScanError("Archive exceeds max bytes limit")
+            for info in infos:
+                p = Path(info.filename)
+                if p.is_absolute() or ".." in p.parts:
+                    raise ScanError(f"Unsafe archive path: {info.filename}")
+            rf.extractall(path=dst)
+    except rarfile.PasswordRequired as exc:
+        raise ArchivePasswordError("RAR archive is password-protected") from exc
+    except rarfile.NeedFirstVolume as exc:
+        raise ArchiveFormatError("Multi-volume RAR not supported") from exc
+
+
+def _safe_extract_xz(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
+    """Extract .xz (plain xz-compressed file, not tar.xz — that's handled by tarfile)."""
+    import lzma
+    out_name = src.stem  # strip .xz
+    out_path = dst / out_name
+    total = 0
+    with lzma.open(src, "rb") as fh:
+        while True:
+            chunk = fh.read(65536)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > max_bytes:
+                raise ScanError("Archive exceeds max bytes limit")
+            with out_path.open("ab") as out:
+                out.write(chunk)
+
+
+def _safe_extract_bz2(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
+    """Extract .bz2 (plain bzip2-compressed file, not tar.bz2 — that's handled by tarfile)."""
+    import bz2
+    out_name = src.stem
+    out_path = dst / out_name
+    total = 0
+    with bz2.open(src, "rb") as fh:
+        while True:
+            chunk = fh.read(65536)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > max_bytes:
+                raise ScanError("Archive exceeds max bytes limit")
+            with out_path.open("ab") as out:
+                out.write(chunk)
+
+
+def _safe_extract_zst(src: Path, dst: Path, max_files: int, max_bytes: int) -> None:
+    """Extract .zst (plain Zstandard-compressed file)."""
+    try:
+        import zstandard  # optional extra
+    except ImportError as exc:
+        raise ArchiveFormatError("zstandard not installed; install skillscan[archives]") from exc
+    out_name = src.stem
+    out_path = dst / out_name
+    total = 0
+    dctx = zstandard.ZstdDecompressor()
+    with src.open("rb") as ifh, out_path.open("wb") as ofh:
+        for chunk in dctx.read_to_iter(ifh, read_size=65536):
+            total += len(chunk)
+            if total > max_bytes:
+                raise ScanError("Archive exceeds max bytes limit")
+            ofh.write(chunk)
 
 
 def prepare_target(
@@ -217,16 +332,45 @@ def prepare_target(
     if target.is_file() and is_archive(target):
         tmp = tempfile.TemporaryDirectory(prefix="skillscan-")
         dst = Path(tmp.name)
-        if target.suffix.lower() == ".zip":
-            _safe_extract_zip(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
-        else:
-            _safe_extract_tar(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+        fmt = detect_archive_format(target)
+        policy_warnings: list[str] = []
+        try:
+            if fmt == "zip":
+                _safe_extract_zip(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+            elif fmt in ("gz", "bz2", "xz", "tar"):
+                # tarfile handles .tar, .tar.gz, .tar.bz2, .tar.xz transparently
+                try:
+                    _safe_extract_tar(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+                except tarfile.ReadError:
+                    # Plain compressed file (not tar) — fall through to single-file decompressors
+                    if fmt == "xz":
+                        _safe_extract_xz(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+                    elif fmt == "bz2":
+                        _safe_extract_bz2(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+                    else:
+                        raise
+            elif fmt == "7z":
+                _safe_extract_7z(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+            elif fmt == "rar":
+                _safe_extract_rar(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+            elif fmt == "zst":
+                _safe_extract_zst(target, dst, policy.limits["max_files"], policy.limits["max_bytes"])
+            else:
+                raise ArchiveFormatError(f"Unsupported archive format: {fmt}")
+        except ArchivePasswordError:
+            # Password-protected: copy as-is and emit BIN-OPAQUE-002 during scan
+            (dst / target.name).write_bytes(target.read_bytes())
+            policy_warnings.append(f"BIN-OPAQUE-002:{target.name}")
+        except ArchiveFormatError as exc:
+            # Library not available or format not supported: copy as-is and emit BIN-OPAQUE-001
+            (dst / target.name).write_bytes(target.read_bytes())
+            policy_warnings.append(f"BIN-OPAQUE-001:{target.name}:{exc}")
         return PreparedTarget(
             root=dst,
             target_type="archive",
             cleanup_dir=tmp,
             read_warnings=[],
-            policy_warnings=[],
+            policy_warnings=policy_warnings,
         )
     raise ScanError("Unsupported target type")
 
@@ -911,21 +1055,61 @@ def scan(
             )
 
         if prepared.policy_warnings:
-            findings.append(
-                Finding(
-                    id="URL-SKIP-POLICY",
-                    category="source_access",
-                    severity=Severity.LOW,
-                    confidence=1.0,
-                    title="Some linked sources were skipped by URL safety policy",
-                    evidence_path=str(target),
-                    snippet=f"skipped_links={len(prepared.policy_warnings)}",
-                    mitigation=(
-                        "Links skipped due to same-origin policy. "
-                        "Use --url-same-origin-only false to include cross-origin links when needed."
-                    ),
-                )
-            )
+            for warning in prepared.policy_warnings:
+                if warning.startswith("BIN-OPAQUE-002:"):
+                    archive_name = warning.split(":", 2)[1]
+                    findings.append(
+                        Finding(
+                            id="BIN-OPAQUE-002",
+                            category="binary_artifact",
+                            severity=Severity.MEDIUM,
+                            confidence=0.9,
+                            title="Password-protected archive — contents unverified",
+                            evidence_path=str(target),
+                            snippet=archive_name,
+                            mitigation=(
+                                "The archive is password-protected and could not be extracted for scanning. "
+                                "Manually inspect the contents before loading this skill."
+                            ),
+                        )
+                    )
+                elif warning.startswith("BIN-OPAQUE-001:"):
+                    parts = warning.split(":", 3)
+                    archive_name = parts[1] if len(parts) > 1 else str(target)
+                    reason = parts[2] if len(parts) > 2 else "unsupported format"
+                    findings.append(
+                        Finding(
+                            id="BIN-OPAQUE-001",
+                            category="binary_artifact",
+                            severity=Severity.MEDIUM,
+                            confidence=0.8,
+                            title="Archive format not extractable — contents unverified",
+                            evidence_path=str(target),
+                            snippet=f"{archive_name}: {reason}",
+                            mitigation=(
+                                "Install skillscan[archives] for expanded archive support, or manually inspect "
+                                "the archive contents before loading this skill."
+                            ),
+                        )
+                    )
+                else:
+                    # URL skip policy warning (legacy path)
+                    findings.append(
+                        Finding(
+                            id="URL-SKIP-POLICY",
+                            category="source_access",
+                            severity=Severity.LOW,
+                            confidence=1.0,
+                            title="Some linked sources were skipped by URL safety policy",
+                            evidence_path=str(target),
+                            snippet=f"skipped_links={len(prepared.policy_warnings)}",
+                            mitigation=(
+                                "Links skipped due to same-origin policy. "
+                                "Use --url-same-origin-only false to include cross-origin links when needed."
+                            ),
+                        )
+                    )
+                    break  # one finding per batch of URL warnings
 
         if graph_scan:
             from skillscan.detectors.skill_graph import skill_graph_findings
