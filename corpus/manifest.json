@@ -1162,7 +1162,7 @@
     "social_engineering/se_ssh_key_audit.md",
     "social_engineering/se_urgency_session_expiry.md"
   ],
-  "last_finetune": "2026-03-20T23:28:17.608113+00:00",
-  "last_finetune_corpus_size": 1284,
+  "last_finetune": "2026-03-21T03:49:24.549392+00:00",
+  "last_finetune_corpus_size": 1287,
   "adapter_repo": "kurtpayne/skillscan-deberta-adapter"
 }
