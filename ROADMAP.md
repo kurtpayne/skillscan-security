@@ -806,7 +806,7 @@ The following items from earlier roadmap drafts are explicitly deprioritized unt
 
 **VS Code Marketplace publish.** The publisher registration process at marketplace.visualstudio.com requires a Microsoft account with working captcha/account recovery, which has been broken for an extended period with no resolution from Microsoft. The extension code is maintained in `editors/vscode/` and can be installed locally. Revisit if Microsoft fixes the registration flow. Zed and JetBrains are the active targets instead.
 
-**SaaS control plane / multi-tenant API.** Out of scope per PRD. Revisit post-v1.0 if adoption warrants it.
+**SaaS control plane / multi-tenant API.** Direction confirmed 2026-03-20: token-gated hosted scanning with permanent report URLs is the target monetization model for the skillscan family. The hosted service runs both `skillscan` (static) and `skillscan-trace` (behavioral) on SkillScan infrastructure and returns a unified report at a permanent URL on the skillscan domain. Token packs, no expiry. See `skillscan-trace/ROADMAP.md` Phase 3 for the full design. Prerequisite: skillscan-trace v1.0 complete, false positive rate below 2% on benign skills.
 
 **Automatic code remediation.** Out of scope per PRD. The scanner's job is to surface findings, not rewrite code.
 
@@ -861,6 +861,7 @@ The following items from earlier roadmap drafts are explicitly deprioritized unt
 | Permission scope validation | not implemented | PSV-001/002/003 rules live (Milestone 16) |
 | Instruction-level diff | report JSON only | skill file diff with rule-flagged changes (Milestone 16) |
 | Similarity hashing / typosquatting | not implemented | TYP-001 rule live (Milestone 17) |
-| skillscan-trace | not started | Docker image published, Ollama support (Milestone 18) |
+| skillscan-trace | spec complete, repo bootstrapped ([kurtpayne/skillscan-trace](https://github.com/kurtpayne/skillscan-trace)) | Docker image published, Ollama default, corpus feedback loop active (Milestone 18) |
+| Scanner as a Service | direction confirmed, not started | token-gated hosted scanning, permanent report URLs, GitHub Action (post-v1.0) |
 | Public skill feed | placeholder page | daily cron, 50+ skills scanned (Milestone 14) |
 | Languages covered | Python/bash/GH Actions | + JS/TS/Ruby/Go/Rust (Milestone 10) |
