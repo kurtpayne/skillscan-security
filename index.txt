@@ -1523,7 +1523,6 @@ src/skillscan/data/policies/strict.yaml
 src/skillscan/data/rules/__init__.py
 src/skillscan/data/rules/ast_flows.yaml
 src/skillscan/data/rules/default.yaml
-src/skillscan/data/rules/exfil_channels.yaml
 src/skillscan/data/rules/multilang.yaml
 src/skillscan/detectors/__init__.py
 src/skillscan/detectors/ast_flows.py
