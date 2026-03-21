@@ -2113,7 +2113,7 @@ static_rules:
     references:
     - https://www.proarch.com/blog/threats-vulnerabilities/openclaw-rce-vulnerability-cve-2026-25253
     - https://nvd.nist.gov/vuln/detail/CVE-2026-25253
-- id: MAL-035
+- id: MAL-041
   category: malware_pattern
   severity: high
   confidence: 0.86
@@ -2548,6 +2548,7 @@ action_patterns:
   stealth_conceal: (?i)(?:do not (?:mention|tell|reveal|show)|hide (?:this|these|the above) (?:step|action)|(?:this is|these are) background (?:telemetry|operation))
   container_escape: (?i)(?:docker\.sock|--privileged|--cap-add[=\s]+(?:ALL|SYS_ADMIN)|nsenter\s+|chroot\s+/host)
   host_path_mount: (?i)(?:-v\s+/(?:etc|root|home|var/run|proc|sys)[:/]|--mount[^\n]{0,100}(?:type=bind|source=/(?:etc|root|home|proc|sys)))
+  exfil_channel: '\b(nslookup|dig|host|smtp|sendmail|ftp|sftp|scp|rsync|aws\s+s3\s+cp|az\s+storage\s+blob\s+upload|gsutil\s+cp|curl\s+-F|nc\s|ncat\s|netcat\s)\b|dns://|ftp://|sftp://|smtp://'
 chain_rules:
 - id: CHN-001
   category: malware_pattern
@@ -2699,6 +2700,16 @@ chain_rules:
   snippet: container escape mechanism + credential/secret access markers detected
   mitigation: Do not combine privileged container access with credential harvesting. This enables host credential theft
     via container breakout.
+- id: CHN-003
+  category: exfiltration
+  severity: critical
+  confidence: 0.9
+  title: Potential secret exfiltration via alternate channel
+  all_of:
+  - secret_access
+  - exfil_channel
+  snippet: secret access + exfiltration channel actions detected
+  mitigation: Remove secret transfer to DNS/mail/cloud/file-transfer channels.
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
   network_access: \b(requests\.|fetch\(|axios|http[s]?://|socket)\b

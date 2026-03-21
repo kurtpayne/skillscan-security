@@ -1188,16 +1188,16 @@ def test_new_patterns_2026_03_19() -> None:
     # Negative: normal gateway URL reference
     assert mal035_gw.pattern.search("the gateway is running on port 8080") is None
 
-    # MAL-035: Trojanized Electron app.asar C2 payload injection
-    mal035_asar = next((r for r in mal035_list if r.pattern.search("app.asar exec")), None)
-    assert mal035_asar is not None
+    # MAL-041: Trojanized Electron app.asar C2 payload injection (renumbered from duplicate MAL-035)
+    mal041 = next((r for r in compiled.static_rules if r.id == "MAL-041"), None)
+    assert mal041 is not None
     assert (
-        mal035_asar.pattern.search(
+        mal041.pattern.search(
             "require('asar'); exec('payload')"
         )
         is not None
     )
-    assert mal035_asar.pattern.search("npm install electron") is None
+    assert mal041.pattern.search("npm install electron") is None
 
 
 def test_new_patterns_2026_03_20() -> None:

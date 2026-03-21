@@ -90,24 +90,29 @@ class CompiledRulePack:
 
 
 def _merge_rulepacks(rulepacks: list[RulePack]) -> RulePack:
-    static_rules: list[StaticRule] = []
-    chain_rules: list[ChainRule] = []
+    # Use dicts keyed by rule ID so later packs (user-synced) override earlier ones
+    # (bundled). This prevents duplicates when the user rules dir contains the same
+    # rule IDs as the bundled pack after a `skillscan rules sync` run.
+    static_by_id: dict[str, StaticRule] = {}
+    chain_by_id: dict[str, ChainRule] = {}
     action_patterns: dict[str, str] = {}
     capability_patterns: dict[str, str] = {}
     versions: list[str] = []
 
     for rp in rulepacks:
         versions.append(rp.version)
-        static_rules.extend(rp.static_rules)
-        chain_rules.extend(rp.chain_rules)
+        for rule in rp.static_rules:
+            static_by_id[rule.id] = rule  # last writer wins
+        for rule in rp.chain_rules:
+            chain_by_id[rule.id] = rule  # last writer wins
         action_patterns.update(rp.action_patterns)
         capability_patterns.update(rp.capability_patterns)
 
     return RulePack(
         version="+".join(versions),
-        static_rules=static_rules,
+        static_rules=list(static_by_id.values()),
         action_patterns=action_patterns,
-        chain_rules=chain_rules,
+        chain_rules=list(chain_by_id.values()),
         capability_patterns=capability_patterns,
     )
 

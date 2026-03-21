@@ -92,3 +92,17 @@ The following rules apply to all automated pattern-update runs (see `.github/wor
 - Keep updates small — prefer one coherent pattern set per PR.
 - Include source links in PR description and changelog entries.
 - Prefer no-change exits over speculative or low-confidence rules.
+
+---
+
+## One-time external account setup
+
+These steps are completed. Documented here for reference if credentials need to be rotated.
+
+**Publish targets:** PyPI package `skillscan-security` · Docker image `kurtpayne/skillscan-security`
+
+**Docker Hub:** Repository `kurtpayne/skillscan-security` (public) exists under account `kurtpayne`. Access token with read/write scope is stored as `DOCKERHUB_TOKEN` in GitHub repo secrets alongside `DOCKERHUB_USERNAME=kurtpayne`.
+
+**PyPI Trusted Publishing:** Configured for `kurtpayne/skillscan-security`, workflow `.github/workflows/release-pypi.yml`, environment `pypi`. No API token required — OIDC-based trusted publishing is active.
+
+**Rollback procedure:** Publish a new patch version that reverts bad behaviour. For Docker consumers, pin to the prior known-good tag. For pip consumers, pin `skillscan-security==<prior-version>`.
