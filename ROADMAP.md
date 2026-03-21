@@ -801,6 +801,80 @@ For each of the weakest injection examples in the training set (those misclassif
 
 ---
 
+## Milestone 21 — Skill Fuzzer (2 weeks)
+
+*Added 2026-03-21.*
+
+A standalone LLM-powered utility that generates adversarial SKILL.md variants from seed inputs. The fuzzer is the controlled-input complement to the public scan feed (Milestone 14): instead of scanning skills found in the wild, we generate skills designed to probe the scanner's detection boundaries. The output is a set of mutated skill files with unified diffs against the original, suitable for both manual review and automated regression testing.
+
+The fuzzer serves three purposes: (1) discovering evasion gaps in static rules by mutating known-malicious samples until they no longer trigger, (2) testing false-positive resilience by injecting attack-adjacent patterns into benign samples, and (3) expanding the ML corpus with high-quality synthetic examples that are verified against the scanner before inclusion.
+
+### Architecture
+
+The fuzzer is a Python CLI (`tools/skill-fuzzer/`) in the `skillscan-security` repo. It can also be installed standalone via `pip install skillscan-fuzzer` (or as an extra: `pip install skillscan-security[fuzzer]`). It uses the OpenAI-compatible API (any provider: OpenAI, Anthropic via proxy, local Ollama) to drive mutations.
+
+Core loop:
+1. Load a seed SKILL.md (from corpus, showcase, or user-supplied path)
+2. Select a mutation strategy (evasion, injection, benign-drift, obfuscation)
+3. Send the seed + strategy prompt to the LLM, requesting a mutated variant
+4. Write the variant to the output directory with a unified diff against the original
+5. Optionally run `skillscan scan` on the variant and record whether the expected rule fired or was evaded
+6. Repeat for N variants per seed
+
+Output structure:
+```
+output/
+  seed_name/
+    variant_001.md
+    variant_001.diff
+    variant_001.scan.json   # optional: scan result
+    variant_002.md
+    variant_002.diff
+    ...
+  summary.json              # evasion rate, detection rate, new findings
+```
+
+### Mutation Strategies
+
+| Strategy | Direction | Goal |
+|---|---|---|
+| **evasion** | malicious → still-malicious-but-different | Test whether obfuscated/rephrased attacks still trigger rules |
+| **injection** | benign → subtly-malicious | Test whether the scanner catches injected attack patterns in otherwise clean skills |
+| **benign-drift** | benign → still-benign-but-suspicious | Test false-positive resilience on skills that use security-adjacent vocabulary |
+| **obfuscation** | malicious → obfuscated | Test instruction hardening (Unicode homoglyphs, zero-width chars, base64, steganographic whitespace) |
+
+Each strategy has a corresponding system prompt template in `tools/skill-fuzzer/prompts/`. The LLM is instructed to produce a complete SKILL.md file, not a patch, so the diff is computed locally.
+
+### Issue FZ1 — Core fuzzer CLI and mutation loop
+
+Build the CLI harness: seed loading, LLM API integration (OpenAI-compatible client), diff generation, output directory management. Support `--strategy`, `--variants-per-seed`, `--model`, `--seed-dir`, and `--output-dir` flags.
+
+**Acceptance criteria:** CLI generates N variants per seed for each strategy. Diffs are valid unified diffs. Output directory structure matches the spec above. Works with `gpt-4.1-mini` and a local Ollama endpoint.
+
+### Issue FZ2 — Strategy prompt templates
+
+Write and tune the system prompt templates for each mutation strategy. The evasion prompt should instruct the LLM to preserve the malicious intent while changing surface patterns (variable names, string encoding, instruction phrasing). The injection prompt should instruct the LLM to add a single subtle attack vector to an otherwise legitimate skill. The benign-drift prompt should add security-adjacent but non-malicious patterns.
+
+**Acceptance criteria:** Each strategy template produces variants that a human reviewer agrees match the intended direction. At least 10 variants per strategy are manually reviewed for quality. Templates are versioned in `tools/skill-fuzzer/prompts/`.
+
+### Issue FZ3 — Scan integration and coverage reporting
+
+Add `--scan` flag that runs `skillscan scan` on each generated variant and records the result. Produce a `summary.json` with: total variants generated, evasion rate (malicious variants that were not detected), false-positive rate (benign variants that were flagged), and per-rule detection counts.
+
+This is the primary feedback loop: if the evasion rate for a rule exceeds a threshold (e.g., 20%), the rule needs hardening. If the false-positive rate for a strategy exceeds a threshold (e.g., 10%), the strategy prompt needs tuning.
+
+**Acceptance criteria:** `--scan` flag works end-to-end. `summary.json` is accurate. Evasion rate and false-positive rate are computed correctly. Output integrates with the corpus pipeline (variants that evade detection can be added to the adversarial corpus after review).
+
+### Issue FZ4 — Corpus feedback loop
+
+Add `--corpus-export` flag that copies scanner-verified variants into the appropriate corpus directory (`corpus/malicious/`, `corpus/prompt_injection/`, `corpus/benign/hard_negatives/`) with proper YAML frontmatter and `SOURCES.md` attribution. Only variants that pass quality checks (correct scan result, valid SKILL.md structure, non-trivial diff) are exported.
+
+This closes the loop between fuzzing and ML training: the fuzzer generates adversarial examples, the scanner validates them, and the verified examples feed back into the training corpus.
+
+**Acceptance criteria:** Exported variants have correct frontmatter and attribution. Only verified variants are exported. The corpus manifest is updated. Integration with the Milestone 19 fine-tune trigger is documented.
+
+---
+
 ## Deprioritized / Deferred
 The following items from earlier roadmap drafts are explicitly deprioritized until the above milestones are complete.
 
