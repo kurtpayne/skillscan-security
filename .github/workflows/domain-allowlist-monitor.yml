@@ -1,0 +1,99 @@
+name: Domain Allowlist Monitor
+
+on:
+  schedule:
+    # Run weekly on Monday at 09:00 UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+    inputs:
+      force_review:
+        description: "Force a review notice even if no changes detected"
+        type: boolean
+        default: false
+
+jobs:
+  check-domains:
+    name: Check upstream domain sources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests pyyaml
+
+      - name: Restore domain state cache
+        uses: actions/cache@v4
+        with:
+          path: trace/domains/.domain_state.json
+          key: domain-state-${{ runner.os }}
+          restore-keys: domain-state-
+
+      - name: Check upstream sources
+        id: check
+        run: |
+          cd trace/domains
+          python3 update_domains.py --ci 2>&1 | tee /tmp/check_output.txt
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Save updated state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: trace/domains/.domain_state.json
+          key: domain-state-${{ runner.os }}
+
+      - name: Open review issue if changes detected
+        if: steps.check.outputs.exit_code == '1' || inputs.force_review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const noticePath = 'trace/domains/REVIEW_NOTICE.md';
+            let body = fs.existsSync(noticePath)
+              ? fs.readFileSync(noticePath, 'utf8')
+              : 'Upstream domain source changes detected. See workflow logs for details.';
+
+            // Check for existing open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'domain-allowlist',
+              state: 'open',
+            });
+
+            if (issues.data.length > 0) {
+              // Add a comment to the existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: `## New upstream changes detected (${new Date().toISOString().split('T')[0]})\n\n${body}`,
+              });
+              console.log(`Updated existing issue #${issues.data[0].number}`);
+            } else {
+              // Open a new issue
+              const issue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `[domain-allowlist] Upstream changes detected — review required (${new Date().toISOString().split('T')[0]})`,
+                body: body,
+                labels: ['domain-allowlist', 'maintenance'],
+              });
+              console.log(`Opened issue #${issue.data.number}`);
+            }
+
+      - name: No changes summary
+        if: steps.check.outputs.exit_code == '0'
+        run: echo "All upstream domain sources unchanged. No review needed."
