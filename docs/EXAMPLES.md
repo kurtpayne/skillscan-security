@@ -102,6 +102,9 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `93_prompt_control_heartbeat_persistence` | Prompt control persistence via heartbeat file and memory store manipulation for persistent AI agent C2 | `PINJ-003` |
 | `94_ghostclaw_skillmd_malware` | GhostClaw/GhostLoader campaign delivering macOS infostealers via malicious SKILL.md files targeting OpenClaw workflows | `MAL-037` |
 | `95_lotai_ai_assistant_c2_relay` | LotAI technique using hidden WebView2 sessions to route C2 through AI assistants like Copilot and Grok | `MAL-038` |
+| `96_glassworm_extensionpack_transitive` | GlassWorm Open VSX extensionPack/extensionDependencies transitive dependency attack silently installing malicious payload extensions | `SUP-011` |
+| `97_npm_dependency_chain_postinstall` | GlassWorm/ForceMemo three-layer npm dependency chain attack via hollow relay packages with postinstall hooks | `SUP-012` |
+| `98_teampcp_actions_credential_stealer` | TeamPCP GitHub Actions credential stealer harvesting Runner.Worker memory and exfiltrating RSA-encrypted secrets | `MAL-039` |
 ## Commands
 
 ```bash

@@ -1,3 +1,50 @@
+## 2026-03-21 — GlassWorm extensionPack Transitive Attack, npm Dependency Chain Postinstall, TeamPCP Actions Credential Stealer
+
+**Sources:**
+- [Eclipse Foundation — GlassWorm Wave 7: extensionPack Transitive Dependency Attack](https://blogs.eclipse.org/post/mikael-barbero/glassworm-wave-7-extensionpack-transitive-dependency-attack)
+- [StepSecurity — Malicious npm Releases Found in Popular React Native Packages](https://www.stepsecurity.io/blog/malicious-npm-releases-found-in-popular-react-native-packages---130k-monthly-downloads-compromised)
+- [StepSecurity — Trivy Compromised a Second Time: Malicious v0.69.4 Release](https://www.stepsecurity.io/blog/trivy-compromised-a-second-time---malicious-v0-69-4-release)
+
+**Event Summary:** Three new detection rules, IOC updates, and vulnerability enrichment were added. The Eclipse Foundation documented GlassWorm Wave 7, where malicious Open VSX extensions use `extensionPack` and `extensionDependencies` arrays to silently install payload extensions as transitive dependencies, bypassing marketplace review. StepSecurity reported a three-layer npm dependency chain attack (GlassWorm/ForceMemo) that compromised popular React Native packages with 130K+ monthly downloads, using hollow relay scoped packages to deliver Solana blockchain C2 malware via postinstall hooks executing standalone JavaScript loader files. StepSecurity also documented a second compromise of the Trivy GitHub Action (v0.69.4) by the TeamPCP threat actor, which injected a comprehensive credential stealer that harvests Runner.Worker process memory, collects developer credentials, encrypts data with RSA-4096, and exfiltrates to the typosquatted domain `scan.aquasecurtiy.org`.
+
+**New Patterns Added:**
+
+### SUP-011: Open VSX extensionPack/extensionDependencies transitive dependency attack
+- **Category:** supply_chain
+- **Severity:** high
+- **Confidence:** 0.87
+- **Pattern:** Detects `extensionPack` and `extensionDependencies` arrays containing suspicious extension IDs following the GlassWorm naming pattern, including AI-themed names like `claude-code-extension`, `antigravity-cockpit`, and `sql-turbo-tool`.
+- **Justification:** Direct detection of the GlassWorm Wave 7 transitive dependency attack documented by the Eclipse Foundation. The technique abuses VS Code extension dependency resolution to silently install malicious extensions.
+
+### SUP-012: npm dependency chain attack via hollow relay package with postinstall loader
+- **Category:** supply_chain
+- **Severity:** high
+- **Confidence:** 0.85
+- **Pattern:** Detects `postinstall` scripts executing standalone JavaScript loader files (`node child.js`, `node init.js`, `node setup.js`, `node loader.js`) characteristic of the GlassWorm/ForceMemo three-layer dependency chain attack.
+- **Justification:** Detection of the npm dependency chain attack documented by StepSecurity, where compromised packages use hollow relay scoped packages to deliver Solana C2 malware via postinstall hooks.
+
+### MAL-039: GitHub Actions credential stealer with Runner.Worker memory harvesting (TeamPCP)
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.92
+- **Pattern:** Detects `Runner.Worker` combined with memory/credential harvesting keywords, the TeamPCP C2 domain `scan.aquasecurtiy.org`, the `tpcp-docs` fallback repository name, and `TeamPCP` threat actor references.
+- **Justification:** Direct detection of the TeamPCP supply chain attack documented by StepSecurity. The credential stealer targets GitHub Actions Runner.Worker process memory for secret extraction.
+
+**IOC Updates:**
+- Added domain: `scan.aquasecurtiy.org` (TeamPCP C2 typosquatted domain)
+- Added domain: `vm0.ai` (GlassWorm Wave 7 payload host)
+- Added IP: `45.148.10.212` (TeamPCP infrastructure)
+
+**Vulnerability Updates:**
+- Added CVE-2026-33017 (critical RCE, Langflow ≤ 1.8.1, fixed in 1.8.2) to vuln_db.json
+
+**Corpus Updates:**
+- Added `corpus/malicious/a38_glassworm_extensionpack.md` — GlassWorm extensionPack transitive dependency sample
+- Added `corpus/malicious/a39_npm_dependency_chain.md` — npm dependency chain postinstall loader sample
+- Added `corpus/malicious/a40_teampcp_credential_stealer.md` — TeamPCP Actions credential stealer sample
+
+---
+
 ## 2026-03-20 (batch 2) — GhostClaw SKILL.md Malware, LotAI AI Assistant C2, CKAN MCP Server SSRF
 
 **Sources:**

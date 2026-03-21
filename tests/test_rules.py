@@ -1348,3 +1348,75 @@ def test_new_patterns_2026_03_20_batch2() -> None:
     # Negative: normal AI assistant usage
     assert mal038.pattern.search("using copilot for code completion") is None
     assert mal038.pattern.search("WebView2 browser control") is None
+
+
+def test_new_patterns_2026_03_21() -> None:
+    """Test new patterns added from March 21, 2026 threat intelligence update."""
+    compiled = load_compiled_builtin_rulepack()
+
+    # SUP-011: Open VSX extensionPack/extensionDependencies transitive dependency attack
+    sup011 = next((r for r in compiled.static_rules if r.id == "SUP-011"), None)
+    assert sup011 is not None
+    assert (
+        sup011.pattern.search(
+            '"extensionPack": ["gvotcha.claude-code-extension"]'
+        )
+        is not None
+    )
+    assert (
+        sup011.pattern.search(
+            '"extensionDependencies": ["mswincx.antigravity-cockpit-extension", "turbobase.sql-turbo-tool"]'
+        )
+        is not None
+    )
+    assert (
+        sup011.pattern.search(
+            '"extensionPack": ["crotoapp.vscode-xml-extension"]'
+        )
+        is not None
+    )
+    # Negative: normal extension references
+    assert sup011.pattern.search('"extensionPack": []') is None
+    assert sup011.pattern.search('"dependencies": {"lodash": "4.17.21"}') is None
+
+    # SUP-012: npm dependency chain attack via hollow relay package with postinstall loader
+    sup012_rules = [r for r in compiled.static_rules if r.id == "SUP-012"]
+    assert len(sup012_rules) >= 1
+    sup012 = sup012_rules[0]
+    assert (
+        sup012.pattern.search('"postinstall": "node child.js"') is not None
+    )
+    assert (
+        sup012.pattern.search('"postinstall": "node init.js"') is not None
+    )
+    assert (
+        sup012.pattern.search('"postinstall": "node setup.js"') is not None
+    )
+    assert (
+        sup012.pattern.search('"postinstall": "node loader.js"') is not None
+    )
+    # Negative: normal postinstall scripts
+    assert sup012.pattern.search('"postinstall": "echo done"') is None
+    assert sup012.pattern.search('"scripts": {"start": "node index.js"}') is None
+
+    # MAL-039: GitHub Actions credential stealer with Runner.Worker memory harvesting
+    mal039 = next((r for r in compiled.static_rules if r.id == "MAL-039"), None)
+    assert mal039 is not None
+    assert (
+        mal039.pattern.search("Runner.Worker memory harvesting for credential extraction") is not None
+    )
+    assert (
+        mal039.pattern.search("scan.aquasecurtiy.org") is not None
+    )
+    assert (
+        mal039.pattern.search("tpcp-docs") is not None
+    )
+    assert (
+        mal039.pattern.search("TeamPCP supply chain attack") is not None
+    )
+    assert (
+        mal039.pattern.search("credential stealer targeting Runner.Worker process") is not None
+    )
+    # Negative: normal GitHub Actions usage
+    assert mal039.pattern.search("actions/checkout@v4") is None
+    assert mal039.pattern.search("runner.os == 'Linux'") is None

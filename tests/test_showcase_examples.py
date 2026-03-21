@@ -168,6 +168,12 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "MAL-037" for f in findings_94)
     findings_95 = _scan("examples/showcase/95_lotai_ai_assistant_c2_relay").findings
     assert any(f.id == "MAL-038" for f in findings_95)
+    findings_96 = _scan("examples/showcase/96_glassworm_extensionpack_transitive").findings
+    assert any(f.id == "SUP-011" for f in findings_96)
+    findings_97 = _scan("examples/showcase/97_npm_dependency_chain_postinstall").findings
+    assert any(f.id == "SUP-012" for f in findings_97)
+    findings_98 = _scan("examples/showcase/98_teampcp_actions_credential_stealer").findings
+    assert any(f.id == "MAL-039" for f in findings_98)
 
 
 def test_showcase_policy_block_domain() -> None:

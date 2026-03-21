@@ -658,6 +658,13 @@
         "severity": "high",
         "fixed": null
       }
+    },
+    "langflow": {
+      "1.8.1": {
+        "id": "CVE-2026-33017",
+        "severity": "critical",
+        "fixed": "1.8.2"
+      }
     }
   },
   "npm": {

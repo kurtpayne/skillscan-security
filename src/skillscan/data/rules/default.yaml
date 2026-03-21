@@ -1,4 +1,4 @@
-version: "2026.03.20.2"
+version: "2026.03.21.1"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -2337,6 +2337,102 @@ static_rules:
     - https://www.blackfog.com/lotai-weaponizing-ai-tools-for-data-exfiltration/
     - https://www.proarch.com/blog/threats-vulnerabilities/ai-malware-c2-copilot-grok-security-risk
 
+- id: SUP-011
+  category: malware_pattern
+  severity: high
+  confidence: 0.86
+  title: Open VSX extensionPack/extensionDependencies transitive dependency attack
+  pattern: (?i)(?:"extensionPack"\s*:\s*\[|"extensionDependencies"\s*:\s*\[)[^\]]{0,500}(?:[a-z0-9_-]+\.[a-z0-9_-]+-extension|[a-z0-9_-]+\.(?:claude|copilot|gpt|ai)[a-z0-9_-]*)
+  mitigation: Do not trust extensions that use extensionPack or extensionDependencies
+    to pull in unknown or suspicious transitive extensions. This pattern detects the
+    GlassWorm supply chain technique of using clean-looking extensions as delivery
+    vehicles for malicious payloads via Open VSX dependency chains.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: SUPPLY-011
+      name: Supply-chain behavior
+    tags:
+    - malware_pattern
+    - sup
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.86
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/03/glassworm-supply-chain-attack-abuses-72.html
+    - https://socket.dev/blog/glassworm-sleeper-extensions-activated-on-open-vsx
+- id: SUP-012
+  category: malware_pattern
+  severity: high
+  confidence: 0.85
+  title: npm dependency chain attack via hollow relay package with postinstall loader
+  pattern: (?i)(?:"postinstall"\s*:\s*"[^"\n]{0,200}\bnode\s+(?:init|child|setup|loader|index)\.js\b)|(?:@[a-z0-9_-]+\/[a-z0-9_-]+[^\n]{0,80}postinstall[^\n]{0,80}node\s+\w+\.js)
+  mitigation: Remove postinstall hooks that execute standalone JavaScript loader files
+    such as init.js or child.js. This pattern detects the GlassWorm/ForceMemo
+    three-layer dependency chain attack where compromised packages use hollow relay
+    scoped packages to deliver Solana blockchain C2 malware via postinstall hooks.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: SUPPLY-012
+      name: Supply-chain behavior
+    tags:
+    - malware_pattern
+    - sup
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://www.stepsecurity.io/blog/malicious-npm-releases-found-in-popular-react-native-packages---130k-monthly-downloads-compromised
+    - https://www.sonatype.com/blog/hijacked-npm-packages-deliver-malware-via-solana-linked-to-glassworm
+- id: MAL-039
+  category: malware_pattern
+  severity: critical
+  confidence: 0.88
+  title: GitHub Actions credential stealer with Runner.Worker memory harvesting
+  pattern: (?i)(?:Runner\.Worker[^\n]{0,120}(?:memory|process|credential|secret|harvest)|(?:credential|secret)[^\n]{0,80}(?:Runner\.Worker|runner.*worker)|scan\.aquasecurtiy\.org|tpcp-docs|TeamPCP|(?:entrypoint\.sh|action\.yaml)[^\n]{0,120}(?:base64[^\n]{0,60}(?:credential|secret|ssh|aws)|RSA[^\n]{0,60}(?:encrypt|exfil)))
+  mitigation: Do not use GitHub Actions that harvest Runner.Worker process memory
+    or environment variables for credential theft. This pattern detects the TeamPCP
+    supply chain attack that compromised Trivy and other GitHub Actions to inject
+    RSA-encrypted credential stealers exfiltrating to typosquatted domains.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-039
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://www.stepsecurity.io/blog/trivy-compromised-a-second-time---malicious-v0-69-4-release
+    - https://www.wiz.io/blog/trivy-compromised-teampcp-supply-chain-attack
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
   execute: \b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b
