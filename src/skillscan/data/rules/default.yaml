@@ -1,4 +1,4 @@
-version: "2026.03.21.1"
+version: "2026.03.21.2"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -2433,6 +2433,101 @@ static_rules:
     references:
     - https://www.stepsecurity.io/blog/trivy-compromised-a-second-time---malicious-v0-69-4-release
     - https://www.wiz.io/blog/trivy-compromised-teampcp-supply-chain-attack
+- id: MAL-040
+  category: malware_pattern
+  severity: critical
+  confidence: 0.87
+  title: CanisterWorm npm self-propagating worm with ICP blockchain C2
+  pattern: (?i)(?:findNpmTokens|canisterworm|canister[_\s-]?worm|icp[_\s-]?canister[^\n]{0,80}(?:c2|command|control|callback)|deploy\.js[^\n]{0,80}(?:worm|propagat|npm[_\s-]?token)|pgmon[^\n]{0,80}(?:systemd|backdoor|persist)|systemd[^\n]{0,80}Restart\s*=\s*always[^\n]{0,80}pgmon)
+  mitigation: Remove CanisterWorm infection markers. This self-propagating npm worm
+    steals npm tokens to publish malicious package versions and uses Internet Computer
+    Protocol (ICP) canisters for C2 communication. Affected scoped packages include
+    @EmilGroup, @opengov, and @pypestream namespaces.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: EXEC-040
+      name: Execution or malware behavior
+    tags:
+    - malware_pattern
+    - mal
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.87
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html
+    - https://www.bleepingcomputer.com/news/security/glassworm-malware-hits-400-plus-code-repos-on-github-npm-vscode-openvsx/
+- id: SUP-013
+  category: supply_chain
+  severity: high
+  confidence: 0.85
+  title: MCP server command injection via unsanitized Git parameters
+  pattern: (?i)(?:mcp-server-auto-commit|getGitChanges[^\n]{0,80}(?:exec|spawn|command)|Git-MCP-Server[^\n]{0,80}(?:command[_\s-]?injection|child_process)|child_process\.exec[^\n]{0,120}(?:show_merge_diff|quick_merge_summary|show_file_diff)|CVE-2026-4198|CVE-2026-4496)
+  mitigation: Do not use vulnerable MCP server packages that pass unsanitized user
+    input to shell commands. CVE-2026-4198 affects mcp-server-auto-commit (getGitChanges
+    RCE) and CVE-2026-4496 affects sigmade/Git-MCP-Server (OS command injection via
+    child_process.exec in gitUtils.ts).
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: SUPPLY-013
+      name: Supply-chain behavior
+    tags:
+    - supply_chain
+    - sup
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://www.sentinelone.com/vulnerability-database/cve-2026-4198/
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-4496
+- id: PINJ-004
+  category: instruction_abuse
+  severity: high
+  confidence: 0.83
+  title: Claudy Day prompt injection via AI assistant URL parameter and data exfiltration
+  pattern: (?i)(?:claude\.ai/new\?q=[^\n]{0,200}(?:<[a-z]|%3[Cc]|\\u003[Cc])|claude\.com/redirect/[^\n]{0,200}(?:http|ftp|//)|(?:files[_\s-]?api|anthropic[_\s-]?files)[^\n]{0,120}(?:exfil|upload|steal|extract)|claudy[_\s-]?day[^\n]{0,80}(?:inject|exfil|vuln|exploit))
+  mitigation: Do not use claude.ai URL parameters to inject hidden HTML or instructions.
+    The Claudy Day attack chain uses invisible prompt injection via the q= parameter,
+    data exfiltration via the Anthropic Files API, and an open redirect on claude.com
+    to steal user data.
+  metadata:
+    version: 1.0.0
+    status: active
+    techniques:
+    - id: PROMPTINJ-004
+      name: Prompt injection/jailbreak
+    tags:
+    - instruction_abuse
+    - pinj
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-03-21'
+      last_modified: '2026-03-21'
+    quality:
+      precision_estimate: 0.83
+      benchmark_set: core-static-v1
+    references:
+    - https://www.oasis.security/blog/claude-ai-prompt-injection-data-exfiltration-vulnerability
 action_patterns:
   download: \b(curl|wget|invoke-webrequest|invoke-restmethod|iwr|irm|download|git\s+clone|pip\s+install|npm\s+install|certutil\s+-urlcache|bitsadmin)\b|https?://
   execute: \b(bash|sh|powershell|pwsh|cmd\.exe|os\.system|subprocess|python\s+-c|python3?\s+[^\s-]\S*|node\s+-e|perl\s+-e|ruby\s+-e)\b

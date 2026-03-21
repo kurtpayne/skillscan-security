@@ -701,6 +701,11 @@
         "id": "CVE-2026-25253",
         "severity": "high",
         "fixed": "2026.3.13"
+      },
+      "2026.3.14": {
+        "id": "CVE-2026-31997",
+        "severity": "critical",
+        "fixed": "2026.3.15"
       }
     },
     "mcp-atlassian": {
@@ -720,6 +725,20 @@
         "id": "CVE-2026-33060",
         "severity": "medium",
         "fixed": "0.4.85"
+      }
+    },
+    "mcp-server-auto-commit": {
+      "1.0.0": {
+        "id": "CVE-2026-4198",
+        "severity": "high",
+        "fixed": "1.0.1"
+      }
+    },
+    "git-mcp-server": {
+      "0.1.0": {
+        "id": "CVE-2026-4496",
+        "severity": "high",
+        "fixed": "0.1.1"
       }
     }
   }

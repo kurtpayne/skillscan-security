@@ -174,6 +174,12 @@ def test_showcase_detection_rules() -> None:
     assert any(f.id == "SUP-012" for f in findings_97)
     findings_98 = _scan("examples/showcase/98_teampcp_actions_credential_stealer").findings
     assert any(f.id == "MAL-039" for f in findings_98)
+    findings_99 = _scan("examples/showcase/99_canisterworm_icp_blockchain_c2").findings
+    assert any(f.id == "MAL-040" for f in findings_99)
+    findings_100 = _scan("examples/showcase/100_mcp_server_command_injection").findings
+    assert any(f.id == "SUP-013" for f in findings_100)
+    findings_101 = _scan("examples/showcase/101_claudy_day_prompt_injection").findings
+    assert any(f.id == "PINJ-004" for f in findings_101)
 
 
 def test_showcase_policy_block_domain() -> None:

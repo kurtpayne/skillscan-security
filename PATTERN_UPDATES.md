@@ -1,3 +1,52 @@
+## 2026-03-21 (batch 2) — CanisterWorm ICP Blockchain C2, MCP Server Command Injection, Claudy Day Prompt Injection
+
+**Sources:**
+- [The Hacker News — Trivy Supply Chain Attack Triggers Self-Propagating CanisterWorm](https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html)
+- [SentinelOne — CVE-2026-4198: mcp-server-auto-commit RCE](https://www.sentinelone.com/vulnerability-database/cve-2026-4198/)
+- [NVD — CVE-2026-4496: sigmade/Git-MCP-Server OS Command Injection](https://nvd.nist.gov/vuln/detail/CVE-2026-4496)
+- [Oasis Security — Claudy Day: Claude.ai Prompt Injection and Data Exfiltration](https://www.oasis.security/blog/claude-ai-prompt-injection-data-exfiltration-vulnerability)
+
+**Event Summary:** Three new detection rules, two new IOC domains, and three new CVEs were added. The Hacker News reported on CanisterWorm, a self-propagating npm worm that steals npm tokens to publish malicious package versions and uses Internet Computer Protocol (ICP) canisters for decentralized C2 communication. The worm installs a Python backdoor named "pgmon" as a systemd service for persistence. SentinelOne disclosed CVE-2026-4198, a command injection vulnerability in `mcp-server-auto-commit` via the `getGitChanges` function, and CVE-2026-4496 was published for OS command injection in `sigmade/Git-MCP-Server` via `child_process.exec` in `gitUtils.ts`. Oasis Security documented the "Claudy Day" attack chain against Claude.ai, combining invisible prompt injection via URL parameters, data exfiltration via the Anthropic Files API, and an open redirect on `claude.com`.
+
+**New Patterns Added:**
+
+### MAL-040: CanisterWorm npm self-propagating worm with ICP blockchain C2
+- **Category:** malware_pattern
+- **Severity:** critical
+- **Confidence:** 0.87
+- **Pattern:** Detects `findNpmTokens` function, CanisterWorm references, ICP canister C2 communication patterns, `deploy.js` worm propagation markers, and `pgmon` Python backdoor with systemd persistence.
+- **Justification:** Direct detection of the CanisterWorm campaign reported by The Hacker News. The worm self-propagates by stealing npm tokens and publishing malicious versions of packages under compromised scopes.
+
+### SUP-013: MCP server command injection via unsanitized Git parameters
+- **Category:** supply_chain
+- **Severity:** high
+- **Confidence:** 0.85
+- **Pattern:** Detects references to `mcp-server-auto-commit`, `getGitChanges` combined with exec/spawn, `Git-MCP-Server` command injection patterns, and CVE-2026-4198/CVE-2026-4496 identifiers.
+- **Justification:** Detection of two MCP server command injection vulnerabilities: CVE-2026-4198 in mcp-server-auto-commit and CVE-2026-4496 in sigmade/Git-MCP-Server.
+
+### PINJ-004: Claudy Day prompt injection via AI assistant URL parameter and data exfiltration
+- **Category:** instruction_abuse
+- **Severity:** high
+- **Confidence:** 0.83
+- **Pattern:** Detects `claude.ai/new?q=` with embedded HTML tags, `claude.com/redirect/` open redirect patterns, Anthropic Files API exfiltration references, and "Claudy Day" attack chain identifiers.
+- **Justification:** Detection of the Claudy Day attack chain documented by Oasis Security, which combines three vulnerabilities in Claude.ai for prompt injection and data exfiltration.
+
+**IOC Updates:**
+- Added domain: `code.translatevv.com` (Warlock threat actor C2 domain)
+- Added domain: `plug-tab-protective-relay.trycloudflare.com` (Trivy compromise Cloudflare Tunnel C2)
+
+**Vulnerability Updates:**
+- Added CVE-2026-4198 (high RCE, mcp-server-auto-commit 1.0.0, fixed in 1.0.1) to vuln_db.json
+- Added CVE-2026-4496 (high command injection, git-mcp-server, fixed in 0.1.1) to vuln_db.json
+- Added CVE-2026-31997 (critical RCE, openclaw 2026.3.14, fixed in 2026.3.15) to vuln_db.json
+
+**Corpus Updates:**
+- Added `corpus/malicious/a41_canisterworm_icp_c2.md` — CanisterWorm ICP blockchain C2 sample
+- Added `corpus/malicious/a42_mcp_server_command_injection.md` — MCP server command injection sample
+- Added `corpus/prompt_injection/p04_claudy_day_injection.md` — Claudy Day prompt injection sample
+
+---
+
 ## 2026-03-21 — GlassWorm extensionPack Transitive Attack, npm Dependency Chain Postinstall, TeamPCP Actions Credential Stealer
 
 **Sources:**

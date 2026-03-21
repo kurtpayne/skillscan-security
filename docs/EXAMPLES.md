@@ -105,6 +105,9 @@ SkillScan ships a full showcase in `examples/showcase` to demonstrate detection 
 | `96_glassworm_extensionpack_transitive` | GlassWorm Open VSX extensionPack/extensionDependencies transitive dependency attack silently installing malicious payload extensions | `SUP-011` |
 | `97_npm_dependency_chain_postinstall` | GlassWorm/ForceMemo three-layer npm dependency chain attack via hollow relay packages with postinstall hooks | `SUP-012` |
 | `98_teampcp_actions_credential_stealer` | TeamPCP GitHub Actions credential stealer harvesting Runner.Worker memory and exfiltrating RSA-encrypted secrets | `MAL-039` |
+| `99_canisterworm_icp_blockchain_c2` | CanisterWorm npm self-propagating worm with ICP blockchain C2 | `MAL-040` |
+| `100_mcp_server_command_injection` | MCP server command injection via unsanitized Git parameters | `SUP-013` |
+| `101_claudy_day_prompt_injection` | Claudy Day prompt injection via AI assistant URL parameter and data exfiltration | `PINJ-004` |
 ## Commands
 
 ```bash
