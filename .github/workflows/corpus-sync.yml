@@ -1,11 +1,7 @@
 name: Corpus Sync & Model Update Trigger
 on:
-  push:
-    branches: [main]
-    paths:
-      - "corpus/**"
-      - "scripts/finetune.py"
-      - "src/skillscan/corpus.py"
+  repository_dispatch:
+    types: [corpus-updated]
   schedule:
     - cron: "0 6,18 * * *"
   workflow_dispatch:
@@ -22,6 +18,7 @@ jobs:
     outputs:
       should_retrain: ${{ steps.sync.outputs.should_retrain }}
       summary: ${{ steps.sync.outputs.summary }}
+      corpus_path: ${{ steps.clone.outputs.corpus_path }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,11 +29,13 @@ jobs:
           cache: pip
       - name: Install package (no ML extras needed for sync)
         run: pip install -e ".[dev]" --quiet
-      - name: Fetch private corpus fixtures
+      - name: Clone skillscan-corpus (all corpus data now lives there)
+        id: clone
         run: |
           if [ -z "$CORPUS_DEPLOY_KEY" ]; then
-            echo "CORPUS_DEPLOY_KEY not set — skipping private corpus fetch"
-            exit 0
+            echo "CORPUS_DEPLOY_KEY not set — cannot fetch corpus"
+            echo "corpus_path=" >> "$GITHUB_OUTPUT"
+            exit 1
           fi
           mkdir -p ~/.ssh
           echo "$CORPUS_DEPLOY_KEY" > ~/.ssh/corpus_deploy_key
@@ -44,18 +43,15 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
           GIT_SSH_COMMAND='ssh -i ~/.ssh/corpus_deploy_key -o StrictHostKeyChecking=yes' \
             git clone --depth 1 git@github.com:kurtpayne/skillscan-corpus.git /tmp/skillscan-corpus
-          for dir in adversarial jailbreak_distillations social_engineering; do
-            if [ -d "/tmp/skillscan-corpus/$dir" ]; then
-              mkdir -p "corpus/$dir"
-              rsync -a --ignore-existing "/tmp/skillscan-corpus/$dir/" "corpus/$dir/"
-            fi
+          rm -f ~/.ssh/corpus_deploy_key
+          echo "corpus_path=/tmp/skillscan-corpus" >> "$GITHUB_OUTPUT"
+          echo "Corpus cloned to /tmp/skillscan-corpus"
+          # Show inventory summary
+          echo "=== Corpus inventory ==="
+          for d in training_corpus adversarial jailbreak_distillations social_engineering held_out_eval; do
+            count=$(find "/tmp/skillscan-corpus/$d" -name "*.md" -o -name "*.yaml" -o -name "*.yml" 2>/dev/null | wc -l)
+            echo "  $d: $count files"
           done
-          if [ -d "/tmp/skillscan-corpus/held_out_eval" ]; then
-            mkdir -p corpus/held_out_eval
-            rsync -a --ignore-existing /tmp/skillscan-corpus/held_out_eval/ corpus/held_out_eval/
-          fi
-          rm -rf /tmp/skillscan-corpus ~/.ssh/corpus_deploy_key
-          echo "Private corpus fixtures merged"
         env:
           CORPUS_DEPLOY_KEY: ${{ secrets.CORPUS_DEPLOY_KEY }}
       - name: Run corpus sync
@@ -63,9 +59,31 @@ jobs:
         run: |
           python - <<'EOF'
           import json, os, sys
+          from pathlib import Path
           sys.path.insert(0, "src")
           from skillscan.corpus import CorpusManager
-          mgr = CorpusManager()
+
+          corpus_path = os.environ.get("CORPUS_PATH", "")
+          if not corpus_path:
+              print("ERROR: CORPUS_PATH not set", file=sys.stderr)
+              sys.exit(1)
+
+          # Build a unified corpus view: training_corpus/ + private dirs
+          # CorpusManager accepts SKILLSCAN_CORPUS_DIR env var
+          # We point it at training_corpus/ for the public data;
+          # private dirs (adversarial, jailbreak_distillations, etc.)
+          # are auto-detected as siblings.
+          corpus_dir = Path(corpus_path) / "training_corpus"
+          mgr = CorpusManager(corpus_dir=corpus_dir)
+
+          # Also scan private dirs if present
+          private_dirs = ["adversarial", "jailbreak_distillations", "social_engineering"]
+          for d in private_dirs:
+              p = Path(corpus_path) / d
+              if p.is_dir():
+                  mgr.corpus_dir = Path(corpus_path)  # widen scope to full repo root
+                  break
+
           decision = mgr.sync()
           print(decision.summary())
           with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
@@ -73,16 +91,24 @@ jobs:
               fh.write(f"summary={decision.summary()}\n")
           EOF
         env:
+          CORPUS_PATH: ${{ steps.clone.outputs.corpus_path }}
           SKILLSCAN_MIN_NEW_EXAMPLES: ${{ vars.SKILLSCAN_MIN_NEW_EXAMPLES || '50' }}
           SKILLSCAN_MIN_DELTA_PCT: ${{ vars.SKILLSCAN_MIN_DELTA_PCT || '0.10' }}
-      - name: Commit updated manifest
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(corpus): update manifest.json [skip ci]"
-          file_pattern: "corpus/manifest.json"
-          commit_user_name: "skillscan-bot"
-          commit_user_email: "bot@skillscan.sh"
-          push_options: "--force-with-lease"
+      - name: Commit updated manifest back to skillscan-corpus
+        if: steps.clone.outputs.corpus_path != ''
+        run: |
+          cd /tmp/skillscan-corpus
+          git config user.name "skillscan-bot"
+          git config user.email "bot@skillscan.sh"
+          # Set up SSH for push
+          mkdir -p ~/.ssh
+          echo "$CORPUS_DEPLOY_KEY" > ~/.ssh/corpus_deploy_key
+          chmod 600 ~/.ssh/corpus_deploy_key
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/corpus_deploy_key -o StrictHostKeyChecking=yes' \
+            git push origin main || echo "No manifest changes to push"
+          rm -f ~/.ssh/corpus_deploy_key
+        env:
+          CORPUS_DEPLOY_KEY: ${{ secrets.CORPUS_DEPLOY_KEY }}
   fine-tune:
     name: Fine-tune DeBERTa on Modal GPU (conditional)
     needs: corpus-sync
@@ -113,6 +139,17 @@ jobs:
         env:
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+      - name: Clone skillscan-corpus for fine-tune scripts
+        run: |
+          mkdir -p ~/.ssh
+          echo "$CORPUS_DEPLOY_KEY" > ~/.ssh/corpus_deploy_key
+          chmod 600 ~/.ssh/corpus_deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/corpus_deploy_key -o StrictHostKeyChecking=yes' \
+            git clone --depth 1 git@github.com:kurtpayne/skillscan-corpus.git /tmp/skillscan-corpus
+          rm -f ~/.ssh/corpus_deploy_key
+        env:
+          CORPUS_DEPLOY_KEY: ${{ secrets.CORPUS_DEPLOY_KEY }}
       - name: Dispatch fine-tune to Modal GPU
         id: finetune
         run: |
@@ -120,19 +157,12 @@ jobs:
           if [ "${{ github.event.inputs.force_retrain }}" = "true" ]; then
             FORCE_FLAG="--force"
           fi
-          modal run scripts/finetune_modal.py $FORCE_FLAG
+          modal run /tmp/skillscan-corpus/scripts/finetune_modal.py $FORCE_FLAG
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
           MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
-      - name: Commit updated CORPUS_CARD.md and manifest
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(corpus): update CORPUS_CARD.md after fine-tune [skip ci]"
-          file_pattern: "corpus/CORPUS_CARD.md corpus/manifest.json"
-          commit_user_name: "skillscan-bot"
-          commit_user_email: "bot@skillscan.sh"
-          push_options: "--force-with-lease"
+          SKILLSCAN_CORPUS_DIR: /tmp/skillscan-corpus/training_corpus
       - name: Post summary
         if: always()
         run: |

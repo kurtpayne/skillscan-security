@@ -2560,6 +2560,14 @@ chain_rules:
   - execute
   snippet: download + execute actions detected
   mitigation: Break download+execute flows; require reviewed local artifacts and explicit integrity checks.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [malware, download-execute, dropper]
+    references:
+      - https://attack.mitre.org/techniques/T1105/
+      - https://attack.mitre.org/techniques/T1059/
 - id: CHN-002
   category: exfiltration
   severity: critical
@@ -2570,6 +2578,14 @@ chain_rules:
   - network
   snippet: secret access + outbound network actions detected
   mitigation: Remove any secret-to-network path; use scoped token exchange or local-only processing.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [exfiltration, credential-theft, network]
+    references:
+      - https://attack.mitre.org/techniques/T1552/
+      - https://attack.mitre.org/techniques/T1041/
 - id: CHN-004
   category: exfiltration
   severity: critical
@@ -2580,6 +2596,14 @@ chain_rules:
   - network
   snippet: GitHub Actions secrets context + network/exfil markers detected
   mitigation: Remove full secrets-context expansion and block outbound transfer of CI/CD secrets.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, exfiltration, secrets]
+    references:
+      - https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+      - https://attack.mitre.org/techniques/T1552/004/
 - id: CHN-005
   category: exfiltration
   severity: critical
@@ -2591,6 +2615,14 @@ chain_rules:
   snippet: pull_request_target + github.event.pull_request.head.* checkout markers detected
   mitigation: Do not combine `pull_request_target` with checkout of untrusted PR head refs. Use unprivileged `pull_request`
     jobs for untrusted code.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, pwn-requests, supply-chain]
+    references:
+      - https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+      - https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=pull_request_target
 - id: ABU-002
   category: instruction_abuse
   severity: high
@@ -2601,6 +2633,14 @@ chain_rules:
   - security_disable
   snippet: privilege escalation + security disable sequence detected
   mitigation: Remove elevation plus security-disable guidance from setup instructions.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [privilege-escalation, defense-evasion, setup-abuse]
+    references:
+      - https://attack.mitre.org/techniques/T1548/
+      - https://attack.mitre.org/techniques/T1562/
 - id: CHN-006
   category: malware_pattern
   severity: critical
@@ -2612,6 +2652,14 @@ chain_rules:
   snippet: pull_request_target + github.event.pull_request.{title/body/etc} interpolation detected in script context
   mitigation: Avoid using pull_request_target with direct shell/script interpolation of PR metadata. Use non-shell actions,
     strict quoting, and unprivileged workflows for untrusted input.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, injection, pwn-requests]
+    references:
+      - https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+      - https://attack.mitre.org/techniques/T1059/
 - id: CHN-007
   category: exfiltration
   severity: critical
@@ -2623,6 +2671,14 @@ chain_rules:
   snippet: pull_request_target + actions/cache key derived from github.event.pull_request.* metadata detected
   mitigation: Avoid cache key derivation from untrusted PR metadata in privileged workflows. Separate caches for untrusted
     jobs and trusted release/publish jobs.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, cache-poisoning, supply-chain]
+    references:
+      - https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+      - https://attack.mitre.org/techniques/T1195/
 - id: CHN-008
   category: malware_pattern
   severity: critical
@@ -2634,6 +2690,14 @@ chain_rules:
   snippet: pull_request_target + third-party action reference pinned to mutable tag/branch detected
   mitigation: In pull_request_target workflows, pin third-party actions to full 40-char commit SHAs and review upstream provenance
     before updates.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, supply-chain, unpinned-dependency]
+    references:
+      - https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-third-party-actions
+      - https://attack.mitre.org/techniques/T1195/002/
 - id: CHN-009
   category: malware_pattern
   severity: high
@@ -2645,6 +2709,14 @@ chain_rules:
   snippet: hook configuration marker + shell-capable command payload detected
   mitigation: Treat repository hook configuration as untrusted and block shell-capable `command` payloads unless explicitly
     reviewed and approved.
+  metadata:
+    author: skillscan
+    created: "2025-01-01"
+    updated: "2025-03-21"
+    tags: [hook-abuse, persistence, shell-execution, claude-code]
+    references:
+      - https://docs.anthropic.com/en/docs/claude-code/hooks
+      - https://attack.mitre.org/techniques/T1546/
 - id: CHN-010
   category: malware_pattern
   severity: critical
@@ -2656,6 +2728,14 @@ chain_rules:
   snippet: pull_request_target + branch/ref metadata interpolation marker detected
   mitigation: Do not combine `pull_request_target` with direct shell/script interpolation of PR branch/ref values. Quote safely,
     avoid shell evaluation, and run untrusted PR data in unprivileged workflows.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [ci-cd, github-actions, injection, pwn-requests]
+    references:
+      - https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+      - https://attack.mitre.org/techniques/T1059/
 - id: CHN-011
   category: exfiltration
   severity: critical
@@ -2667,6 +2747,14 @@ chain_rules:
   snippet: MCP tool description poisoning + credential/secret access markers detected
   mitigation: Reject MCP tool descriptions that contain hidden instruction blocks combined with credential access patterns.
     This is a documented tool-poisoning exfiltration attack.
+  metadata:
+    author: skillscan
+    created: "2025-01-01"
+    updated: "2025-03-21"
+    tags: [mcp, tool-poisoning, exfiltration, credential-theft]
+    references:
+      - https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks
+      - https://attack.mitre.org/techniques/T1552/
 - id: CHN-012
   category: exfiltration
   severity: critical
@@ -2678,6 +2766,14 @@ chain_rules:
   snippet: stealth instruction concealment + outbound network markers detected
   mitigation: Remove instructions that conceal agent actions from the user while performing network operations. This pattern
     indicates covert data exfiltration.
+  metadata:
+    author: skillscan
+    created: "2025-01-01"
+    updated: "2025-03-21"
+    tags: [stealth, exfiltration, covert-channel, deception]
+    references:
+      - https://attack.mitre.org/techniques/T1041/
+      - https://attack.mitre.org/techniques/T1564/
 - id: CHN-013
   category: malware_pattern
   severity: critical
@@ -2689,6 +2785,14 @@ chain_rules:
   snippet: container escape mechanism + sensitive host path mount detected
   mitigation: Do not combine privileged container execution with sensitive host path mounts. This enables full host compromise
     from within a container.
+  metadata:
+    author: skillscan
+    created: "2025-01-01"
+    updated: "2025-03-21"
+    tags: [container-escape, privilege-escalation, host-compromise]
+    references:
+      - https://attack.mitre.org/techniques/T1611/
+      - https://attack.mitre.org/techniques/T1052/
 - id: CHN-014
   category: malware_pattern
   severity: critical
@@ -2700,6 +2804,14 @@ chain_rules:
   snippet: container escape mechanism + credential/secret access markers detected
   mitigation: Do not combine privileged container access with credential harvesting. This enables host credential theft
     via container breakout.
+  metadata:
+    author: skillscan
+    created: "2025-01-01"
+    updated: "2025-03-21"
+    tags: [container-escape, credential-theft, privilege-escalation]
+    references:
+      - https://attack.mitre.org/techniques/T1611/
+      - https://attack.mitre.org/techniques/T1552/
 - id: CHN-003
   category: exfiltration
   severity: critical
@@ -2710,6 +2822,14 @@ chain_rules:
   - exfil_channel
   snippet: secret access + exfiltration channel actions detected
   mitigation: Remove secret transfer to DNS/mail/cloud/file-transfer channels.
+  metadata:
+    author: skillscan
+    created: "2024-01-01"
+    updated: "2025-03-21"
+    tags: [exfiltration, covert-channel, dns-exfil, credential-theft]
+    references:
+      - https://attack.mitre.org/techniques/T1048/
+      - https://attack.mitre.org/techniques/T1552/
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
   network_access: \b(requests\.|fetch\(|axios|http[s]?://|socket)\b

@@ -2,6 +2,8 @@
 
 This guide explains what SkillScan checks, why each check is useful, and how safety is enforced.
 
+> **See also:** [COMMANDS.md](COMMANDS.md) for the full CLI flag reference · [EXAMPLES.md](EXAMPLES.md) for the complete rule table · [POLICY.md](POLICY.md) for policy configuration
+
 ## Design principles
 
 1. Untrusted input by default.
@@ -88,3 +90,7 @@ This guide explains what SkillScan checks, why each check is useful, and how saf
 3. In CI: use `--fail-on block` and store JSON artifacts.
 4. As a pre-filter: run SkillScan before sending skills to online scanners (Invariant,
    Lakera Guard, etc.) to eliminate easy wins and reduce token spend.
+
+---
+
+*For CLI flags and subcommands, see [COMMANDS.md](COMMANDS.md). For the full rule catalogue, see [EXAMPLES.md](EXAMPLES.md).*

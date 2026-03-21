@@ -1,5 +1,7 @@
 # Command Reference
 
+> **See also:** [SCAN_OVERVIEW.md](SCAN_OVERVIEW.md) for how the scan pipeline works · [EXAMPLES.md](EXAMPLES.md) for the full rule catalogue · [POLICY.md](POLICY.md) for policy options
+
 ## `skillscan scan <path>`
 
 Run a scan on a folder, file, archive, or URL.
