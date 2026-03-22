@@ -304,5 +304,16 @@ tests/test_semantic_local.py
 tests/test_showcase_examples.py
 tests/test_skill_graph.py
 tests/test_suppressions.py
+tools/skill-fuzzer/README.md
+tools/skill-fuzzer/__init__.py
+tools/skill-fuzzer/cli.py
+tools/skill-fuzzer/fuzzer.py
+tools/skill-fuzzer/prompts/authority.txt
+tools/skill-fuzzer/prompts/benign_drift.txt
+tools/skill-fuzzer/prompts/evasion.txt
+tools/skill-fuzzer/prompts/injection.txt
+tools/skill-fuzzer/prompts/obfuscation.txt
+tools/skill-fuzzer/pyproject.toml
+tools/skill-fuzzer/tests/test_fuzzer.py
 trace/domains/update_domains.py
 trace/domains/verified.yml
