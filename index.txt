@@ -190,6 +190,7 @@ integrations/openai/openapi.json
 integrations/openclaw/SKILL.md
 packaging/homebrew/skillscan-security.rb
 pyproject.toml
+scripts/fuzzer_tracer_pipeline.py
 scripts/generate_examples_table.py
 scripts/install.sh
 scripts/run_tests.sh
