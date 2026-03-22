@@ -1,14 +1,16 @@
 # SkillScan Security — Roadmap
 
-*Last updated: 2026-03-21. Reflects a full codebase audit conducted at v0.3.1; updated through v0.3.2 and subsequent sessions through 2026-03-21. M18 (skillscan-trace) and M19 (skill-fuzzer) complete. First behavioral batch run complete: F1 92.5% → 98.7% after judge prompt fixes. 40 sandbox_verified examples imported to corpus. Triage pipeline and corpus feedback loop operational.*
+*Last updated: 2026-03-21 (session 2). Reflects a full codebase audit conducted at v0.3.1; updated through v0.3.2 and subsequent sessions through 2026-03-21. M18 (skillscan-trace) and M19 (skill-fuzzer) complete. Benign corpus expanded 54 → 188 files (Gap #3 closed). Fine-tune pending with new benign examples. Next: fine-tune trigger + held-out eval (Items 1–2), then `skillscan diff` BD1 + PSV rules BD2.*
 
 > SkillScan was designed and directed by Kurt Payne and built with [Manus](https://manus.im) — an AI agent that handled implementation, research, and iteration at speed.
 
 ---
 
-## Current State (v0.3.2 / 2026-03-21)
+## Current State (v0.3.2 / 2026-03-21 session 2)
 
-> **Session summary (2026-03-21):** M18 (skillscan-trace) and M19 (skill-fuzzer) are complete. First behavioral batch run on 95 skills produced F1 92.5% → 98.7% after judge prompt fixes. 40 sandbox_verified examples imported to corpus. Triage pipeline (static-first, skip trace if score <0.20 AND semantic <0.25 AND ML prob <0.30 AND zero findings) is operational. Corpus feedback loop active via `CorpusManager.iter_examples()`. Next: fuzzer→tracer pipeline on 30 agent_hijacker seeds, benign corpus scraping (50-100 GitHub/ClawHub skills), and fine-tune trigger with 40 sandbox_verified examples.
+> **Session summary (2026-03-21, session 1):** M18 (skillscan-trace) and M19 (skill-fuzzer) are complete. First behavioral batch run on 95 skills produced F1 92.5% → 98.7% after judge prompt fixes. 40 sandbox_verified examples imported to corpus. Triage pipeline (static-first, skip trace if score <0.20 AND semantic <0.25 AND ML prob <0.30 AND zero findings) is operational. Corpus feedback loop active via `CorpusManager.iter_examples()`. Fuzzer→tracer pipeline script written (`scripts/fuzzer_tracer_pipeline.py`). ROADMAP.md and DETECTION_MODEL.md updated.
+
+> **Session summary (2026-03-21, session 2 — Gap #3 closed):** Benign corpus expanded from 54 → 188 files (+134) via three scrapers targeting `mattnigh/skills_collection` (48 skills), GitHub code search (36 skills), and `alirezarezvani/claude-skills` (50 skills). Quality filters: length 100–20k chars, 20 injection-keyword hard-rejects, structure check, SHA-256 dedup. FP rate spot-check on alirezarezvani skills shows ~80% false-block rate driven by RB-001 (backtick in markdown), PINJ-SEM-001/SE-SEM-001 (semantic over-fire on long instructional prose), and CHN-001/002 (benign phrases like "PDF download"). These 134 new benign examples are the negative training data needed to suppress these FPs. **Next: fine-tune trigger + held-out eval (F1 target ≥ 0.90), then `skillscan diff` BD1 + PSV rules BD2.**
 
 ## Current State (v0.3.1 baseline)
 
@@ -26,7 +28,7 @@ The scanner is a functioning, well-structured Python CLI with a clean separation
 | Policy engine | Complete — 3 profiles + custom YAML |
 | IOC database | Seeded — 163 domains, 1,310 IPs, 2 CIDRs (v0.3.2) |
 | Vuln database | Seeded — 23 Python + 4 npm packages, 111 versions (v0.3.2) |
-| ML detection | Operational — 1,159 corpus examples, macro F1=0.7544 (gate lowered to 0.77 on 2026-03-20 — pending push; see `corpus/EVAL_RESULTS.md`) |
+| ML detection | Operational — 1,293 corpus examples (1,159 + 134 new benign), macro F1=0.7544 pre-retrain. Fine-tune pending with new benign batch. Target: F1 ≥ 0.90 on held-out eval. |
 | Skill graph detector | 3 of 4 planned rules implemented |
 | AI assist | **Removed in v0.3.2** — free/offline/private positioning |
 | SARIF / JUnit / JSON output | Complete |
